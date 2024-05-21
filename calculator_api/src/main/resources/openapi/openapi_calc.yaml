@@ -1,0 +1,276 @@
+openapi: 3.0.0
+info:
+  title: calculatorApi
+  description: бэкенд-приложение с микросервисной архитектурой - прототип небольшого банка.
+  version: 1.0.1
+servers:
+  - url: http://localhost:8080/credit_bank/
+paths:
+  /calculator/offers:
+    post:
+      summary: расчёт возможных условий кредита
+      operationId: createLoanOffer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanStatementRequestDto'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoanOfferDto'
+
+  /calculator/calc:
+    post:
+      summary: валидация присланных данных + полный расчет параметров кредита
+      operationId: calculateLoan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoringDataDto'
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditDto'
+
+
+components:
+  schemas:
+    LoanStatementRequestDto:
+      type: object
+      required:
+        - amount
+        - term
+        - firstName
+        - lastName
+        - email
+        - birthdate
+        - passportSeries
+        - passportNumber
+      properties:
+        amount:
+          type: number
+          minimum: 30000
+        term:
+          type: integer
+          format: int32
+          minimum: 6
+        firstName:
+          type: string
+          pattern: ^[a-zA-Z]
+          minLength: 2
+          maxLength: 30
+        lastName:
+          type: string
+          pattern: ^[a-zA-Z]
+          minLength: 2
+          maxLength: 30
+        middleName:
+          type: string
+          pattern: ^[a-zA-Z]
+          minLength: 2
+          maxLength: 30
+        email:
+          type: string
+          pattern: ^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$
+        birthdate:
+          type: string
+          format: date
+
+        passportSeries:
+          type: string
+          pattern: ^[0-9]
+          minLength: 4
+          maxLength: 4
+        passportNumber:
+          type: string
+          pattern: ^[0-9]
+          minLength: 6
+          maxLength: 6
+
+    LoanOfferDto:
+      type: object
+      properties:
+        statementId:
+          type: string
+        requestedAmount:
+          type: number
+        totalAmount:
+          type: number
+        term:
+          type: integer
+          format: int32
+        monthlyPayment:
+          type: number
+        rate:
+          type: number
+        isInsuranceEnabled:
+          type: boolean
+        isSalaryClient:
+          type: boolean
+
+    ScoringDataDto:
+      type: object
+      required:
+        - amount
+        - term
+        - firstName
+        - lastName
+        - gender
+        - birthdate
+        - passportSeries
+        - passportNumber
+        - passportIssueDate
+        - passportIssueBranch
+        - maritalStatus
+        - dependentAmount
+        - employment
+        - accountNumber
+        - isInsuranceEnabled
+        - isSalaryClient
+      properties:
+        amount:
+          type: number
+          minimum: 30000
+        term:
+          type: integer
+          format: int32
+          minimum: 6
+        firstName:
+          type: string
+          pattern: ^[a-zA-Z]
+          minLength: 2
+          maxLength: 30
+        lastName:
+          type: string
+          pattern: ^[a-zA-Z]
+          minLength: 2
+          maxLength: 30
+        middleName:
+          type: string
+          pattern: ^[a-zA-Z]
+          minLength: 2
+          maxLength: 30
+        gender:
+          type: string
+          enum:
+            - male
+            - female
+            - other
+        birthdate:
+          type: string
+          format: date
+        passportSeries:
+          type: string
+          pattern: ^[0-9]
+          minLength: 4
+          maxLength: 4
+        passportNumber:
+          type: string
+          pattern: ^[0-9]
+          minLength: 6
+          maxLength: 6
+        passportIssueDate:
+          type: string
+          format: date
+        passportIssueBranch:
+          type: string
+        maritalStatus:
+          type: string
+          enum:
+            - married
+            - divorced
+            - single
+        dependentAmount:
+          type: integer
+          format: int32
+        employment:
+          $ref: '#/components/schemas/EmploymentDto'
+        accountNumber:
+          type: string
+        isInsuranceEnabled:
+          type: boolean
+        isSalaryClient:
+          type: boolean
+
+    CreditDto:
+      type: object
+      properties:
+        amount:
+          type: number
+        term:
+          type: integer
+          format: int32
+        monthlyPayment:
+          type: number
+        rate:
+          type: number
+        psk:
+          type: number
+        isInsuranceEnabled:
+          type: boolean
+        isSalaryClient:
+          type: boolean
+        paymentSchedule:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentScheduleElementDto'
+
+    EmploymentDto:
+      type: object
+      required:
+        - employmentStatus
+        - employerINN
+        - salary
+        - workExperienceTotal
+        - workExperienceCurrent
+      properties:
+        employmentStatus:
+          type: string
+          enum:
+            - unemployed
+            - self-employed
+            - business owner
+        employerINN:
+          type: string
+        salary:
+          type: number
+        position:
+          type: string
+          enum:
+            - manager
+            - top-manager
+        workExperienceTotal:
+          type: integer
+          format: int32
+        workExperienceCurrent:
+          type: integer
+          format: int32
+
+    PaymentScheduleElementDto:
+      type: object
+      properties:
+        number:
+          type: integer
+          format: int32
+        date:
+          type: string
+          format: date
+        totalPayment:
+          type: number
+        interestPayment:
+          type: number
+        debtPayment:
+          type: number
+        remainingDebt:
+          type: number
+
