@@ -25,15 +25,15 @@ public class CalculatorController {
 
     @PostMapping("/offers")
     public ResponseEntity<List<LoanOfferDto>> createLoanOffer(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
-        List<LoanOfferDto> offers = calculatorService.createLoanOffer(loanStatementRequestDto);
+        List<LoanOfferDto> offers = calculatorService.createListOffer(loanStatementRequestDto);
         return ResponseEntity.ok(offers);
     }
 
 
     @PostMapping("/calc")
-    public ResponseEntity<CreditDto> calculateLoan(@RequestBody @Valid ScoringDataDto scoringDataDto) {
+    public ResponseEntity<CreditDto> calculateCredit(@RequestBody @Valid ScoringDataDto scoringDataDto) {
 
-        return calculatorService.calculateLoan(scoringDataDto);
+        return ResponseEntity.ok(calculatorService.calculateCredit(scoringDataDto));
     }
 
 

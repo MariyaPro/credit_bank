@@ -38,8 +38,6 @@ public class LoanStatementRequestDto {
     private String email;
 
     @NotNull
-    @Valid
-
     private LocalDate birthdate;
 
     @NotNull

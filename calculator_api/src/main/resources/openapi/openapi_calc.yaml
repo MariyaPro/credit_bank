@@ -28,7 +28,7 @@ paths:
   /calculator/calc:
     post:
       summary: валидация присланных данных + полный расчет параметров кредита
-      operationId: calculateLoan
+      operationId: calculateCredit
       requestBody:
         content:
           application/json:

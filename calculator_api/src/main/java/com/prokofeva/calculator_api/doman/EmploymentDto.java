@@ -27,11 +27,13 @@ public class EmploymentDto {
 
     public enum EmploymentStatusEnum {
         UNEMPLOYED,
+        BUSY,
         SELF_EMPLOYED,
         BUSINESS_OWNER
     }
 
     public enum PositionEnum {
+        EMPLOYEE,
         MANAGER,
         TOP_MANAGER
     }
