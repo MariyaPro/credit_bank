@@ -72,9 +72,7 @@
                 <version>7.1.0</version>
                 <executions>
                     <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
+
                         <configuration>
                             <inputSpec>
                                 ${project.basedir}/src/main/resources/openapi/openapi_calc.yaml
