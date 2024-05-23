@@ -21,12 +21,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/calculator")
 public class CalculatorController {
-    private CalculatorService calculatorService;
+
+    private final CalculatorService calculatorService;
 
     @PostMapping("/offers")
     public ResponseEntity<List<LoanOfferDto>> createLoanOffer(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
-        List<LoanOfferDto> offers = calculatorService.createListOffer(loanStatementRequestDto);
-        return ResponseEntity.ok(offers);
+
+        return ResponseEntity.ok(calculatorService.createListOffer(loanStatementRequestDto));
     }
 
 

@@ -1,6 +1,7 @@
 package com.prokofeva.calculator_api.service;
 
 import com.prokofeva.calculator_api.doman.*;
+import com.prokofeva.calculator_api.exceptions.DeniedLoanException;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,7 @@ public class CalculatorService {
 
     public List<LoanOfferDto> createListOffer(LoanStatementRequestDto loanStatementRequestDto) {
         if (!prescoring(loanStatementRequestDto.getBirthdate())) {
-            throw new RuntimeException(); // todo bag request
+            throw new DeniedLoanException("Loan was denied. Cause: age does not meet established requirements.");
         }
 
         List<LoanOfferDto> offers = new ArrayList<>(List.of(
@@ -115,7 +116,7 @@ public class CalculatorService {
     public CreditDto calculateCredit(ScoringDataDto scoringDataDto) {
         BigDecimal amount = scoringDataDto.getAmount();
         Integer term = scoringDataDto.getTerm();
-        BigDecimal insurance = scoringDataDto.getIsInsuranceEnabled() ? calculateInsurance(amount, term) : BigDecimal.ZERO;     //todo повтор кода
+        BigDecimal insurance = scoringDataDto.getIsInsuranceEnabled() ? calculateInsurance(amount, term) : BigDecimal.ZERO;
 
         BigDecimal totalRate = scoring(scoringDataDto);
 
@@ -146,7 +147,8 @@ public class CalculatorService {
         );
 
         switch (scoringDataDto.getEmployment().getEmploymentStatus()) {
-            case UNEMPLOYED -> throw new RuntimeException("отказ"); //todo
+            case UNEMPLOYED ->
+                    throw new DeniedLoanException("Loan was denied. Cause: employment status does not meet established requirements.");
             case SELF_EMPLOYED -> rate = rate.add(BigDecimal.ONE);
             case BUSINESS_OWNER -> rate = rate.add(BigDecimal.valueOf(2));
         }
@@ -157,7 +159,7 @@ public class CalculatorService {
         }
 
         if (scoringDataDto.getAmount().compareTo(scoringDataDto.getEmployment().getSalary().multiply(BigDecimal.valueOf(25))) > 0)
-            throw new RuntimeException("отказ"); //todo
+            throw new DeniedLoanException("Loan was denied. Cause: the possible loan amount has been exceeded.");
 
         switch (scoringDataDto.getMaritalStatus()) {
             case MARRIED -> rate = rate.subtract(BigDecimal.valueOf(3.0));
@@ -169,7 +171,7 @@ public class CalculatorService {
             age--;
 
         if (age > 65 || age < 20)
-            throw new RuntimeException("отказ"); //todo
+            throw new DeniedLoanException("Loan was denied. Cause: age does not meet established requirements.");
 
         switch (scoringDataDto.getGender()) {
             case MALE -> {
@@ -185,7 +187,7 @@ public class CalculatorService {
 
         if (scoringDataDto.getEmployment().getWorkExperienceTotal() < 18
                 || scoringDataDto.getEmployment().getWorkExperienceCurrent() < 3)
-            throw new RuntimeException("отказ"); // todo
+            throw new DeniedLoanException("Loan was denied. Cause: work experience does not meet established requirements.");
 
         return rate;
     }
