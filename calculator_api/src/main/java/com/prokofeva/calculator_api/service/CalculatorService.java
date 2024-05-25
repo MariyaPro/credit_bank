@@ -20,11 +20,101 @@ import java.util.UUID;
 @Setter
 public class CalculatorService {
 
-    @Value("${base_loan_rate}")
-    private Double baseLoanRate;
+    @Value("${rate_loan.base}")
+    private Double rateLoanBase;
+
+    @Value("${rate_loan.age.min.male}")
+    private Integer ageMinMale;
+
+    @Value("${rate_loan.age.min.female}")
+    private Integer ageMinFemale;
+
+    @Value("${rate_loan.age.max.male}")
+    private Integer ageMaxMale;
+
+    @Value("${rate_loan.age.max.female}")
+    private Integer ageMaxFemale;
+
+    @Value("${rate_loan.correction.age.male}")
+    private BigDecimal correctionAgeMale;
+
+    @Value("${rate_loan.correction.age.female}")
+    private BigDecimal correctionAgeFemale;
+
+    @Value("${rate_loan.correction.employment.status.self_employed}")
+    private BigDecimal correctionSelfEmployed;
+
+    @Value("${rate_loan.correction.employment.status.business_owner}")
+    private BigDecimal correctionBusinessOwner;
+
+    @Value("${rate_loan.correction.employment.position.manager}")
+    private BigDecimal correctionManager;
+
+    @Value("${rate_loan.correction.employment.position.top_manager}")
+    private BigDecimal correctionTopManager;
+
+    @Value("${rate_loan.correction.marital_status.married}")
+    private BigDecimal correctionMarried;
+
+    @Value("${rate_loan.correction.marital_status.divorced}")
+    private BigDecimal correctionDivorced;
+
+    @Value("${rate_loan.correction.insurance_enabled}")
+    private Double correctionInsuranceEnabled;
+
+    @Value("${rate_loan.correction.salary_client}")
+    private Double correctionSalaryClient;
+
+    @Value("${rate_loan.correction.gender.other}")
+    private BigDecimal correctionGenderOther;
+
+    @Value("${rate_insurance.base}")
+    private Double rateInsuranceBase;
+
+    @Value("${rate_insurance.term.short}")
+    private Integer rateInsuranceTermShort;
+
+    @Value("${rate_insurance.term.long}")
+    private Integer rateInsuranceTermLong;
+
+    @Value("${rate_insurance.amount_loan.small}")
+    private BigDecimal rateInsuranceAmountSmall;
+
+    @Value("${rate_insurance.amount_loan.big}")
+    private BigDecimal rateInsuranceAmountBig;
+
+    @Value("${rate_insurance.correction.short_term}")
+    private Double rateInsuranceCorrectionShortTerm;
+
+    @Value("${rate_insurance.correction.long_term}")
+    private Double rateInsuranceCorrectionLongTerm;
+
+    @Value("${rate_insurance.correction.small_amount}")
+    private Double rateInsuranceCorrectionSmallAmount;
+
+    @Value("${rate_insurance.correction.big_amount}")
+    private Double rateInsuranceCorrectionBigAmount;
+
+    @Value("${prescoring.min_age}")
+    private Integer prescoringMinAge;
+
+    @Value("${scoring.age.min}")
+    private Integer scoringAgeMin;
+
+    @Value("${scoring.age.max}")
+    private Integer scoringAgeMax;
+
+    @Value("${scoring.min_work_experience.total}")
+    private Integer minWorkExperienceTotal;
+
+    @Value("${scoring.min_work_experience.current}")
+    private Integer minWorkExperienceCurrent;
+
+    @Value("${scoring.max_number_of_salaries_in_amount}")
+    private BigDecimal maxNumberSalaries;
 
     private final MathContext mathContextDoc = new MathContext(2);
-    private final MathContext mathContextCalc = new MathContext(15);
+    private final MathContext mathContextCalc = new MathContext(10);
 
     public List<LoanOfferDto> createListOffer(LoanStatementRequestDto loanStatementRequestDto) {
         if (!prescoring(loanStatementRequestDto.getBirthdate())) {
@@ -37,13 +127,13 @@ public class CalculatorService {
                 createLoanOffer(loanStatementRequestDto, true, true),
                 createLoanOffer(loanStatementRequestDto, true, false)
         ));
-        offers.sort((of1, of2) -> of2.getRate().compareTo(of1.getRate())); //todo ???????????
+        offers.sort((of1, of2) -> of2.getRate().compareTo(of1.getRate()));
 
         return offers;
     }
 
-    private boolean prescoring(LocalDate birthdate) {       //todo ????????
-        return LocalDate.now().minusYears(18).isAfter(birthdate);
+    private boolean prescoring(LocalDate birthdate) {
+        return LocalDate.now().minusYears(prescoringMinAge).isAfter(birthdate);
     }
 
     private LoanOfferDto createLoanOffer(LoanStatementRequestDto loanStatementRequestDto,
@@ -62,7 +152,7 @@ public class CalculatorService {
         LoanOfferDto offerDto = new LoanOfferDto();
         offerDto.setStatementId(UUID.randomUUID());
         offerDto.setRequestedAmount(amount);
-        offerDto.setTotalAmount(psk);
+        offerDto.setTotalAmount(psk); // todo сумма или %
         offerDto.setTerm(term);
         offerDto.setMonthlyPayment(monthlyPayment);
         offerDto.setRate(rate);
@@ -73,30 +163,27 @@ public class CalculatorService {
     }
 
     private BigDecimal calculateRate(boolean isInsuranceEnabled, boolean isSalaryClient) {
-        Double rate = baseLoanRate;
+        Double rate = rateLoanBase;
         if (isInsuranceEnabled) {
-            rate -= 3.0;
+            rate +=correctionInsuranceEnabled;
         }
         if (isSalaryClient) {
-            rate -= 1.0;
+            rate += correctionSalaryClient;
         }
         return BigDecimal.valueOf(rate);
     }
 
     private BigDecimal calculateInsurance(BigDecimal amount, Integer term) {
-        double rate = 3.0;
-        if (term < 12) rate += 1.0;
-        if (term >= 60) rate -= 1.0;
+        double rate = rateInsuranceBase;
+        if (term < rateInsuranceTermShort) rate += rateInsuranceCorrectionShortTerm;
+        if (term >= rateInsuranceTermLong) rate -= rateInsuranceCorrectionLongTerm;
 
-        if (amount.compareTo(BigDecimal.valueOf(100000.0)) <= 0) rate += 1.0;
-        if (amount.compareTo(BigDecimal.valueOf(1000000.0)) >= 0) rate -= 1.0;
+        if (amount.compareTo(rateInsuranceAmountSmall) <= 0) rate += rateInsuranceCorrectionSmallAmount;
+        if (amount.compareTo(rateInsuranceAmountBig) >= 0) rate += rateInsuranceCorrectionBigAmount;
 
-        BigDecimal amountInsurance = amount.multiply(BigDecimal.valueOf(rate * 0.01)).multiply(BigDecimal.valueOf(term / 12.0));
+        BigDecimal amountInsurance = amount.divide(BigDecimal.valueOf(rate * 0.01),mathContextCalc).multiply(BigDecimal.valueOf(term / 12.0));
 
-        BigDecimal maxInsurance = amount.multiply(BigDecimal.valueOf(0.1));
-        BigDecimal minInsurance = amount.multiply(BigDecimal.valueOf(0.05));
-
-        return amountInsurance.max(minInsurance).min(maxInsurance).round(mathContextDoc);
+        return amountInsurance;
     }
 
     // monthlyPayment = amount * rate / 12 * (1+rate/12)^term / ((1+rate/12)^term - 1)
@@ -104,7 +191,7 @@ public class CalculatorService {
         BigDecimal rateMonth = rate.divide(BigDecimal.valueOf(12), mathContextCalc);
         BigDecimal helper = rateMonth.add(BigDecimal.ONE).pow(term);        //todo: name? helper = (1+rate/12)^term
 
-        BigDecimal monthlyPayment = amount.multiply(rateMonth).multiply(helper).divide(helper.add(BigDecimal.valueOf(-1)), mathContextDoc);
+        BigDecimal monthlyPayment = amount.multiply(rateMonth).multiply(helper).divide(helper.subtract(BigDecimal.ONE), mathContextDoc);
 
         return monthlyPayment;
     }
@@ -149,44 +236,44 @@ public class CalculatorService {
         switch (scoringDataDto.getEmployment().getEmploymentStatus()) {
             case UNEMPLOYED ->
                     throw new DeniedLoanException("Loan was denied. Cause: employment status does not meet established requirements.");
-            case SELF_EMPLOYED -> rate = rate.add(BigDecimal.ONE);
-            case BUSINESS_OWNER -> rate = rate.add(BigDecimal.valueOf(2));
+            case SELF_EMPLOYED -> rate = rate.add(correctionSelfEmployed);
+            case BUSINESS_OWNER -> rate = rate.add(correctionBusinessOwner);
         }
 
         switch (scoringDataDto.getEmployment().getPosition()) {
-            case MANAGER -> rate = rate.subtract(BigDecimal.ONE);
-            case TOP_MANAGER -> rate = rate.subtract(BigDecimal.valueOf(3.0));
+            case MANAGER -> rate = rate.add(correctionManager);
+            case TOP_MANAGER -> rate = rate.add(correctionTopManager);
         }
 
-        if (scoringDataDto.getAmount().compareTo(scoringDataDto.getEmployment().getSalary().multiply(BigDecimal.valueOf(25))) > 0)
+        if (scoringDataDto.getAmount().compareTo(scoringDataDto.getEmployment().getSalary().multiply(maxNumberSalaries,mathContextCalc)) > 0)
             throw new DeniedLoanException("Loan was denied. Cause: the possible loan amount has been exceeded.");
 
         switch (scoringDataDto.getMaritalStatus()) {
-            case MARRIED -> rate = rate.subtract(BigDecimal.valueOf(3.0));
-            case DIVORCED -> rate = rate.add(BigDecimal.ONE);
+            case MARRIED -> rate = rate.add(correctionMarried);
+            case DIVORCED -> rate = rate.add(correctionDivorced);
         }
 
         int age = LocalDate.now().getYear() - scoringDataDto.getBirthdate().getYear();
         if (LocalDate.now().minusYears(1).isBefore(scoringDataDto.getBirthdate()))
             age--;
 
-        if (age > 65 || age < 20)
+        if (age >= scoringAgeMax || age < scoringAgeMin)
             throw new DeniedLoanException("Loan was denied. Cause: age does not meet established requirements.");
 
         switch (scoringDataDto.getGender()) {
             case MALE -> {
-                if (age >= 32 && age < 60)
-                    rate = rate.subtract(BigDecimal.valueOf(3));
+                if (age >= ageMinMale && age < ageMaxMale)
+                    rate = rate.add(correctionAgeMale);
             }
             case FEMALE -> {
-                if (age >= 30 && age < 55)
-                    rate = rate.subtract(BigDecimal.valueOf(3));
+                if (age >= ageMinFemale && age < ageMaxFemale)
+                    rate = rate.add(correctionAgeFemale);
             }
-            case OTHER -> rate = rate.add(BigDecimal.valueOf(7));
+            case OTHER -> rate = rate.add(correctionGenderOther);
         }
 
-        if (scoringDataDto.getEmployment().getWorkExperienceTotal() < 18
-                || scoringDataDto.getEmployment().getWorkExperienceCurrent() < 3)
+        if (scoringDataDto.getEmployment().getWorkExperienceTotal() < minWorkExperienceTotal
+                || scoringDataDto.getEmployment().getWorkExperienceCurrent() < minWorkExperienceCurrent)
             throw new DeniedLoanException("Loan was denied. Cause: work experience does not meet established requirements.");
 
         return rate;

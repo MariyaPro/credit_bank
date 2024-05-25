@@ -1,5 +1,8 @@
 package com.prokofeva.calculator_api.doman;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,16 +22,16 @@ public class ScoringDataDto {
     private Integer term;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z]", message = "Только латинские бувкы.")
+    @Pattern(regexp = "^[a-zA-Z]*", message = "Только латинские бувкы.")
     @Size(min = 2, max = 30, message = "От 2 до 30 символов.")
     private String firstName;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z]", message = "Только латинские бувкы.")
+    @Pattern(regexp = "^[a-zA-Z]*", message = "Только латинские бувкы.")
     @Size(min = 2, max = 30, message = "От 2 до 30 символов.")
     private String lastName;
 
-    @Pattern(regexp = "^[a-zA-Z]", message = "Только латинские бувкы.")
+    @Pattern(regexp = "^[a-zA-Z]*", message = "Только латинские бувкы.")
     @Size(min = 2, max = 30, message = "От 2 до 30 символов.")
     private String middleName;
 
@@ -39,13 +42,13 @@ public class ScoringDataDto {
     private LocalDate birthdate;
 
     @NotNull
-    @Pattern(regexp = "^[0-9]", message = "Серия паспорта ссостоит из 4х цифр.")
-    @Size(min = 4, max = 4)
+    @Pattern(regexp = "^[0-9]{4}", message = "Серия паспорта состоит из 4х цифр.")
+    //   @Size(min = 4, max = 4)
     private String passportSeries;
 
     @NotNull
-    @Pattern(regexp = "^[0-9]", message = "Номер паспорта состоит из 6ти цифр.")
-    @Size(min = 6, max = 6)
+    @Pattern(regexp = "^[0-9]{6}", message = "Номер паспорта состоит из 6ти цифр.")
+    //   @Size(min = 6, max = 6)
     private String passportNumber;
 
     @NotNull
@@ -73,16 +76,52 @@ public class ScoringDataDto {
     @NotNull
     private Boolean isSalaryClient;
 
+    @AllArgsConstructor
     public enum GenderEnum {
-        MALE,
-        FEMALE,
-        OTHER
+        MALE("male"),
+        FEMALE("female"),
+        OTHER("other");
+
+        private final String value;
+
+        @JsonValue
+        public String getValue() {
+            return value;
+        }
+
+        @JsonCreator
+        public static GenderEnum fromValue(String value) {
+            for (GenderEnum b : GenderEnum.values()) {
+                if (b.value.equalsIgnoreCase(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
     }
 
+    @AllArgsConstructor
     public enum MaritalStatusEnum {
-        MARRIED,
-        DIVORCED,
-        SINGLE
+        MARRIED("married"),
+        DIVORCED("divorced"),
+        SINGLE("single");
+
+        private final String value;
+
+        @JsonValue
+        public String getValue() {
+            return value;
+        }
+
+        @JsonCreator
+        public static MaritalStatusEnum fromValue(String value) {
+            for (MaritalStatusEnum b : MaritalStatusEnum.values()) {
+                if (b.value.equalsIgnoreCase(value)) {
+                    return b;
+                }
+            }
+            throw new IllegalArgumentException("Unexpected value '" + value + "'");
+        }
     }
 }
 

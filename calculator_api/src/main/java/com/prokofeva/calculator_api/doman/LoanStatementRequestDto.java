@@ -3,7 +3,6 @@ package com.prokofeva.calculator_api.doman;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,16 +19,16 @@ public class LoanStatementRequestDto {
     private Integer term;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z]" , message = "Только латинские бувкы.")
+    @Pattern(regexp = "^[a-zA-Z]*", message = "Только латинские бувкы.")
     @Size(min = 2, max = 30, message = "От 2 до 30 символов.")
     private String firstName;
 
     @NotNull
-    @Pattern(regexp = "^[a-zA-Z]", message = "Только латинские бувкы.")
+    @Pattern(regexp = "^[a-zA-Z]*", message = "Только латинские бувкы.")
     @Size(min = 2, max = 30, message = "От 2 до 30 символов.")
     private String lastName;
 
-    @Pattern(regexp = "^[a-zA-Z]", message = "Только латинские бувкы.")
+    @Pattern(regexp = "^[a-zA-Z]*", message = "Только латинские бувкы.")
     @Size(min = 2, max = 30, message = "От 2 до 30 символов.")
     private String middleName;
 
@@ -41,13 +40,11 @@ public class LoanStatementRequestDto {
     private LocalDate birthdate;
 
     @NotNull
-    @Pattern(regexp = "^[0-9]", message = "Серия паспорта ссостоит из 4х цифр.")
-    @Size(min = 4, max = 4)
+    @Pattern(regexp = "^[0-9]{4}", message = "Серия паспорта состоит из 4х цифр.")
     private String passportSeries;
 
     @NotNull
-    @Pattern(regexp = "^[0-9]", message = "Номер паспорта состоит из 6ти цифр.")
-    @Size(min = 6, max = 6)
+    @Pattern(regexp = "^[0-9]{6}", message = "Номер паспорта состоит из 6ти цифр.")
     private String passportNumber;
 
 }
