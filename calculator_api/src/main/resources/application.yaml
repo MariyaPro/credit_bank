@@ -1,5 +1,5 @@
 rate_loan:
-  base: '20.00'
+  base: '23.00'
   age:
     min:
       male: '32'

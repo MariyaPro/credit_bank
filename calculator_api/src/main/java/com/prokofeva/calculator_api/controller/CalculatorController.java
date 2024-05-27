@@ -5,6 +5,7 @@ import com.prokofeva.calculator_api.doman.LoanOfferDto;
 import com.prokofeva.calculator_api.doman.LoanStatementRequestDto;
 import com.prokofeva.calculator_api.doman.ScoringDataDto;
 import com.prokofeva.calculator_api.service.CalculatorService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,11 +21,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/calculator")
+@Tag(name = "Расчет кредитных условий по заданным параметрам.", description = "Производит предварительный и полный расчет кредита.")
 public class CalculatorController {
 
     private final CalculatorService calculatorService;
 
     @PostMapping("/offers")
+
     public ResponseEntity<List<LoanOfferDto>> createLoanOffer(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
 
         return ResponseEntity.ok(calculatorService.createListOffer(loanStatementRequestDto));
