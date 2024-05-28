@@ -34,7 +34,7 @@ public class LoanServiceImpl implements LoanService {
         return offers;
     }
 
-    private LoanOfferDto createLoanOffer(LoanStatementRequestDto loanStatementRequestDto,
+      private LoanOfferDto createLoanOffer(LoanStatementRequestDto loanStatementRequestDto,
                                          boolean isInsuranceEnabled, boolean isSalaryClient) {
 
         BigDecimal amount = loanStatementRequestDto.getAmount();
