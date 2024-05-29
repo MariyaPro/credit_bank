@@ -1,8 +1,10 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.doman.EmploymentDto;
-import com.prokofeva.calculator_api.doman.ScoringDataDto;
+import com.prokofeva.calculator_api.doman.enums.EmploymentStatusEnum;
+import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.doman.enums.MaritalStatusEnum;
+import com.prokofeva.calculator_api.doman.enums.PositionEnum;
 import com.prokofeva.calculator_api.exceptions.DeniedLoanException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +46,8 @@ class ScoringServiceImplTest {
 
         scoringDataDto.setIsSalaryClient(true);
         scoringDataDto.setIsInsuranceEnabled(true);
-        scoringDataDto.getEmployment().setPosition(EmploymentDto.PositionEnum.MANAGER);
-        scoringDataDto.setMaritalStatus(ScoringDataDto.MaritalStatusEnum.MARRIED);
+        scoringDataDto.getEmployment().setPosition(PositionEnum.MANAGER);
+        scoringDataDto.setMaritalStatus(MaritalStatusEnum.MARRIED);
 
         rate = scoringService.scoring(scoringDataDto);
 
@@ -56,7 +58,7 @@ class ScoringServiceImplTest {
     void scoringDeniedLoanException() {
         // статус - безработный
         ScoringDataDto scoringDataDto = CreatorValidDto.createScoringDataDto();
-        scoringDataDto.getEmployment().setEmploymentStatus(EmploymentDto.EmploymentStatusEnum.UNEMPLOYED);
+        scoringDataDto.getEmployment().setEmploymentStatus(EmploymentStatusEnum.UNEMPLOYED);
         BigDecimal rate = null;
         try {
             rate = scoringService.scoring(scoringDataDto);

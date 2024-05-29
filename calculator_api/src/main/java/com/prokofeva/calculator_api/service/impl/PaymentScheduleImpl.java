@@ -1,6 +1,6 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.doman.PaymentScheduleElementDto;
+import com.prokofeva.calculator_api.doman.dto.PaymentScheduleElementDto;
 import com.prokofeva.calculator_api.service.PaymentScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

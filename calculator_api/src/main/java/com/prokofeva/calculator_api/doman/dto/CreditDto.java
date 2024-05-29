@@ -1,4 +1,4 @@
-package com.prokofeva.calculator_api.doman;
+package com.prokofeva.calculator_api.doman.dto;
 
 import lombok.Data;
 

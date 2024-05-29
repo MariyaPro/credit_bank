@@ -1,10 +1,10 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.doman.CreditDto;
-import com.prokofeva.calculator_api.doman.LoanOfferDto;
-import com.prokofeva.calculator_api.doman.LoanStatementRequestDto;
-import com.prokofeva.calculator_api.doman.ScoringDataDto;
+import com.prokofeva.calculator_api.doman.dto.CreditDto;
+import com.prokofeva.calculator_api.doman.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.doman.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.exceptions.DeniedLoanException;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.OfferService;

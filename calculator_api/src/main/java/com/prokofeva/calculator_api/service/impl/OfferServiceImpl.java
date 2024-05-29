@@ -1,7 +1,7 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.doman.LoanOfferDto;
-import com.prokofeva.calculator_api.doman.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.doman.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.doman.dto.LoanStatementRequestDto;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.InsuranceService;
 import com.prokofeva.calculator_api.service.OfferService;

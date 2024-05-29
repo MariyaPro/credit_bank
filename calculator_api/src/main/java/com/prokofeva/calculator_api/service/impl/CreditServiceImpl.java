@@ -1,8 +1,8 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.doman.CreditDto;
-import com.prokofeva.calculator_api.doman.PaymentScheduleElementDto;
-import com.prokofeva.calculator_api.doman.ScoringDataDto;
+import com.prokofeva.calculator_api.doman.dto.CreditDto;
+import com.prokofeva.calculator_api.doman.dto.PaymentScheduleElementDto;
+import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.InsuranceService;
 import com.prokofeva.calculator_api.service.PaymentScheduleService;

@@ -1,6 +1,10 @@
 package com.prokofeva.calculator_api;
 
-import com.prokofeva.calculator_api.doman.*;
+import com.prokofeva.calculator_api.doman.enums.EmploymentStatusEnum;
+import com.prokofeva.calculator_api.doman.dto.*;
+import com.prokofeva.calculator_api.doman.enums.GenderEnum;
+import com.prokofeva.calculator_api.doman.enums.MaritalStatusEnum;
+import com.prokofeva.calculator_api.doman.enums.PositionEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -50,11 +54,11 @@ public class CreatorValidDto {
         scoringDataDto.setFirstName("FirstName");
         scoringDataDto.setLastName("LastName");
         scoringDataDto.setMiddleName("MiddleName");
-        scoringDataDto.setGender(ScoringDataDto.GenderEnum.MALE);
+        scoringDataDto.setGender(GenderEnum.MALE);
         scoringDataDto.setBirthdate(LocalDate.of(2000, 2, 21));
         scoringDataDto.setPassportSeries("1234");
         scoringDataDto.setPassportNumber("123456");
-        scoringDataDto.setMaritalStatus(ScoringDataDto.MaritalStatusEnum.SINGLE);
+        scoringDataDto.setMaritalStatus(MaritalStatusEnum.SINGLE);
         scoringDataDto.setDependentAmount(0);
         scoringDataDto.setEmployment(createEmploymentDto());
         scoringDataDto.setAccountNumber("123456789");
@@ -67,10 +71,10 @@ public class CreatorValidDto {
     public static EmploymentDto createEmploymentDto() {
         EmploymentDto employmentDto = new EmploymentDto();
 
-        employmentDto.setEmploymentStatus(EmploymentDto.EmploymentStatusEnum.BUSY);
+        employmentDto.setEmploymentStatus(EmploymentStatusEnum.BUSY);
         employmentDto.setEmployerINN("23366677711");
         employmentDto.setSalary(BigDecimal.valueOf(70000));
-        employmentDto.setPosition(EmploymentDto.PositionEnum.EMPLOYEE);
+        employmentDto.setPosition(PositionEnum.EMPLOYEE);
         employmentDto.setWorkExperienceTotal(36);
         employmentDto.setWorkExperienceCurrent(10);
 

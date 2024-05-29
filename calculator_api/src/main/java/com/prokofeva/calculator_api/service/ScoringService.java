@@ -1,6 +1,6 @@
 package com.prokofeva.calculator_api.service;
 
-import com.prokofeva.calculator_api.doman.ScoringDataDto;
+import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
 
 import java.math.BigDecimal;
 

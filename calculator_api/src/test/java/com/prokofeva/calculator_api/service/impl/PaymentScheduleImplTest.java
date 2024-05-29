@@ -1,6 +1,6 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.doman.PaymentScheduleElementDto;
+import com.prokofeva.calculator_api.doman.dto.PaymentScheduleElementDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

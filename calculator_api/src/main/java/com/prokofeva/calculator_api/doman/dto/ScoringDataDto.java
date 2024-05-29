@@ -1,8 +1,7 @@
-package com.prokofeva.calculator_api.doman;
+package com.prokofeva.calculator_api.doman.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.AllArgsConstructor;
+import com.prokofeva.calculator_api.doman.enums.GenderEnum;
+import com.prokofeva.calculator_api.doman.enums.MaritalStatusEnum;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -76,52 +75,5 @@ public class ScoringDataDto {
     @NotNull
     private Boolean isSalaryClient;
 
-    @AllArgsConstructor
-    public enum GenderEnum {
-        MALE("male"),
-        FEMALE("female"),
-        OTHER("other");
-
-        private final String value;
-
-        @JsonValue
-        public String getValue() {
-            return value;
-        }
-
-        @JsonCreator
-        public static GenderEnum fromValue(String value) {
-            for (GenderEnum b : GenderEnum.values()) {
-                if (b.value.equalsIgnoreCase(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-    }
-
-    @AllArgsConstructor
-    public enum MaritalStatusEnum {
-        MARRIED("married"),
-        DIVORCED("divorced"),
-        SINGLE("single");
-
-        private final String value;
-
-        @JsonValue
-        public String getValue() {
-            return value;
-        }
-
-        @JsonCreator
-        public static MaritalStatusEnum fromValue(String value) {
-            for (MaritalStatusEnum b : MaritalStatusEnum.values()) {
-                if (b.value.equalsIgnoreCase(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-    }
 }
 
