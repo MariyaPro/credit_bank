@@ -31,11 +31,11 @@ public class CreditServiceImpl implements CreditService {
                 : BigDecimal.ZERO;
         BigDecimal monthlyPayment = calculateMonthlyPayment(amount, term, rate);
 
-        List<PaymentScheduleElementDto> schedule = paymentScheduleService.createPaymentSchedule(amount, term, rate, monthlyPayment);
+        List<PaymentScheduleElementDto> schedule = paymentScheduleService.createPaymentSchedule(amount, term, rate,monthlyPayment);
 
         BigDecimal psk = calculatePsk(amount, insurance, schedule);
 
-        CreditDto creditDto = new CreditDto();          //todo может в builder?
+        CreditDto creditDto = new CreditDto();
         creditDto.setAmount(amount);
         creditDto.setTerm(term);
         creditDto.setMonthlyPayment(monthlyPayment);
@@ -49,19 +49,22 @@ public class CreditServiceImpl implements CreditService {
     }
 
     // monthlyPayment = amount * rate / 12 * (1+rate/12)^term / ((1+rate/12)^term - 1)
+    @Override
     public BigDecimal calculateMonthlyPayment(BigDecimal amount, Integer term, BigDecimal rate) {
         BigDecimal rateMonth = rate.movePointLeft(2).divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_EVEN);
         BigDecimal tmp = rateMonth.add(BigDecimal.ONE).pow(term);        // tmp = (1+rate/12)^term
 
-        BigDecimal monthlyPayment = amount.multiply(rateMonth).multiply(tmp)
+        BigDecimal monthlyPayment = amount.multiply(rateMonth)
+                .multiply(tmp)
                 .divide(tmp.subtract(BigDecimal.ONE), 2, RoundingMode.HALF_EVEN);
 
         return monthlyPayment;
     }
 
-    //пск = (сумма платежей / сумма кредита - 1 ) / срок кредита в годах * 100
+    // упрощеная формула: пск = (сумма платежей / сумма кредита - 1 ) / срок кредита в годах * 100
+    @Override
     public BigDecimal calculatePsk(BigDecimal amount, BigDecimal insurance, List<PaymentScheduleElementDto> schedule) {
-        BigDecimal totalAmount = calculateTotalAmount(schedule).add(insurance);
+        BigDecimal totalAmount = calculateTotalAmount(schedule, insurance).add(insurance);
 
         BigDecimal psk = totalAmount
                 .divide(amount, 10, RoundingMode.HALF_EVEN)
@@ -72,11 +75,14 @@ public class CreditServiceImpl implements CreditService {
         return psk;
     }
 
-    public BigDecimal calculateTotalAmount(List<PaymentScheduleElementDto> schedule) {
+    @Override
+    public BigDecimal calculateTotalAmount(List<PaymentScheduleElementDto> schedule, BigDecimal insurance) {
+        schedule.get(0).setTotalPayment(insurance);
         BigDecimal totalAmount = BigDecimal.ZERO;
+
         for (PaymentScheduleElementDto payment : schedule)
             totalAmount = totalAmount.add(payment.getTotalPayment());
-        // System.out.println(totalAmount);
+
         return totalAmount;
     }
 }

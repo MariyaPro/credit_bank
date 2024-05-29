@@ -1,6 +1,7 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.service.InsuranceService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Service
+@Getter
 public class InsuranceServiceImpl implements InsuranceService {
     @Value("${rate_insurance.base}")
     private BigDecimal rateInsuranceBase;

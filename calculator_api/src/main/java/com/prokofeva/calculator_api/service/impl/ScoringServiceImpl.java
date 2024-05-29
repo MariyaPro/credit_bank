@@ -76,6 +76,7 @@ public class ScoringServiceImpl implements ScoringService {
     @Value("${scoring.max_number_of_salaries_in_amount}")
     private BigDecimal maxNumberSalaries;
 
+    @Override
     public BigDecimal calculateRate(boolean isInsuranceEnabled, boolean isSalaryClient) {
         BigDecimal rate = rateLoanBase;
         if (isInsuranceEnabled) {

@@ -6,23 +6,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public class ValidDtoFactory {
+public class CreatorValidDto {
 
-    public static Object getDto(Class<?> clas) {
-        if (clas.equals(LoanStatementRequestDto.class))
-            return createLoanStatementRequestDto();
-        if (clas.equals(EmploymentDto.class))
-            return createEmploymentDto();
-        if (clas.equals(ScoringDataDto.class))
-            return createScoringDataDto();
-        if (clas.equals(CreditDto.class))
-            return createCreditDto();
-        return new IllegalArgumentException();
-    }
-
-
-    private static LoanStatementRequestDto createLoanStatementRequestDto() {
+    public static LoanStatementRequestDto createLoanStatementRequestDto() {
         LoanStatementRequestDto loanRequestDto = new LoanStatementRequestDto();
 
         loanRequestDto.setAmount(BigDecimal.valueOf(100000));
@@ -38,11 +26,26 @@ public class ValidDtoFactory {
         return loanRequestDto;
     }
 
+    public static LoanOfferDto createLoanOfferDto(){
+        LoanOfferDto loanOfferDto = new LoanOfferDto();
 
-    private static ScoringDataDto createScoringDataDto() {
+        loanOfferDto.setStatementId(UUID.randomUUID());
+        loanOfferDto.setRequestedAmount(BigDecimal.valueOf(100000));
+        loanOfferDto.setTotalAmount(BigDecimal.valueOf(111185));
+        loanOfferDto.setTerm(12);
+        loanOfferDto.setMonthlyPayment(BigDecimal.valueOf(9263.45));
+        loanOfferDto.setRate(BigDecimal.valueOf(20.00));
+        loanOfferDto.setIsInsuranceEnabled(false);
+        loanOfferDto.setIsSalaryClient(false);
+
+        return loanOfferDto;
+    }
+
+
+    public static ScoringDataDto createScoringDataDto() {
         ScoringDataDto scoringDataDto = new ScoringDataDto();
 
-        scoringDataDto.setAmount(BigDecimal.valueOf(123000));
+        scoringDataDto.setAmount(BigDecimal.valueOf(100000));
         scoringDataDto.setTerm(18);
         scoringDataDto.setFirstName("FirstName");
         scoringDataDto.setLastName("LastName");
@@ -61,7 +64,7 @@ public class ValidDtoFactory {
         return scoringDataDto;
     }
 
-    private static EmploymentDto createEmploymentDto() {
+    public static EmploymentDto createEmploymentDto() {
         EmploymentDto employmentDto = new EmploymentDto();
 
         employmentDto.setEmploymentStatus(EmploymentDto.EmploymentStatusEnum.BUSY);
@@ -74,7 +77,7 @@ public class ValidDtoFactory {
         return employmentDto;
     }
 
-    private static CreditDto createCreditDto(){
+    public static CreditDto createCreditDto(){
         CreditDto creditDto = new CreditDto();
 
         creditDto.setAmount(BigDecimal.valueOf(50000));
@@ -89,13 +92,13 @@ public class ValidDtoFactory {
         return creditDto;
     }
 
-    private static List<PaymentScheduleElementDto> createPaymentSchedule() {
+    public static List<PaymentScheduleElementDto> createPaymentSchedule() {
         List<PaymentScheduleElementDto> schedule = new ArrayList<>();
 
         PaymentScheduleElementDto payment0 = new PaymentScheduleElementDto();
         payment0.setNumber(0);
         payment0.setDate(LocalDate.now());
-        payment0.setTotalPayment(BigDecimal.valueOf(8826.14));
+        payment0.setTotalPayment(BigDecimal.ZERO);
         payment0.setInterestPayment(BigDecimal.ZERO);
         payment0.setDebtPayment(BigDecimal.ZERO);
         payment0.setRemainingDebt(BigDecimal.valueOf(50000));

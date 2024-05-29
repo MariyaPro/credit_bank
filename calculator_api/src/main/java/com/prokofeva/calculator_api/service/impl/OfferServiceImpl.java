@@ -4,38 +4,24 @@ import com.prokofeva.calculator_api.doman.LoanOfferDto;
 import com.prokofeva.calculator_api.doman.LoanStatementRequestDto;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.InsuranceService;
-import com.prokofeva.calculator_api.service.LoanService;
+import com.prokofeva.calculator_api.service.OfferService;
 import com.prokofeva.calculator_api.service.ScoringService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class LoanServiceImpl implements LoanService {
+public class OfferServiceImpl implements OfferService {
     private final CreditService creditService;
     private final InsuranceService insuranceService;
     private final ScoringService scoringService;
 
     @Override
-    public List<LoanOfferDto> createListOffer(LoanStatementRequestDto loanStatementRequestDto) {
-        List<LoanOfferDto> offers = new ArrayList<>(List.of(
-                createLoanOffer(loanStatementRequestDto, false, false),
-                createLoanOffer(loanStatementRequestDto, false, true),
-                createLoanOffer(loanStatementRequestDto, true, true),
-                createLoanOffer(loanStatementRequestDto, true, false)
-        ));
-        offers.sort((of1, of2) -> of2.getRate().compareTo(of1.getRate()));
-
-        return offers;
-    }
-
-      private LoanOfferDto createLoanOffer(LoanStatementRequestDto loanStatementRequestDto,
-                                         boolean isInsuranceEnabled, boolean isSalaryClient) {
+    public LoanOfferDto createOffer(LoanStatementRequestDto loanStatementRequestDto,
+                                    boolean isInsuranceEnabled, boolean isSalaryClient) {
 
         BigDecimal amount = loanStatementRequestDto.getAmount();
         Integer term = loanStatementRequestDto.getTerm();
@@ -44,9 +30,9 @@ public class LoanServiceImpl implements LoanService {
                 ? insuranceService.calculateInsurance(amount, term)
                 : BigDecimal.ZERO;
         BigDecimal monthlyPayment = creditService.calculateMonthlyPayment(amount, term, rate);
-        BigDecimal totalAmount = monthlyPayment.multiply(BigDecimal.valueOf(term)).add(insurance); //todo через график было бы точнее
+        BigDecimal totalAmount = monthlyPayment.multiply(BigDecimal.valueOf(term)).add(insurance);
 
-        LoanOfferDto offerDto = new LoanOfferDto();         //todo может в builder?
+        LoanOfferDto offerDto = new LoanOfferDto();
         offerDto.setStatementId(UUID.randomUUID());
         offerDto.setRequestedAmount(amount);
         offerDto.setTotalAmount(totalAmount);
@@ -58,5 +44,4 @@ public class LoanServiceImpl implements LoanService {
 
         return offerDto;
     }
-
 }

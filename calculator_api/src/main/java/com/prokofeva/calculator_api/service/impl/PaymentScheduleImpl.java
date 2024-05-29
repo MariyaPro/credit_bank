@@ -16,9 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaymentScheduleImpl implements PaymentScheduleService {
 
+    @Override
     public List<PaymentScheduleElementDto> createPaymentSchedule(BigDecimal amount, Integer term,
-                                                                  BigDecimal rate,
-                                                                  BigDecimal monthlyPayment
+                                                                 BigDecimal rate, BigDecimal monthlyPayment
     ) {
         List<PaymentScheduleElementDto> schedule = new ArrayList<>();
         BigDecimal remainingDebt = amount;
@@ -49,6 +49,7 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
 
         return schedule;
     }
+
     private void addFirstPayment(List<PaymentScheduleElementDto> schedule, BigDecimal amount) {
         PaymentScheduleElementDto payment = new PaymentScheduleElementDto();
         payment.setNumber(0);
@@ -59,6 +60,7 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
         payment.setRemainingDebt(amount);
         schedule.add(payment);
     }
+
     private void fixLastPayment(PaymentScheduleElementDto payment) {
         BigDecimal totalPayment = payment.getTotalPayment().add(payment.getRemainingDebt());
         payment.setTotalPayment(totalPayment);
