@@ -5,6 +5,7 @@ import com.prokofeva.calculator_api.doman.dto.LoanOfferDto;
 import com.prokofeva.calculator_api.doman.dto.LoanStatementRequestDto;
 import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.CalculatorService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class CalculatorController {
     private final CalculatorService calculatorService;
 
     @PostMapping("/offers")
-
+    @Operation(description = "Расчёт возможных условий кредита")
     public ResponseEntity<List<LoanOfferDto>> createLoanOffer(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
         log.info("Поступила заявка на расчет вариантов займа. {}", loanStatementRequestDto.toString());
         return ResponseEntity.ok(calculatorService.createListOffer(loanStatementRequestDto));
@@ -37,6 +38,7 @@ public class CalculatorController {
 
 
     @PostMapping("/calc")
+    @Operation(description = "Валидация присланных данных + полный расчет параметров кредита ")
     public ResponseEntity<CreditDto> calculateCredit(@RequestBody @Valid ScoringDataDto scoringDataDto) {
         log.info("Поступила заявка на кредит. {}", scoringDataDto.toString());
         return ResponseEntity.ok(calculatorService.calculateCredit(scoringDataDto));

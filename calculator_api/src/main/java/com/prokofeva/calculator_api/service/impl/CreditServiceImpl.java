@@ -36,7 +36,7 @@ public class CreditServiceImpl implements CreditService {
                 : BigDecimal.ZERO;
         BigDecimal monthlyPayment = calculateMonthlyPayment(amount, term, rate);
 
-        List<PaymentScheduleElementDto> schedule = paymentScheduleService.createPaymentSchedule(amount, term, rate,monthlyPayment);
+        List<PaymentScheduleElementDto> schedule = paymentScheduleService.createPaymentSchedule(amount, term, rate, monthlyPayment);
 
         BigDecimal psk = calculatePsk(amount, insurance, schedule);
 
@@ -56,7 +56,7 @@ public class CreditServiceImpl implements CreditService {
     // monthlyPayment = amount * rate / 12 * (1+rate/12)^term / ((1+rate/12)^term - 1)
     @Override
     public BigDecimal calculateMonthlyPayment(BigDecimal amount, Integer term, BigDecimal rate) {
-        log.info("Расчет суммы ежемесячного платежа по параметрам (сумма - {}, срок {} мес., ставка - {}%.",amount,term,rate);
+        log.info("Расчет суммы ежемесячного платежа по параметрам (сумма - {}, срок {} мес., ставка - {}%.", amount, term, rate);
         BigDecimal rateMonth = rate.movePointLeft(2).divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_EVEN);
         BigDecimal tmp = rateMonth.add(BigDecimal.ONE).pow(term);        // tmp = (1+rate/12)^term
 
@@ -64,7 +64,7 @@ public class CreditServiceImpl implements CreditService {
                 .multiply(tmp)
                 .divide(tmp.subtract(BigDecimal.ONE), 2, RoundingMode.HALF_EVEN);
 
-        log.info("Ежемесячный платеж составляет {}.",monthlyPayment);
+        log.info("Ежемесячный платеж составляет {}.", monthlyPayment);
         return monthlyPayment;
     }
 
@@ -81,10 +81,23 @@ public class CreditServiceImpl implements CreditService {
                 .movePointRight(2)
                 .divide(BigDecimal.valueOf((schedule.size() - 1.0) / 12.0), 3, RoundingMode.HALF_EVEN);
 
-        log.info("Полная стоимость кредита составляет {}.",psk);
+      //  psk = helper(amount, insurance, schedule);
+
+        log.info("Полная стоимость кредита составляет {}.", psk);
 
         return psk;
     }
+
+    // private BigDecimal helper(BigDecimal amount, BigDecimal insurance, List<PaymentScheduleElementDto> schedule) {
+        //     BigDecimal monthlyPayment = schedule.get(1).getTotalPayment();
+        //     BigDecimal totalAmount = monthlyPayment.multiply(BigDecimal.valueOf(schedule.size() - 1)).add(insurance);
+
+        //     BigDecimal ans = null;
+        //     BigDecimal min = BigDecimal.ZERO;
+        //     BigDecimal max = BigDecimal.valueOf(100);
+
+
+        // }
 
     @Override
     public BigDecimal calculateTotalAmount(List<PaymentScheduleElementDto> schedule, BigDecimal insurance) {
