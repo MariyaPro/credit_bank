@@ -3,6 +3,7 @@ package com.prokofeva.calculator_api.service.impl;
 import com.prokofeva.calculator_api.doman.dto.PaymentScheduleElementDto;
 import com.prokofeva.calculator_api.service.PaymentScheduleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,6 +13,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PaymentScheduleImpl implements PaymentScheduleService {
@@ -20,12 +22,16 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
     public List<PaymentScheduleElementDto> createPaymentSchedule(BigDecimal amount, Integer term,
                                                                  BigDecimal rate, BigDecimal monthlyPayment
     ) {
+        log.info("Идет расчет графика платежей.");
+
         List<PaymentScheduleElementDto> schedule = new ArrayList<>();
         BigDecimal remainingDebt = amount;
         BigDecimal rateDay = rate.movePointLeft(2).divide(BigDecimal.valueOf(365), 10, RoundingMode.HALF_EVEN);
         LocalDate date = LocalDate.now();
 
         addFirstPayment(schedule, amount);
+
+        log.info("Платеж №0: {}.",schedule.get(0));
 
         for (int i = 1; i <= term; i++) {
             LocalDate datePayment = date.plusMonths(1);
@@ -35,7 +41,7 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
             remainingDebt = remainingDebt.subtract(debtPayment);
             date = datePayment;
 
-            PaymentScheduleElementDto scheduleElement = new PaymentScheduleElementDto();        //todo может в builder?
+            PaymentScheduleElementDto scheduleElement = new PaymentScheduleElementDto();
             scheduleElement.setNumber(i);
             scheduleElement.setDate(datePayment);
             scheduleElement.setTotalPayment(monthlyPayment);
@@ -43,9 +49,15 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
             scheduleElement.setDebtPayment(debtPayment);
             scheduleElement.setRemainingDebt(remainingDebt);
 
+            log.info("Платеж №{}: {}.",i,scheduleElement);
+
             schedule.add(scheduleElement);
         }
+
         fixLastPayment(schedule.get(term));
+
+        log.info("Платеж №{}: {}.",term,schedule.get(term));
+        log.info("Формирование графика платежей завершено.");
 
         return schedule;
     }
@@ -62,6 +74,7 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
     }
 
     private void fixLastPayment(PaymentScheduleElementDto payment) {
+        log.info("Коррекция последнего платежа.");
         BigDecimal totalPayment = payment.getTotalPayment().add(payment.getRemainingDebt());
         payment.setTotalPayment(totalPayment);
         payment.setRemainingDebt(BigDecimal.ZERO);

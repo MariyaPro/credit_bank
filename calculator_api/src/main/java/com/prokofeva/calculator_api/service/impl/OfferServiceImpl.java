@@ -7,11 +7,13 @@ import com.prokofeva.calculator_api.service.InsuranceService;
 import com.prokofeva.calculator_api.service.OfferService;
 import com.prokofeva.calculator_api.service.ScoringService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OfferServiceImpl implements OfferService {
@@ -22,7 +24,8 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public LoanOfferDto createOffer(LoanStatementRequestDto loanStatementRequestDto,
                                     boolean isInsuranceEnabled, boolean isSalaryClient) {
-
+        log.info("Расчет предложения займа с параметрами: страховка кредита({}), зарплатный клиент({}).",
+                isInsuranceEnabled,isSalaryClient);
         BigDecimal amount = loanStatementRequestDto.getAmount();
         Integer term = loanStatementRequestDto.getTerm();
         BigDecimal rate = scoringService.calculateRate(isInsuranceEnabled, isSalaryClient);
@@ -42,6 +45,7 @@ public class OfferServiceImpl implements OfferService {
         offerDto.setIsInsuranceEnabled(isInsuranceEnabled);
         offerDto.setIsSalaryClient(isSalaryClient);
 
+        log.info("Предложение сформировано.");
         return offerDto;
     }
 }

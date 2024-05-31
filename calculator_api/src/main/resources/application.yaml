@@ -51,3 +51,9 @@ scoring:
     total: '18'
     current: '3'
   max_number_of_salaries_in_amount: '25'
+
+logging:
+  level:
+    com.prokofeva.calculator_api: info
+  file:
+    name: logs

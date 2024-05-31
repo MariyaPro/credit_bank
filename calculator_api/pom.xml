@@ -41,6 +41,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -66,7 +67,6 @@
             <artifactId>springdoc-openapi-ui</artifactId>
             <version>1.8.0</version>
         </dependency>
-
     </dependencies>
 
     <build>

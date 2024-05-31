@@ -4,12 +4,14 @@ import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.exceptions.DeniedLoanException;
 import com.prokofeva.calculator_api.service.ScoringService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ScoringServiceImpl implements ScoringService {
@@ -78,18 +80,22 @@ public class ScoringServiceImpl implements ScoringService {
 
     @Override
     public BigDecimal calculateRate(boolean isInsuranceEnabled, boolean isSalaryClient) {
+        log.info("Базовая ставка по кредиту составляет: {}.",rateLoanBase);
         BigDecimal rate = rateLoanBase;
         if (isInsuranceEnabled) {
             rate = rate.add(correctionInsuranceEnabled);
+            log.info("Ставка скорректирована (isInsuranceEnabled: {}, поправка: {}).", isInsuranceEnabled, correctionInsuranceEnabled);
         }
         if (isSalaryClient) {
             rate = rate.add(correctionSalaryClient);
+            log.info("Ставка скорректирована (isSalaryClient: {}, поправка: {}).", isSalaryClient, correctionSalaryClient);
         }
         return rate;
     }
 
     @Override
     public BigDecimal scoring(ScoringDataDto scoringDataDto) {
+        log.info("Скоринг ...");
         BigDecimal rate = calculateRate(
                 scoringDataDto.getIsInsuranceEnabled(),
                 scoringDataDto.getIsSalaryClient()
@@ -98,21 +104,40 @@ public class ScoringServiceImpl implements ScoringService {
         switch (scoringDataDto.getEmployment().getEmploymentStatus()) {
             case UNEMPLOYED ->
                     throw new DeniedLoanException("Loan was denied. Cause: employment status does not meet established requirements.");
-            case SELF_EMPLOYED -> rate = rate.add(correctionSelfEmployed);
-            case BUSINESS_OWNER -> rate = rate.add(correctionBusinessOwner);
+            case SELF_EMPLOYED -> {
+                rate = rate.add(correctionSelfEmployed);
+                log.info("Ставка скорректирована (EmploymentStatus: {}, поправка: {}).", "SELF_EMPLOYED", correctionSelfEmployed);
+            }
+            case BUSINESS_OWNER -> {
+                rate = rate.add(correctionBusinessOwner);
+                log.info("Ставка скорректирована (EmploymentStatus: {}, поправка: {}).", "BUSINESS_OWNER", correctionBusinessOwner);
+            }
         }
 
         switch (scoringDataDto.getEmployment().getPosition()) {
-            case MANAGER -> rate = rate.add(correctionManager);
-            case TOP_MANAGER -> rate = rate.add(correctionTopManager);
+            case MANAGER -> {
+                rate = rate.add(correctionManager);
+                log.info("Ставка скорректирована (EmploymentPosition: {}, поправка: {}).", "MANAGER", correctionManager);
+
+            }
+            case TOP_MANAGER -> {
+                rate = rate.add(correctionTopManager);
+                log.info("Ставка скорректирована (EmploymentPosition: {}, поправка: {}).", "TOP_MANAGER", correctionTopManager);
+            }
         }
 
         if (scoringDataDto.getAmount().compareTo(scoringDataDto.getEmployment().getSalary().multiply(maxNumberSalaries)) > 0)
             throw new DeniedLoanException("Loan was denied. Cause: the possible loan amount has been exceeded.");
 
         switch (scoringDataDto.getMaritalStatus()) {
-            case MARRIED -> rate = rate.add(correctionMarried);
-            case DIVORCED -> rate = rate.add(correctionDivorced);
+            case MARRIED -> {
+                rate = rate.add(correctionMarried);
+                log.info("Ставка скорректирована (MaritalStatus: {}, поправка: {}).", "MARRIED", correctionMarried);
+            }
+            case DIVORCED -> {
+                rate = rate.add(correctionDivorced);
+                log.info("Ставка скорректирована (MaritalStatus: {}, поправка: {}).", "DIVORCED", correctionDivorced);
+            }
         }
 
         int age = LocalDate.now().getYear() - scoringDataDto.getBirthdate().getYear();
@@ -124,19 +149,28 @@ public class ScoringServiceImpl implements ScoringService {
 
         switch (scoringDataDto.getGender()) {
             case MALE -> {
-                if (age >= ageMinMale && age < ageMaxMale)
+                if (age >= ageMinMale && age < ageMaxMale) {
                     rate = rate.add(correctionAgeMale);
+                    log.info("Ставка скорректирована (Gender: {}, {} <= возраст < {}, поправка: {}).", "MALE", ageMinMale, ageMaxMale, correctionAgeMale);
+                }
             }
             case FEMALE -> {
-                if (age >= ageMinFemale && age < ageMaxFemale)
+                if (age >= ageMinFemale && age < ageMaxFemale) {
                     rate = rate.add(correctionAgeFemale);
+                    log.info("Ставка скорректирована (Gender: {}, {} <= возраст < {}, поправка: {}).", "FEMALE", ageMinFemale, ageMaxFemale, correctionAgeMale);
+                }
             }
-            case OTHER -> rate = rate.add(correctionGenderOther);
+            case OTHER -> {
+                rate = rate.add(correctionGenderOther);
+                log.info("Ставка скорректирована (Gender: {}, поправка: {}).", "OTHER", correctionAgeMale);
+            }
         }
 
         if (scoringDataDto.getEmployment().getWorkExperienceTotal() < minWorkExperienceTotal
                 || scoringDataDto.getEmployment().getWorkExperienceCurrent() < minWorkExperienceCurrent)
             throw new DeniedLoanException("Loan was denied. Cause: work experience does not meet established requirements.");
+
+        log.info("Итоговая ставка по кредиту составляет: {}", rate);
 
         return rate;
     }
