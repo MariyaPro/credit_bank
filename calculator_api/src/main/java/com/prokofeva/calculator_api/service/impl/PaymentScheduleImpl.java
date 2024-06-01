@@ -20,8 +20,9 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
 
     @Override
     public List<PaymentScheduleElementDto> createPaymentSchedule(BigDecimal amount, Integer term,
-                                                                 BigDecimal rate, BigDecimal monthlyPayment
-    ) {
+                                                                 BigDecimal rate,
+                                                                 BigDecimal monthlyPayment,
+                                                                 BigDecimal insurance) {
         log.info("Идет расчет графика платежей.");
 
         List<PaymentScheduleElementDto> schedule = new ArrayList<>();
@@ -29,7 +30,7 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
         BigDecimal rateDay = rate.movePointLeft(2).divide(BigDecimal.valueOf(365), 10, RoundingMode.HALF_EVEN);
         LocalDate date = LocalDate.now();
 
-        addFirstPayment(schedule, amount);
+        addFirstPayment(schedule, amount, insurance);
 
         log.info("Платеж №0: {}.",schedule.get(0));
 
@@ -62,11 +63,11 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
         return schedule;
     }
 
-    private void addFirstPayment(List<PaymentScheduleElementDto> schedule, BigDecimal amount) {
+    private void addFirstPayment(List<PaymentScheduleElementDto> schedule, BigDecimal amount, BigDecimal insurance) {
         PaymentScheduleElementDto payment = new PaymentScheduleElementDto();
         payment.setNumber(0);
         payment.setDate(LocalDate.now());
-        payment.setTotalPayment(BigDecimal.ZERO);
+        payment.setTotalPayment(insurance);
         payment.setInterestPayment(BigDecimal.ZERO);
         payment.setDebtPayment(BigDecimal.ZERO);
         payment.setRemainingDebt(amount);

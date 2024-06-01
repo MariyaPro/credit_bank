@@ -1,8 +1,8 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.doman.enums.EmploymentStatusEnum;
 import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.doman.enums.EmploymentStatusEnum;
 import com.prokofeva.calculator_api.doman.enums.MaritalStatusEnum;
 import com.prokofeva.calculator_api.doman.enums.PositionEnum;
 import com.prokofeva.calculator_api.exceptions.DeniedLoanException;

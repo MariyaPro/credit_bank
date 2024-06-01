@@ -41,7 +41,7 @@ class CreditServiceImplTest {
     void calculateCredit() {
         ScoringDataDto scoringDataDto = CreatorValidDto.createScoringDataDto();
         when(scoringService.scoring(any())).thenReturn(BigDecimal.valueOf(20.00));
-        when(paymentScheduleService.createPaymentSchedule(any(), any(), any(), any())).thenReturn(CreatorValidDto.createPaymentSchedule());
+        when(paymentScheduleService.createPaymentSchedule(any(), any(), any(), any(), any())).thenReturn(CreatorValidDto.createPaymentSchedule());
 
 
         CreditDto creditDto = creditService.calculateCredit(scoringDataDto);

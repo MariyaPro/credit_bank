@@ -21,8 +21,9 @@ class PaymentScheduleImplTest {
         BigDecimal amount = BigDecimal.valueOf(50000);
         Integer term = 6;
         BigDecimal rate = BigDecimal.valueOf(20.0);
+        BigDecimal insurance = BigDecimal.valueOf(2000.0);
         BigDecimal monthlyPayment = BigDecimal.valueOf(8826.14);
-        List<PaymentScheduleElementDto> schedule = paymentSchedule.createPaymentSchedule(amount, term, rate, monthlyPayment);
+        List<PaymentScheduleElementDto> schedule = paymentSchedule.createPaymentSchedule(amount, term, rate, monthlyPayment, insurance);
 
         assertNotNull(schedule);
         assertEquals(term + 1, schedule.size());

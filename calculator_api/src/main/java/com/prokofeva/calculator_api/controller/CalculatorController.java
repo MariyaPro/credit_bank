@@ -23,19 +23,17 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/calculator")
 @Tag(name = "Расчет кредитных условий по заданным параметрам.", description = "Производит предварительный и полный расчет кредита.")
+@RequestMapping("/calculator")
 public class CalculatorController {
 
     private final CalculatorService calculatorService;
-
-    @PostMapping("/offers")
     @Operation(description = "Расчёт возможных условий кредита")
+    @PostMapping("/offers")
     public ResponseEntity<List<LoanOfferDto>> createLoanOffer(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
         log.info("Поступила заявка на расчет вариантов займа. {}", loanStatementRequestDto.toString());
         return ResponseEntity.ok(calculatorService.createListOffer(loanStatementRequestDto));
     }
-
 
     @PostMapping("/calc")
     @Operation(description = "Валидация присланных данных + полный расчет параметров кредита ")

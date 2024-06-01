@@ -36,9 +36,9 @@ public class CreditServiceImpl implements CreditService {
                 : BigDecimal.ZERO;
         BigDecimal monthlyPayment = calculateMonthlyPayment(amount, term, rate);
 
-        List<PaymentScheduleElementDto> schedule = paymentScheduleService.createPaymentSchedule(amount, term, rate, monthlyPayment);
+        List<PaymentScheduleElementDto> schedule = paymentScheduleService.createPaymentSchedule(amount, term, rate, monthlyPayment, insurance);
 
-        BigDecimal psk = calculatePsk(amount, insurance, schedule);
+        BigDecimal psk = calculatePsk(amount, rate, schedule);
 
         CreditDto creditDto = new CreditDto();
         creditDto.setAmount(amount);
@@ -68,36 +68,53 @@ public class CreditServiceImpl implements CreditService {
         return monthlyPayment;
     }
 
-    // упрощеная формула: пск = (сумма платежей / сумма кредита - 1 ) / срок кредита в годах * 100
     @Override
-    public BigDecimal calculatePsk(BigDecimal amount, BigDecimal insurance, List<PaymentScheduleElementDto> schedule) {
+    public BigDecimal calculatePsk(BigDecimal amount, BigDecimal rate, List<PaymentScheduleElementDto> schedule) {
         log.info("Расчет полной стоимости кредита.");
 
-        BigDecimal totalAmount = calculateTotalAmount(schedule, insurance).add(insurance);
+        BigDecimal minRateI = BigDecimal.ZERO;
+        BigDecimal maxRateI = rate;
 
-        BigDecimal psk = totalAmount
-                .divide(amount, 10, RoundingMode.HALF_EVEN)
-                .subtract(BigDecimal.ONE)
-                .movePointRight(2)
-                .divide(BigDecimal.valueOf((schedule.size() - 1.0) / 12.0), 3, RoundingMode.HALF_EVEN);
+        while (checkRateI(maxRateI, amount, schedule).signum() == 1) {
+            minRateI = maxRateI;
+            maxRateI = maxRateI.multiply(BigDecimal.valueOf(2));
+        }
 
-      //  psk = helper(amount, insurance, schedule);
+        BigDecimal validDif = BigDecimal.valueOf(100);
+        while (minRateI.compareTo(maxRateI) < 0) {
+            BigDecimal midRateI = maxRateI.add(minRateI).divide(BigDecimal.valueOf(2), 10, RoundingMode.HALF_EVEN);
+            BigDecimal dif = checkRateI(midRateI, amount, schedule);
+            if (dif.signum() == -1) {
+                maxRateI = midRateI;
+            } else {
+                if (dif.compareTo(validDif) < 0)
+                    break;
+
+                minRateI = midRateI;
+            }
+        }
+
+        BigDecimal psk = minRateI.multiply(BigDecimal.valueOf(365)).divide(BigDecimal.valueOf(30), 3, RoundingMode.HALF_EVEN);
 
         log.info("Полная стоимость кредита составляет {}.", psk);
 
         return psk;
     }
 
-    // private BigDecimal helper(BigDecimal amount, BigDecimal insurance, List<PaymentScheduleElementDto> schedule) {
-        //     BigDecimal monthlyPayment = schedule.get(1).getTotalPayment();
-        //     BigDecimal totalAmount = monthlyPayment.multiply(BigDecimal.valueOf(schedule.size() - 1)).add(insurance);
+    private BigDecimal checkRateI(BigDecimal rate, BigDecimal amount, List<PaymentScheduleElementDto> schedule) {
+        BigDecimal dif = amount.negate().subtract(schedule.get(0).getTotalPayment());
 
-        //     BigDecimal ans = null;
-        //     BigDecimal min = BigDecimal.ZERO;
-        //     BigDecimal max = BigDecimal.valueOf(100);
+        BigDecimal tmp = BigDecimal.ONE;
+        BigDecimal tmpPow = rate.movePointLeft(2).add(BigDecimal.ONE);
 
 
-        // }
+        for (int i = 1; i < schedule.size(); i++) {
+            tmp = tmp.multiply(tmpPow);
+            BigDecimal payment = schedule.get(i).getTotalPayment().divide(tmp, 5, RoundingMode.HALF_EVEN);
+            dif = dif.add(payment);
+        }
+        return dif;
+    }
 
     @Override
     public BigDecimal calculateTotalAmount(List<PaymentScheduleElementDto> schedule, BigDecimal insurance) {

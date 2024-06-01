@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 //@ExtendWith(SpringExtension.class)
 //@SpringBootTest
-//@TestPropertySource("application-test.yaml")
+//@TestPropertySource("/application.yaml")
 public class CalculatorServiceImplTest {
 
     @Mock

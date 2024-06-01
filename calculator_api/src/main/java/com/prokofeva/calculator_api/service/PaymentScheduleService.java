@@ -8,5 +8,6 @@ import java.util.List;
 public interface PaymentScheduleService {
     List<PaymentScheduleElementDto> createPaymentSchedule(BigDecimal amount, Integer term,
                                                           BigDecimal totalRate,
-                                                          BigDecimal monthlyPayment);
+                                                          BigDecimal monthlyPayment,
+                                                          BigDecimal insurance);
 }
