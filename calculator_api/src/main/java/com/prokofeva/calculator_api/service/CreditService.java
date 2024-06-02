@@ -13,7 +13,7 @@ public interface CreditService {
 
     BigDecimal calculateMonthlyPayment(BigDecimal amount, Integer term, BigDecimal rate);
 
-    BigDecimal calculateTotalAmount(List<PaymentScheduleElementDto> schedule,BigDecimal insurance);
+    BigDecimal calculateTotalAmount(List<PaymentScheduleElementDto> schedule);
 
     BigDecimal calculatePsk(BigDecimal amount, BigDecimal insurance, List<PaymentScheduleElementDto> schedule);
 }

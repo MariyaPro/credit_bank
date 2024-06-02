@@ -2,7 +2,6 @@ package com.prokofeva.calculator_api.doman.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

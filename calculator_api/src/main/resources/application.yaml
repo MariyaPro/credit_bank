@@ -56,4 +56,4 @@ logging:
   level:
     com.prokofeva.calculator_api: info
   file:
-    name: logs
+    name: calc-logs

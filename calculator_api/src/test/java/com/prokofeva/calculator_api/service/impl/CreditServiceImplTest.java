@@ -84,16 +84,16 @@ class CreditServiceImplTest {
 
     @Test
     void calculatePsk() {
-        BigDecimal validDifPsk = BigDecimal.valueOf(41); //todo :-(
+        BigDecimal validDifPsk = BigDecimal.valueOf(20.0);
 
         //без страховки
         List<PaymentScheduleElementDto> schedule = CreatorValidDto.createPaymentSchedule();
 
         BigDecimal psk1 = creditService.calculatePsk(
                 BigDecimal.valueOf(50000),
-                BigDecimal.ZERO,
+                BigDecimal.valueOf(20),
                 schedule);
-        BigDecimal psk1Ex = BigDecimal.valueOf(19.940);
+        BigDecimal psk1Ex = BigDecimal.valueOf(19.937);
         BigDecimal dif1 = psk1.subtract(psk1Ex).abs().movePointRight(2).divide(psk1Ex, 3, RoundingMode.HALF_EVEN);
 
         assertTrue(validDifPsk.compareTo(dif1) >= 0);
@@ -102,7 +102,7 @@ class CreditServiceImplTest {
         schedule.get(0).setTotalPayment(BigDecimal.valueOf(2000));
         BigDecimal psk2 = creditService.calculatePsk(
                 BigDecimal.valueOf(50000),
-                BigDecimal.valueOf(2000),
+                BigDecimal.valueOf(20),
                 schedule);
         BigDecimal psk2Ex = BigDecimal.valueOf(34.393);
         BigDecimal dif2 = psk2.subtract(psk2Ex).abs().movePointRight(2).divide(psk1Ex, 3, RoundingMode.HALF_EVEN);
@@ -113,14 +113,14 @@ class CreditServiceImplTest {
     @Test
     void calculateTotalAmount() {
         List<PaymentScheduleElementDto> schedule = CreatorValidDto.createPaymentSchedule();
-        BigDecimal totalAmount = creditService.calculateTotalAmount(schedule, BigDecimal.ZERO);
+        BigDecimal totalAmount = creditService.calculateTotalAmount(schedule);
 
         assertEquals(totalAmount, BigDecimal.valueOf(52973.95));
 
         for (PaymentScheduleElementDto payment : schedule)
             payment.setTotalPayment(BigDecimal.valueOf(1000));
 
-        totalAmount = creditService.calculateTotalAmount(schedule, BigDecimal.valueOf(1000));
+        totalAmount = creditService.calculateTotalAmount(schedule);
         assertEquals(totalAmount, BigDecimal.valueOf(1000L * schedule.size()));
     }
 }

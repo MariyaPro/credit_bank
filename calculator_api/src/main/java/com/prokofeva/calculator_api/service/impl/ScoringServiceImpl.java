@@ -80,22 +80,24 @@ public class ScoringServiceImpl implements ScoringService {
 
     @Override
     public BigDecimal calculateRate(boolean isInsuranceEnabled, boolean isSalaryClient) {
-        log.info("Базовая ставка по кредиту составляет: {}.",rateLoanBase);
+        log.info("Базовая ставка по кредиту составляет: {}.", rateLoanBase);
         BigDecimal rate = rateLoanBase;
         if (isInsuranceEnabled) {
             rate = rate.add(correctionInsuranceEnabled);
-            log.info("Ставка скорректирована (isInsuranceEnabled: {}, поправка: {}).", isInsuranceEnabled, correctionInsuranceEnabled);
+            log.info("Ставка скорректирована (isInsuranceEnabled: поправка: {}).", correctionInsuranceEnabled);
         }
         if (isSalaryClient) {
             rate = rate.add(correctionSalaryClient);
-            log.info("Ставка скорректирована (isSalaryClient: {}, поправка: {}).", isSalaryClient, correctionSalaryClient);
+            log.info("Ставка скорректирована (isSalaryClient: поправка: {}).", correctionSalaryClient);
         }
         return rate;
     }
 
     @Override
     public BigDecimal scoring(ScoringDataDto scoringDataDto) {
-        log.info("Скоринг ...");
+        log.info("Скоринг заявки. Клиент: {} {} {}, сумма: {}, срок {}, страховка: {}."
+                , scoringDataDto.getFirstName(), scoringDataDto.getMiddleName(), scoringDataDto.getLastName()
+                , scoringDataDto.getAmount(), scoringDataDto.getTerm(), scoringDataDto.getIsInsuranceEnabled());
         BigDecimal rate = calculateRate(
                 scoringDataDto.getIsInsuranceEnabled(),
                 scoringDataDto.getIsSalaryClient()
@@ -106,23 +108,23 @@ public class ScoringServiceImpl implements ScoringService {
                     throw new DeniedLoanException("Loan was denied. Cause: employment status does not meet established requirements.");
             case SELF_EMPLOYED -> {
                 rate = rate.add(correctionSelfEmployed);
-                log.info("Ставка скорректирована (EmploymentStatus: {}, поправка: {}).", "SELF_EMPLOYED", correctionSelfEmployed);
+                log.info("Ставка скорректирована (EmploymentStatus: SELF_EMPLOYED, поправка: {}).", correctionSelfEmployed);
             }
             case BUSINESS_OWNER -> {
                 rate = rate.add(correctionBusinessOwner);
-                log.info("Ставка скорректирована (EmploymentStatus: {}, поправка: {}).", "BUSINESS_OWNER", correctionBusinessOwner);
+                log.info("Ставка скорректирована (EmploymentStatus: BUSINESS_OWNER, поправка: {}).", correctionBusinessOwner);
             }
         }
 
         switch (scoringDataDto.getEmployment().getPosition()) {
             case MANAGER -> {
                 rate = rate.add(correctionManager);
-                log.info("Ставка скорректирована (EmploymentPosition: {}, поправка: {}).", "MANAGER", correctionManager);
+                log.info("Ставка скорректирована (EmploymentPosition: MANAGER, поправка: {}).", correctionManager);
 
             }
             case TOP_MANAGER -> {
                 rate = rate.add(correctionTopManager);
-                log.info("Ставка скорректирована (EmploymentPosition: {}, поправка: {}).", "TOP_MANAGER", correctionTopManager);
+                log.info("Ставка скорректирована (EmploymentPosition: TOP_MANAGER, поправка: {}).", correctionTopManager);
             }
         }
 
@@ -132,11 +134,11 @@ public class ScoringServiceImpl implements ScoringService {
         switch (scoringDataDto.getMaritalStatus()) {
             case MARRIED -> {
                 rate = rate.add(correctionMarried);
-                log.info("Ставка скорректирована (MaritalStatus: {}, поправка: {}).", "MARRIED", correctionMarried);
+                log.info("Ставка скорректирована (MaritalStatus: MARRIED, поправка: {}).", correctionMarried);
             }
             case DIVORCED -> {
                 rate = rate.add(correctionDivorced);
-                log.info("Ставка скорректирована (MaritalStatus: {}, поправка: {}).", "DIVORCED", correctionDivorced);
+                log.info("Ставка скорректирована (MaritalStatus: DIVORCED, поправка: {}).", correctionDivorced);
             }
         }
 
@@ -151,18 +153,18 @@ public class ScoringServiceImpl implements ScoringService {
             case MALE -> {
                 if (age >= ageMinMale && age < ageMaxMale) {
                     rate = rate.add(correctionAgeMale);
-                    log.info("Ставка скорректирована (Gender: {}, {} <= возраст < {}, поправка: {}).", "MALE", ageMinMale, ageMaxMale, correctionAgeMale);
+                    log.info("Ставка скорректирована (Gender: MALE, {} <= возраст < {}, поправка: {}).", ageMinMale, ageMaxMale, correctionAgeMale);
                 }
             }
             case FEMALE -> {
                 if (age >= ageMinFemale && age < ageMaxFemale) {
                     rate = rate.add(correctionAgeFemale);
-                    log.info("Ставка скорректирована (Gender: {}, {} <= возраст < {}, поправка: {}).", "FEMALE", ageMinFemale, ageMaxFemale, correctionAgeMale);
+                    log.info("Ставка скорректирована (Gender: FEMALE, {} <= возраст < {}, поправка: {}).", ageMinFemale, ageMaxFemale, correctionAgeMale);
                 }
             }
             case OTHER -> {
                 rate = rate.add(correctionGenderOther);
-                log.info("Ставка скорректирована (Gender: {}, поправка: {}).", "OTHER", correctionAgeMale);
+                log.info("Ставка скорректирована (Gender: OTHER, поправка: {}).", correctionAgeMale);
             }
         }
 

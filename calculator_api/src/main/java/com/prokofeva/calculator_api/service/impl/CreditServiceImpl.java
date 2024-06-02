@@ -102,7 +102,7 @@ public class CreditServiceImpl implements CreditService {
     }
 
     private BigDecimal checkRateI(BigDecimal rate, BigDecimal amount, List<PaymentScheduleElementDto> schedule) {
-        BigDecimal dif = amount.negate().subtract(schedule.get(0).getTotalPayment());
+        BigDecimal dif = amount.negate().add(schedule.get(0).getTotalPayment());
 
         BigDecimal tmp = BigDecimal.ONE;
         BigDecimal tmpPow = rate.movePointLeft(2).add(BigDecimal.ONE);
@@ -117,8 +117,7 @@ public class CreditServiceImpl implements CreditService {
     }
 
     @Override
-    public BigDecimal calculateTotalAmount(List<PaymentScheduleElementDto> schedule, BigDecimal insurance) {
-        schedule.get(0).setTotalPayment(insurance);
+    public BigDecimal calculateTotalAmount(List<PaymentScheduleElementDto> schedule) {
         BigDecimal totalAmount = BigDecimal.ZERO;
 
         for (PaymentScheduleElementDto payment : schedule)
