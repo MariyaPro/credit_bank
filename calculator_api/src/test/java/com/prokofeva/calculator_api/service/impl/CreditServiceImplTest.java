@@ -10,7 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,13 +23,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@TestPropertySource("/application-test.yaml")
 class CreditServiceImplTest {
 
-    // @Value("${test.valid_difference_percent.psk:5}")             //todo
-    // private BigDecimal validDifPsk;
-    // @Value("${test.valid_difference_percent.monthlyPayment:3}")
-    // private BigDecimal validDifMonthlyPayment;
+    @Value("${valid_difference_psk}")
+    private BigDecimal validDifPsk;
+
+    @Value("${valid_difference_monthlyPayment}")
+    private BigDecimal validDifMonthlyPayment;
 
     @Mock
     private ScoringService scoringService;
@@ -61,7 +67,6 @@ class CreditServiceImplTest {
 
     @Test
     void calculateMonthlyPayment() {
-        BigDecimal validDifMonthlyPayment = BigDecimal.valueOf(3);
         BigDecimal payment1 = creditService.calculateMonthlyPayment(
                 BigDecimal.valueOf(50000), 6, BigDecimal.valueOf(30));
         BigDecimal payment2 = creditService.calculateMonthlyPayment(
@@ -84,8 +89,6 @@ class CreditServiceImplTest {
 
     @Test
     void calculatePsk() {
-        BigDecimal validDifPsk = BigDecimal.valueOf(20.0);
-
         //без страховки
         List<PaymentScheduleElementDto> schedule = CreatorValidDto.createPaymentSchedule();
 

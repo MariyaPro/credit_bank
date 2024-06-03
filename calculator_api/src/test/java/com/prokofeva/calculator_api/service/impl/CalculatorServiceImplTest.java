@@ -13,6 +13,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -21,11 +26,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-//@ExtendWith(SpringExtension.class)
-//@SpringBootTest
-//@TestPropertySource("/application.yaml")
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
+@TestPropertySource("/application-test.yaml")
 public class CalculatorServiceImplTest {
+    @Value("${prescoring_min_age}")
+    private Integer prescoringMinAge;
 
     @Mock
     private OfferService offerService;
@@ -39,7 +45,7 @@ public class CalculatorServiceImplTest {
     @Test
     void createListOffer() {
 
-        calculatorService.setPrescoringMinAge(18); //todo не цепляется из application-test.yaml
+        calculatorService.setPrescoringMinAge(prescoringMinAge);
 
         LoanStatementRequestDto requestDto = CreatorValidDto.createLoanStatementRequestDto();
 

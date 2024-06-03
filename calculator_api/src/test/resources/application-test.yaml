@@ -40,8 +40,7 @@ rate_insurance:
     small_amount: '1'
     big_amount: '-1'
 
-prescoring:
-  min_age: '18'
+prescoring_min_age: 18
 
 scoring:
   age:
@@ -51,7 +50,6 @@ scoring:
     total: '18'
     current: '3'
   max_number_of_salaries_in_amount: '25'
-test:
-  valid_difference_percent:
-    psk: '5'
-    monthlyPayment: '3'
+
+valid_difference_psk: 6
+valid_difference_monthlyPayment: 3

@@ -23,7 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Setter
 public class CalculatorServiceImpl implements CalculatorService {
-    @Value("${prescoring.min_age}")
+    @Value("${prescoring_min_age}")
     private Integer prescoringMinAge;
 
     private final OfferService offerService;

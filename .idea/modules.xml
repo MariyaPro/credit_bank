@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/calculator_api/calculator_api.iml" filepath="$PROJECT_DIR$/calculator_api/calculator_api.iml" />
       <module fileurl="file://$PROJECT_DIR$/credit_bank.iml" filepath="$PROJECT_DIR$/credit_bank.iml" />
     </modules>
   </component>
