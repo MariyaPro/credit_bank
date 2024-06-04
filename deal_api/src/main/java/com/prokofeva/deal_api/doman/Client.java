@@ -1,6 +1,6 @@
 package com.prokofeva.deal_api.doman;
 
-import com.prokofeva.deal_api.doman.enums.Gender;
+import com.prokofeva.deal_api.doman.enums.GenderEnum;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ public class Client {
     private String middleName;
     private LocalDate birthDate;
     private String email;
-    private Gender gender;
+    private GenderEnum gender;
     private MaritalStatus maritalStatus;
     private Integer dependentAmount;
     private Passport passportId;

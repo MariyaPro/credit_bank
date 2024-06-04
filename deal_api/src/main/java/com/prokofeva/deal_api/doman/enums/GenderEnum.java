@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum Gender {
+public enum GenderEnum {
     MALE("male"),
     FEMALE("female"),
     NON_BINARY("non binary");
@@ -18,8 +18,8 @@ public enum Gender {
     }
 
     @JsonCreator
-    public static Gender fromValue(String value) {
-        for (Gender b : Gender.values()) {
+    public static GenderEnum fromValue(String value) {
+        for (GenderEnum b : GenderEnum.values()) {
             if (b.value.equalsIgnoreCase(value)) {
                 return b;
             }
