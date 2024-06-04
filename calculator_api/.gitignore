@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### ignore all logs
+*.log
+/calc-logs

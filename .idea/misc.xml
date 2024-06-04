@@ -4,12 +4,17 @@
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/deal_api/pom.xml" />
         <option value="$PROJECT_DIR$/calculator_api/pom.xml" />
+        <option value="$PROJECT_DIR$/deal_api/pom.xml" />
+        <option value="$PROJECT_DIR$/statemant_api/pom.xml" />
       </list>
     </option>
+    <option name="workspaceImportForciblyTurnedOn" value="true" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="19" project-jdk-type="JavaSDK">
+  <component name="PWA">
+    <option name="wasEnabledAtLeastOnce" value="true" />
+  </component>
+  <component name="ProjectRootManager">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
