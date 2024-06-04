@@ -1,18 +1,16 @@
-package com.prokofeva.deal_api.doman;
+package com.prokofeva.deal_api.doman.dto;
 
+import com.prokofeva.deal_api.doman.Employment;
+import com.prokofeva.deal_api.doman.Passport;
 import com.prokofeva.deal_api.doman.enums.GenderEnum;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity
 @Data
-public class Client {
-    @Id
+public class ClientDto {
     private UUID clientId;
     private String lastName;
     private String firstName;

@@ -1,17 +1,13 @@
-package com.prokofeva.deal_api.doman;
+package com.prokofeva.deal_api.doman.dto;
 
 import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-@Entity
 @Data
-public class Statement {
-    @Id
+public class StatementDto {
     private UUID statementId;
     private UUID clientId;
     private UUID creditId;

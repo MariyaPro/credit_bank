@@ -6,5 +6,5 @@ import com.prokofeva.deal_api.doman.dto.LoanStatementRequestDto;
 import java.util.List;
 
 public interface OfferService {
-    List<LoanOfferDto> gelListOffers (LoanStatementRequestDto loanStatementRequestDto);
+    List<LoanOfferDto> getListOffers (LoanStatementRequestDto loanStatementRequestDto);
 }

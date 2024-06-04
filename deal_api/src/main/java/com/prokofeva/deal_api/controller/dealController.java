@@ -37,7 +37,7 @@ public class dealController {
     @PostMapping("/statement")
     @Operation(description = "Paсчет возможных условий кредита.")
     public ResponseEntity<List<LoanOfferDto>> getLoanOffers(@RequestBody LoanStatementRequestDto loanStatementRequestDto) {
-        return ResponseEntity.ok(offerService.gelListOffers(loanStatementRequestDto));
+        return ResponseEntity.ok(offerService.getListOffers(loanStatementRequestDto));
     }
 
     @PostMapping("/offer/select")
