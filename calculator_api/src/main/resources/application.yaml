@@ -52,7 +52,5 @@ scoring:
   max_number_of_salaries_in_amount: '25'
 
 logging:
-  level:
-    com.prokofeva.calculator_api: info
   file:
-    name: calc-logs
+    name: calculator_api/calc-logs

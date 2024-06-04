@@ -34,3 +34,4 @@ build/
 
 ### ignore all logs
 *.log
+/calc-logs
