@@ -22,7 +22,7 @@ public class StatementServiceImpl implements StatementService {
     public void setAppliedOffer(LoanOfferDto loanOfferDto){
         Optional<Statement> statementOptional = statementRepo.findById(loanOfferDto.getStatementId());
         Statement statement = statementOptional.orElseThrow();
-        statement.setAppliedOffer(loanOfferDto.toString()); // todo jsonb
+        statement.setAppliedOffer(loanOfferDto);
         statementRepo.save(statement);
         //Statement save = statementRepo.save(statement);
     }

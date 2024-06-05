@@ -13,7 +13,7 @@ public class StatementDto {
     private UUID creditId;
     private ApplicationStatus status;
     private Timestamp creationDate;
-    private String appliedOffer;        //todo jsonb
+    private LoanOfferDto appliedOffer;
     private Timestamp signDate;
     private String sesCode;     //todo varchar?
 }

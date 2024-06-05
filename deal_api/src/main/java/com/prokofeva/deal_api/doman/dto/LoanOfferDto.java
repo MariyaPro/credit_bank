@@ -1,7 +1,9 @@
 package com.prokofeva.deal_api.doman.dto;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.hibernate.annotations.TypeDef;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -9,6 +11,7 @@ import java.util.UUID;
 
 @Schema(description = "Предложение условий займа")
 @Data
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class LoanOfferDto {
 
     @Schema(description = "Id предложения")
