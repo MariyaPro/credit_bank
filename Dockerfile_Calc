@@ -1,0 +1,9 @@
+FROM bellsoft/liberica-openjdk-alpine
+RUN mkdir -p /app/app
+WORKDIR /app/
+
+COPY calculator_api/target/calculator_api-0.0.1-SNAPSHOT.jar /app/
+
+EXPOSE 8090
+
+ENTRYPOINT ["java", "-jar", "calculator_api-0.0.1-SNAPSHOT.jar"]
