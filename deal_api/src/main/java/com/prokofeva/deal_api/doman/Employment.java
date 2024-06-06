@@ -5,8 +5,6 @@ import com.prokofeva.deal_api.doman.enums.EmploymentStatus;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
@@ -19,7 +17,6 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@RequiredArgsConstructor
 //@TypeDefs({
 //        @TypeDef(name = "json", typeClass = JsonStringType.class),
 //        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)

@@ -3,13 +3,10 @@ package com.prokofeva.deal_api.doman;
 import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
 import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
 import lombok.Data;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

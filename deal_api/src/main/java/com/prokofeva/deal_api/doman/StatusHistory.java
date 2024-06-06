@@ -3,7 +3,6 @@ package com.prokofeva.deal_api.doman;
 import com.prokofeva.deal_api.doman.enums.ChangeType;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;

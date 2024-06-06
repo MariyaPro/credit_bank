@@ -3,9 +3,8 @@ package com.prokofeva.deal_api.doman;
 import com.prokofeva.deal_api.doman.enums.GenderEnum;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
 import org.hibernate.annotations.Type;
-import org.hibernate.id.GUIDGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,7 +13,6 @@ import java.util.UUID;
 
 @Entity
 @Data
-@RequiredArgsConstructor
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,11 +40,12 @@ public class Client {
     private Integer dependentAmount;
 
     @NotNull
-    @Type(type = "jsonb")
-    private Passport passportId;
+    // @Type(type = "jsonb")
+    private UUID passportId;
 
-    @Type(type = "jsonb")
-    private Employment employmentId;
+    // @Type(type = "jsonb")
+    private UUID employmentId;
 
     private String accountNumber;
+
 }
