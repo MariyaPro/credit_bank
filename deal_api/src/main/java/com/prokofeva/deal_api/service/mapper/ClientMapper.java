@@ -15,8 +15,8 @@ public class ClientMapper {
         clientDto.setGender(client.getGender());
         clientDto.setMaritalStatus(client.getMaritalStatus());
         clientDto.setDependentAmount(client.getDependentAmount());
-        clientDto.setPassportId(client.getPassportId());
-        clientDto.setEmploymentId(client.getEmploymentId());
+//        clientDto.setPassportId(client.getPassportId());          //todo json? UUID?
+//        clientDto.setEmploymentId(client.getEmploymentId());
         clientDto.setAccountNumber(client.getAccountNumber());
 
         return clientDto;

@@ -8,6 +8,5 @@ import java.util.UUID;
 
 public interface StatementService {
     void setAppliedOffer(LoanOfferDto loanOfferDto);
-    UUID findClientIdByStatementId(String statementId);
-    StatementDto saveStatement (ClientDto clientDto);
+    StatementDto createStatement (ClientDto clientDto);
 }

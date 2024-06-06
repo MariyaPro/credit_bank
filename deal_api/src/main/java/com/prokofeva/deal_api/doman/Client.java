@@ -42,14 +42,10 @@ public class Client {
     private Integer dependentAmount;
 
     @NotNull
-    //@Type(type = "jsonb")
-    @OneToOne(mappedBy = "client")
-    @JoinColumn(name = "passport_id")
+    @Type(type = "jsonb")
     private Passport passportId;
 
-    //@Type(type = "jsonb")
-    @OneToOne(mappedBy = "client")
-    @JoinColumn(name = "employment_id")
+    @Type(type = "jsonb")
     private Employment employmentId;
 
     private String accountNumber;

@@ -20,8 +20,8 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public List<LoanOfferDto> getListOffers(LoanStatementRequestDto loanStatementRequestDto) {
-        ClientDto clientDto = clientService.saveClient(loanStatementRequestDto);
-        StatementDto statementDto = statementService.saveStatement(clientDto);
+        ClientDto clientDto = clientService.createClient(loanStatementRequestDto);
+        StatementDto statementDto = statementService.createStatement(clientDto);
 
         List<LoanOfferDto> listOffers = List.of(new LoanOfferDto());  //todo из калькулятора
 

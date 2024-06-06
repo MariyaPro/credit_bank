@@ -16,7 +16,7 @@ public class CreditServiceImpl implements CreditService {
     @Override
     public void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto,
                                    String statementId) {
-        UUID clientId = statementService.findClientIdByStatementId(statementId);
+       // UUID clientId = statementService.findClientIdByStatementId(statementId);
 
     }
 }

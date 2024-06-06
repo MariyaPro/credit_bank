@@ -1,13 +1,12 @@
 package com.prokofeva.deal_api.doman.dto;
 
-import com.prokofeva.deal_api.doman.Employment;
-import com.prokofeva.deal_api.doman.Passport;
 import com.prokofeva.deal_api.doman.enums.GenderEnum;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -33,9 +32,9 @@ public class ClientDto {
 
     private Integer dependentAmount;
     @NotNull
-    private Passport passportId;
+    private UUID passportId;
 
-    private Employment employmentId;
+    private UUID employmentId;
 
     private String accountNumber;
 }
