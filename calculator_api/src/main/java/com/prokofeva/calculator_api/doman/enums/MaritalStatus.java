@@ -5,10 +5,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum GenderEnum {
-    MALE("male"),
-    FEMALE("female"),
-    OTHER("other");
+public enum MaritalStatus {
+    MARRIED("married"),
+    DIVORCED("divorced"),
+    SINGLE("single"),
+    WIDOW_WIDOWER("widow widower");
 
     private final String value;
 
@@ -18,8 +19,8 @@ public enum GenderEnum {
     }
 
     @JsonCreator
-    public static GenderEnum fromValue(String value) {
-        for (GenderEnum b : GenderEnum.values()) {
+    public static MaritalStatus fromValue(String value) {
+        for (MaritalStatus b : MaritalStatus.values()) {
             if (b.value.equalsIgnoreCase(value)) {
                 return b;
             }

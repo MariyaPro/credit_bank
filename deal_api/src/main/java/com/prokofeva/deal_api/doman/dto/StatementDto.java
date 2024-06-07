@@ -9,11 +9,11 @@ import java.util.UUID;
 @Data
 public class StatementDto {
     private UUID statementId;
-    private UUID clientId;
-    private UUID creditId;
+    private ClientDto clientId;
+    private CreditDto creditId;
     private ApplicationStatus status;
     private LocalDateTime creationDate;
     private LoanOfferDto appliedOffer;
     private LocalDateTime signDate;
-    private String sesCode;     //todo varchar?
+    private String sesCode;
 }

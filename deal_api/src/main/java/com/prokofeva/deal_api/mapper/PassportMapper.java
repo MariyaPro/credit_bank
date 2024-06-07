@@ -8,6 +8,7 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
 @Mapper(componentModel = SPRING)
 public interface PassportMapper {
+
     PassportDto convertEntityToDto(Passport passport);
 
     Passport convertDtoToEntity(PassportDto passportDto);

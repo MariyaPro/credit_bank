@@ -14,17 +14,17 @@ import java.util.UUID;
 @Data
 public class Statement {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private UUID statementId;
 
-//    @OneToOne(mappedBy = "statement_id")
-//    @JoinColumn(name = "client_id")
+    @ManyToOne()
+    @JoinColumn(name = "client_id")
     @NotNull
-    private UUID clientId;
+    private Client clientId;
 
-//    @OneToOne(mappedBy = "statement_id")
-//    @JoinColumn(name = "credit_id")
-    private UUID creditId;
+    @OneToOne()
+    @JoinColumn(name = "credit_id")
+    private Credit creditId;
 
     @NotNull
     private ApplicationStatus status;
@@ -38,5 +38,5 @@ public class Statement {
 
     private LocalDateTime signDate;
 
-    private String sesCode;     //todo varchar?
+    private String sesCode;
 }

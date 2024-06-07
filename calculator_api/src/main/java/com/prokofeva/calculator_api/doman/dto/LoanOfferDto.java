@@ -5,15 +5,10 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Schema(description = "Предложение условий займа")
 @Data
 public class LoanOfferDto {
-
-    @Schema(description = "Id предложения")
-    @NotNull
-    private UUID statementId;
 
     @Schema(description = "Запрашиваемая сумма")
     @NotNull
@@ -27,7 +22,7 @@ public class LoanOfferDto {
     @NotNull
     private Integer term;
 
-    @Schema(description = "Ужемясчный платеж")
+    @Schema(description = "Ежемесячный платеж")
     @NotNull
     private BigDecimal monthlyPayment;
 

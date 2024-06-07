@@ -46,8 +46,8 @@ public class CreditServiceImpl implements CreditService {
         creditDto.setMonthlyPayment(monthlyPayment);
         creditDto.setRate(rate);
         creditDto.setPsk(psk);
-        creditDto.setIsInsuranceEnabled(scoringDataDto.getIsInsuranceEnabled());
-        creditDto.setIsSalaryClient(scoringDataDto.getIsSalaryClient());
+        creditDto.setInsuranceEnabled(scoringDataDto.getIsInsuranceEnabled());
+        creditDto.setSalaryClient(scoringDataDto.getIsSalaryClient());
         creditDto.setPaymentSchedule(schedule);
 
         return creditDto;

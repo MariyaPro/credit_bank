@@ -15,7 +15,7 @@ import java.util.UUID;
 @Data
 public class Credit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private UUID creditId;
 
     @NotNull
@@ -34,7 +34,6 @@ public class Credit {
     private BigDecimal psk;
 
     @NotNull
-    @ElementCollection
     @Type(type = "jsonb")
     private List<PaymentScheduleElementDto> paymentSchedule;
 

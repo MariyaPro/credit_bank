@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum EmploymentStatusEnum {
+public enum EmploymentStatus {
     UNEMPLOYED("unemployed"),
-    BUSY("busy"),
-    SELF_EMPLOYED("self_employed"),
-    BUSINESS_OWNER("business_owner");
+    SELF_EMPLOYED("self employed"),
+    EMPLOYED("employed"),
+    BUSINESS_OWNER("business owner");
 
     private final String value;
 
@@ -19,8 +19,8 @@ public enum EmploymentStatusEnum {
     }
 
     @JsonCreator
-    public static EmploymentStatusEnum fromValue(String value) {
-        for (EmploymentStatusEnum b : EmploymentStatusEnum.values()) {
+    public static EmploymentStatus fromValue(String value) {
+        for (EmploymentStatus b : EmploymentStatus.values()) {
             if (b.value.equalsIgnoreCase(value)) {
                 return b;
             }

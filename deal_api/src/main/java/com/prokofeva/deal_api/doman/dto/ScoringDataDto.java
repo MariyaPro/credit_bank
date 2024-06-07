@@ -1,6 +1,6 @@
 package com.prokofeva.deal_api.doman.dto;
 
-import com.prokofeva.deal_api.doman.enums.GenderEnum;
+import com.prokofeva.deal_api.doman.enums.Gender;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -43,7 +43,7 @@ public class ScoringDataDto {
 
     @Schema(description = "Пол", example = "female")
     @NotNull
-    private GenderEnum gender;
+    private Gender gender;
 
     @Schema(description = "Дата рождения", example = "1987-03-06")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

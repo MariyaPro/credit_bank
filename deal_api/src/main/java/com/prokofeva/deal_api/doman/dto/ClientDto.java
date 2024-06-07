@@ -1,6 +1,6 @@
 package com.prokofeva.deal_api.doman.dto;
 
-import com.prokofeva.deal_api.doman.enums.GenderEnum;
+import com.prokofeva.deal_api.doman.enums.Gender;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import lombok.Data;
 
@@ -16,10 +16,10 @@ public class ClientDto {
     private String middleName;
     private LocalDate birthDate;
     private String email;
-    private GenderEnum gender;
+    private Gender gender;
     private MaritalStatus maritalStatus;
     private Integer dependentAmount;
-    private UUID passportId;
-    private UUID employmentId;
+    private PassportDto passportDto;
+    private EmploymentDto employmentDto;
     private String accountNumber;
 }

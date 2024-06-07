@@ -22,6 +22,7 @@
         <hibernate-types-55.version>2.18.0</hibernate-types-55.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <mapstruct-binding.version>0.2.0</mapstruct-binding.version>
+        <!--        <feign.veersion>13.1</feign.veersion>-->
     </properties>
     <dependencies>
         <dependency>
@@ -79,17 +80,43 @@
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok-mapstruct-binding</artifactId>-->
-<!--            <version>${mapstruct-binding.version}</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.mapstruct</groupId>-->
-<!--            <artifactId>mapstruct-processor</artifactId>-->
-<!--            <version>${mapstruct.version}</version>-->
-<!--        </dependency>-->
 
+
+        <!--        <dependency>-->
+        <!--            <groupId>io.github.openfeign</groupId>-->
+        <!--            <artifactId>feign-okhttp</artifactId>-->
+        <!--            <version>${feign.veersion}</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>io.github.openfeign</groupId>-->
+        <!--            <artifactId>feign-gson</artifactId>-->
+        <!--            <version>${feign.veersion}</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>io.github.openfeign</groupId>-->
+        <!--            <artifactId>feign-slf4j</artifactId>-->
+        <!--            <version>${feign.veersion}</version>-->
+        <!--        </dependency>-->
+        <!--        &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-openfeign &ndash;&gt;-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-openfeign</artifactId>-->
+        <!--            <version>4.1.2</version>-->
+        <!--        </dependency>-->
+
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.testng</groupId>-->
+        <!--            <artifactId>testng</artifactId>-->
+        <!--            <version>RELEASE</version>-->
+        <!--            <scope>compile</scope>-->
+        <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
 
     </dependencies>
 
@@ -112,8 +139,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>9</source>
+                    <target>9</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>

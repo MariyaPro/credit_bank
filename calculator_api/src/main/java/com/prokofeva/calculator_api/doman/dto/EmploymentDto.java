@@ -1,7 +1,7 @@
 package com.prokofeva.calculator_api.doman.dto;
 
-import com.prokofeva.calculator_api.doman.enums.EmploymentStatusEnum;
-import com.prokofeva.calculator_api.doman.enums.PositionEnum;
+import com.prokofeva.calculator_api.doman.enums.EmploymentStatus;
+import com.prokofeva.calculator_api.doman.enums.EmploymentPosition;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -14,12 +14,12 @@ import java.math.BigDecimal;
 public class EmploymentDto {
     @Schema(description = "Статус", example = "busy")
     @NotNull
-    private EmploymentStatusEnum employmentStatus;
+    private EmploymentStatus status;
 
     @Schema(description = "личный ИНН", example = "505021556592")
     @NotNull
     @Pattern(regexp = "^[0-9]*", message = "ИНН содержит только цифры.")
-    private String employerINN;
+    private String employerInn;
 
     @Schema(description = "Зарплата", example = "285000")
     @NotNull
@@ -27,7 +27,7 @@ public class EmploymentDto {
 
     @Schema(description = "Должность", example = "top_manager")
     @NotNull
-    private PositionEnum position;
+    private EmploymentPosition position;
 
     @Schema(description = "Общий трудовой  стаж", example = "360")
     @NotNull

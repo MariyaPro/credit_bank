@@ -32,16 +32,18 @@ public class CreditDto {
     @NotNull
     private BigDecimal psk;
 
-    @Schema(description = "Влючена ли страховка кредита")
-    @NotNull
-    private Boolean isInsuranceEnabled;
-
-    @Schema(description = "Зарплатный клиент")
-    @NotNull
-    private Boolean isSalaryClient;
-
     @Schema(description = "График платежей")
     @NotNull
     private List<PaymentScheduleElementDto> paymentSchedule;
+
+    @Schema(description = "Влючена ли страховка кредита")
+    @NotNull
+    private Boolean insuranceEnabled;
+
+    @Schema(description = "Зарплатный клиент")
+    @NotNull
+    private Boolean salaryClient;
+
 }
+
 

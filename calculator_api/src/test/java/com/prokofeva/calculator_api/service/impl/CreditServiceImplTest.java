@@ -56,8 +56,8 @@ class CreditServiceImplTest {
 
         assertEquals(creditDto.getAmount(), scoringDataDto.getAmount());
         assertEquals(creditDto.getTerm(), scoringDataDto.getTerm());
-        assertEquals(creditDto.getIsInsuranceEnabled(), scoringDataDto.getIsInsuranceEnabled());
-        assertEquals(creditDto.getIsSalaryClient(), scoringDataDto.getIsSalaryClient());
+        assertEquals(creditDto.getInsuranceEnabled(), scoringDataDto.getIsInsuranceEnabled());
+        assertEquals(creditDto.getSalaryClient(), scoringDataDto.getIsSalaryClient());
 
         assertNotNull(creditDto.getRate());
         assertNotNull(creditDto.getMonthlyPayment());

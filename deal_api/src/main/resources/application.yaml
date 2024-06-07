@@ -7,7 +7,7 @@ spring:
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    generate-ddl: true
+    generate-ddl: off
     show-sql: true
     hibernate:
       ddl-auto: none
@@ -15,3 +15,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+
+  liquibase:
+    change-log: db/changelog/db.changelog-master.xml

@@ -30,7 +30,7 @@ public class LoanOfferDto {
     @NotNull
     private Integer term;
 
-    @Schema(description = "Ужемясчный платеж")
+    @Schema(description = "Ежемесячный платеж")
     @NotNull
     private BigDecimal monthlyPayment;
 

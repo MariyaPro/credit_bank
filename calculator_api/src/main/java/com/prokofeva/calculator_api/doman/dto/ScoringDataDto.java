@@ -1,7 +1,7 @@
 package com.prokofeva.calculator_api.doman.dto;
 
-import com.prokofeva.calculator_api.doman.enums.GenderEnum;
-import com.prokofeva.calculator_api.doman.enums.MaritalStatusEnum;
+import com.prokofeva.calculator_api.doman.enums.Gender;
+import com.prokofeva.calculator_api.doman.enums.MaritalStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,7 +43,7 @@ public class ScoringDataDto {
 
     @Schema(description = "Пол", example = "female")
     @NotNull
-    private GenderEnum gender;
+    private Gender gender;
 
     @Schema(description = "Дата рождения", example = "1987-03-06")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -70,7 +70,7 @@ public class ScoringDataDto {
 
     @Schema(description = "Семейное положение",example = "married")
     @NotNull
-    private MaritalStatusEnum maritalStatus;
+    private MaritalStatus maritalStatus;
 
     @Schema(description = "Количество иждивенцев", example = "1")
     @NotNull

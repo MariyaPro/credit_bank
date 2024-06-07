@@ -103,7 +103,7 @@ public class ScoringServiceImpl implements ScoringService {
                 scoringDataDto.getIsSalaryClient()
         );
 
-        switch (scoringDataDto.getEmployment().getEmploymentStatus()) {
+        switch (scoringDataDto.getEmployment().getStatus()) {
             case UNEMPLOYED ->
                     throw new DeniedLoanException("Loan was denied. Cause: employment status does not meet established requirements.");
             case SELF_EMPLOYED -> {
@@ -117,7 +117,7 @@ public class ScoringServiceImpl implements ScoringService {
         }
 
         switch (scoringDataDto.getEmployment().getPosition()) {
-            case MANAGER -> {
+            case MID_MANAGER -> {
                 rate = rate.add(correctionManager);
                 log.info("Ставка скорректирована (EmploymentPosition: MANAGER, поправка: {}).", correctionManager);
 
@@ -162,7 +162,7 @@ public class ScoringServiceImpl implements ScoringService {
                     log.info("Ставка скорректирована (Gender: FEMALE, {} <= возраст < {}, поправка: {}).", ageMinFemale, ageMaxFemale, correctionAgeMale);
                 }
             }
-            case OTHER -> {
+            case NON_BINARY -> {
                 rate = rate.add(correctionGenderOther);
                 log.info("Ставка скорректирована (Gender: OTHER, поправка: {}).", correctionAgeMale);
             }

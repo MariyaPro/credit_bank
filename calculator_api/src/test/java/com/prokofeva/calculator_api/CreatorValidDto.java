@@ -1,10 +1,10 @@
 package com.prokofeva.calculator_api;
 
-import com.prokofeva.calculator_api.doman.enums.EmploymentStatusEnum;
+import com.prokofeva.calculator_api.doman.enums.EmploymentStatus;
 import com.prokofeva.calculator_api.doman.dto.*;
-import com.prokofeva.calculator_api.doman.enums.GenderEnum;
-import com.prokofeva.calculator_api.doman.enums.MaritalStatusEnum;
-import com.prokofeva.calculator_api.doman.enums.PositionEnum;
+import com.prokofeva.calculator_api.doman.enums.Gender;
+import com.prokofeva.calculator_api.doman.enums.MaritalStatus;
+import com.prokofeva.calculator_api.doman.enums.EmploymentPosition;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,7 +33,6 @@ public class CreatorValidDto {
     public static LoanOfferDto createLoanOfferDto(){
         LoanOfferDto loanOfferDto = new LoanOfferDto();
 
-        loanOfferDto.setStatementId(UUID.randomUUID());
         loanOfferDto.setRequestedAmount(BigDecimal.valueOf(100000));
         loanOfferDto.setTotalAmount(BigDecimal.valueOf(111185));
         loanOfferDto.setTerm(12);
@@ -54,11 +53,11 @@ public class CreatorValidDto {
         scoringDataDto.setFirstName("FirstName");
         scoringDataDto.setLastName("LastName");
         scoringDataDto.setMiddleName("MiddleName");
-        scoringDataDto.setGender(GenderEnum.MALE);
+        scoringDataDto.setGender(Gender.MALE);
         scoringDataDto.setBirthdate(LocalDate.of(2000, 2, 21));
         scoringDataDto.setPassportSeries("1234");
         scoringDataDto.setPassportNumber("123456");
-        scoringDataDto.setMaritalStatus(MaritalStatusEnum.SINGLE);
+        scoringDataDto.setMaritalStatus(MaritalStatus.SINGLE);
         scoringDataDto.setDependentAmount(0);
         scoringDataDto.setEmployment(createEmploymentDto());
         scoringDataDto.setAccountNumber("123456789");
@@ -71,10 +70,10 @@ public class CreatorValidDto {
     public static EmploymentDto createEmploymentDto() {
         EmploymentDto employmentDto = new EmploymentDto();
 
-        employmentDto.setEmploymentStatus(EmploymentStatusEnum.BUSY);
-        employmentDto.setEmployerINN("23366677711");
+        employmentDto.setStatus(EmploymentStatus.EMPLOYED);
+        employmentDto.setEmployerInn("23366677711");
         employmentDto.setSalary(BigDecimal.valueOf(70000));
-        employmentDto.setPosition(PositionEnum.EMPLOYEE);
+        employmentDto.setPosition(EmploymentPosition.WORKER);
         employmentDto.setWorkExperienceTotal(36);
         employmentDto.setWorkExperienceCurrent(10);
 
@@ -89,8 +88,8 @@ public class CreatorValidDto {
         creditDto.setMonthlyPayment(BigDecimal.valueOf(8826.14));
         creditDto.setRate(BigDecimal.valueOf(20.00));
         creditDto.setPsk(BigDecimal.valueOf(19.974));
-        creditDto.setIsInsuranceEnabled(false);
-        creditDto.setIsSalaryClient(false);
+        creditDto.setInsuranceEnabled(false);
+        creditDto.setSalaryClient(false);
         creditDto.setPaymentSchedule(createPaymentSchedule());
 
         return creditDto;
