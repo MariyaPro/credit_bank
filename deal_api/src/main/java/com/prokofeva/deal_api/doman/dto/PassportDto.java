@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
@@ -29,5 +29,5 @@ public class PassportDto {
 
     @Schema(description = "Дата выдачи паспорта", example = "2000-04-20")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private Date issueDate;
+    private LocalDate issueDate;
 }

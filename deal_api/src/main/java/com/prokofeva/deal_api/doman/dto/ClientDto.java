@@ -19,7 +19,7 @@ public class ClientDto {
     private Gender gender;
     private MaritalStatus maritalStatus;
     private Integer dependentAmount;
-    private PassportDto passportDto;
-    private EmploymentDto employmentDto;
+    private PassportDto passport;
+    private EmploymentDto employment;
     private String accountNumber;
 }

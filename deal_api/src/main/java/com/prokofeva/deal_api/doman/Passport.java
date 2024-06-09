@@ -5,7 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.TypeDef;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 
 
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
@@ -18,6 +18,6 @@ public class Passport {
     @NotNull
     private String number;
     private String issueBranch;
-    private Date issueDate;
+    private LocalDate issueDate;
 
 }

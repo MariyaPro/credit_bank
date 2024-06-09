@@ -5,7 +5,9 @@ import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -36,7 +38,6 @@ public class Client {
     private MaritalStatus maritalStatus;
 
     private Integer dependentAmount;
-
 
     @Type(type = "jsonb")
     private Passport passport;
