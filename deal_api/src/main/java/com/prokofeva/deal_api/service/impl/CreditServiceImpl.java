@@ -1,22 +1,28 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.doman.dto.FinishRegistrationRequestDto;
+import com.prokofeva.deal_api.doman.Credit;
+import com.prokofeva.deal_api.doman.dto.CreditDto;
+import com.prokofeva.deal_api.doman.enums.CreditStatus;
+import com.prokofeva.deal_api.mapper.CreditMapper;
+import com.prokofeva.deal_api.repositories.CreditRepo;
 import com.prokofeva.deal_api.service.CreditService;
-import com.prokofeva.deal_api.service.StatementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class CreditServiceImpl implements CreditService {
-    private final StatementService statementService;
+    private final CreditRepo creditRepo;
+    private final CreditMapper creditMapper;
 
     @Override
-    public void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto,
-                                   String statementId) {
-       // UUID clientId = statementService.findClientIdByStatementId(statementId);
+    public CreditDto createCredit(CreditDto creditDto) {
+        Credit credit = creditMapper.convertDtoToEntity(creditDto);
+        credit.setCreditStatus(CreditStatus.CALCULATED);
+        return saveCredit(credit);
+    }
 
+    public CreditDto saveCredit(Credit credit) {
+        return creditMapper.convertEntityToDto(creditRepo.saveAndFlush(credit));
     }
 }

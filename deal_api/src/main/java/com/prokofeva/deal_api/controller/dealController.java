@@ -3,9 +3,7 @@ package com.prokofeva.deal_api.controller;
 import com.prokofeva.deal_api.doman.dto.FinishRegistrationRequestDto;
 import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
 import com.prokofeva.deal_api.doman.dto.LoanStatementRequestDto;
-import com.prokofeva.deal_api.service.CreditService;
-import com.prokofeva.deal_api.service.OfferService;
-import com.prokofeva.deal_api.service.StatementService;
+import com.prokofeva.deal_api.service.DealService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,26 +28,24 @@ import java.util.List;
 @Tag(name = "Deal", description = "Обрабатывает и регистрирует поступившие заявки на кредит.")
 @RequestMapping("/deal")
 public class dealController {
-    private final OfferService offerService;
-    private final StatementService statementService;
-    private final CreditService creditService;
+    private final DealService dealService;
 
     @PostMapping("/statement")
     @Operation(description = "Paсчет возможных условий кредита.")
-    public ResponseEntity<List<LoanOfferDto>> getLoanOffers(@RequestBody LoanStatementRequestDto loanStatementRequestDto) {
-        return ResponseEntity.ok(offerService.getListOffers(loanStatementRequestDto));
+    public ResponseEntity<List<LoanOfferDto>> getLoanOffers(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
+        return ResponseEntity.ok(dealService.getListOffers(loanStatementRequestDto));
     }
 
     @PostMapping("/offer/select")
     @Operation(description = "Выбор одного из кредитных предложений.")
     public void setAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
-        statementService.setAppliedOffer(loanOfferDto);
+        dealService.setAppliedOffer(loanOfferDto);
     }
 
     @PostMapping("/calculate/{statementId}")
     @Operation(description = "Завершение регистрации и полный подсчёт кредита.")
     public void registrationCredit(@RequestBody FinishRegistrationRequestDto finishRegistrationRequestDto,
-                              @PathVariable String statementId) {
-        creditService.registrationCredit(finishRegistrationRequestDto,statementId);
+                                   @PathVariable String statementId) {
+        dealService.registrationCredit(finishRegistrationRequestDto, statementId);
     }
 }

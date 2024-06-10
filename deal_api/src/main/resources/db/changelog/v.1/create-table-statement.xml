@@ -37,6 +37,9 @@
             <column name="credit_id" type="uuid">
                 <constraints nullable="true"/>
             </column>
+            <column name="status_history_list" type="jsonb">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
     </changeSet>

@@ -44,6 +44,7 @@ public class Credit {
     private Boolean salaryClient;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private CreditStatus creditStatus;
 
 }

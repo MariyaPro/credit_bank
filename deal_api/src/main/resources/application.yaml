@@ -18,3 +18,30 @@ spring:
 
   liquibase:
     change-log: db/changelog/db.changelog-master.xml
+
+#  cloud:
+#    openfeign:
+#      client:
+#        config:
+#          calc:
+#            url: http://localhost:8090/calculator/offers
+#            connect-timeout: 1000
+#            read-timeout: 2000
+#
+#      oauth2:
+#        enabled: true
+
+#feign:
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 5000
+#        readTimeout: 5000
+#        loggerLevel: basic
+
+server:
+  port: 8080
+#feign:
+#  autoconfiguration:
+#    jackson:
+#      enabled: true

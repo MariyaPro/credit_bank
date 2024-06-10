@@ -6,6 +6,8 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Data;
 import org.hibernate.annotations.TypeDef;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -14,6 +16,7 @@ import java.math.BigDecimal;
 public class Employment {
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private EmploymentStatus status;
 
     @NotNull
@@ -23,6 +26,7 @@ public class Employment {
     private BigDecimal salary;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private EmploymentPosition position;
 
     @NotNull

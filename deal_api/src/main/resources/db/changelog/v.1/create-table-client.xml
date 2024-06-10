@@ -13,7 +13,7 @@
         </preConditions>
 
         <createTable tableName="client">
-            <column name="client_id" type="uuid">
+            <column name="client_id" type="uuid" >
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="account_number" type="varchar(255)">

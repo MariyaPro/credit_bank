@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -17,9 +18,8 @@ public class Statement {
     @GeneratedValue
     private UUID statementId;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "client_id")
-    @NotNull
     private Client clientId;
 
     @OneToOne()
@@ -27,16 +27,19 @@ public class Statement {
     private Credit creditId;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
 
     @NotNull
     private LocalDateTime creationDate;
 
-    @NotNull
     @Type(type = "jsonb")
     private LoanOfferDto appliedOffer;
 
     private LocalDateTime signDate;
+
+    @Type(type = "jsonb")
+    private List<StatusHistory> statusHistoryList;
 
     private String sesCode;
 }

@@ -5,9 +5,7 @@ import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -17,6 +15,7 @@ import java.util.UUID;
 public class Client {
     @Id
     @GeneratedValue
+    @Column(name = "client_id")
     private UUID clientId;
 
     @NotNull
@@ -33,8 +32,10 @@ public class Client {
     @NotNull
     private String email;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus;
 
     private Integer dependentAmount;
