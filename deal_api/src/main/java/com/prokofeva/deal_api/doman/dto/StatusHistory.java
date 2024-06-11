@@ -1,4 +1,4 @@
-package com.prokofeva.deal_api.doman;
+package com.prokofeva.deal_api.doman.dto;
 
 import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
 import com.prokofeva.deal_api.doman.enums.ChangeType;

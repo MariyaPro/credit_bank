@@ -1,6 +1,7 @@
 package com.prokofeva.deal_api.doman;
 
 import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
+import com.prokofeva.deal_api.doman.dto.StatusHistory;
 import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
 import lombok.Data;
 import org.hibernate.annotations.Type;

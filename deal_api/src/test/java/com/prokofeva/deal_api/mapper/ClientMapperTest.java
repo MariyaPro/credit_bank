@@ -1,9 +1,7 @@
 package com.prokofeva.deal_api.mapper;
 
 import com.prokofeva.deal_api.doman.Client;
-import com.prokofeva.deal_api.doman.Passport;
 import com.prokofeva.deal_api.doman.dto.ClientDto;
-import com.prokofeva.deal_api.doman.dto.PassportDto;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,30 +67,5 @@ class ClientMapperTest {
 
         assertNotNull(clientEx);
         assertEquals(clientEx, clientAc);
-    }
-
-
-    @Test
-    void convertPassport() {
-        Passport passportAc =new Passport();
-        passportAc.setSeries("3434");
-        passportAc.setNumber("666666");
-
-        PassportDto passportDtoAc =new PassportDto();
-        passportDtoAc.setSeries("3434");
-        passportDtoAc.setNumber("666666");
-
-        clientAc.setPassport(passportAc);
-        clientDtoAc.setPassport(passportDtoAc);
-
-        Client clientEx = clientMapper.convertDtoToEntity(clientDtoAc);
-
-        assertNotNull(clientEx);
-        assertEquals(clientEx.getPassport(), clientAc.getPassport());
-
-        ClientDto clientDtoEx = clientMapper.convertEntityToDto(clientAc);
-
-        assertNotNull(clientDtoEx);
-        assertEquals(clientDtoEx.getPassport(), clientDtoAc.getPassport());
     }
 }

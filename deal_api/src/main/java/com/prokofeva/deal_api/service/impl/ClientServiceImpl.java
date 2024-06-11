@@ -1,7 +1,6 @@
 package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.doman.Client;
-import com.prokofeva.deal_api.doman.Passport;
 import com.prokofeva.deal_api.doman.dto.*;
 import com.prokofeva.deal_api.mapper.ClientMapper;
 import com.prokofeva.deal_api.repositories.ClientRepo;
@@ -15,25 +14,13 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepo clientRepo;
     private final ClientMapper clientMapper;
 
-
     @Override
     public ClientDto createClient(LoanStatementRequestDto loanStatementRequestDto) {
-        Passport passport = new Passport();
+        PassportDto passport = new PassportDto();
         passport.setSeries(loanStatementRequestDto.getPassportSeries());
         passport.setNumber(loanStatementRequestDto.getPassportNumber());
 
-//        String s = passport.getSeries() + passport.getNumber();
-//
-//        UUID clientId = UUID.nameUUIDFromBytes(s.getBytes());
-//
-//        if (clientRepo.existsById(clientId)) {
-//            return clientMapper.convertEntityToDto(
-//                    clientRepo.findById(clientId).
-//                            orElseThrow(RuntimeException::new));
-//        }
-
         Client client = new Client();
-        //  client.setClientId(clientId);
         client.setLastName(loanStatementRequestDto.getLastName());
         client.setFirstName(loanStatementRequestDto.getFirstName());
         client.setMiddleName(loanStatementRequestDto.getMiddleName());

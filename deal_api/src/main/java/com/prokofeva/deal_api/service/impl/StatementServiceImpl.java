@@ -1,7 +1,7 @@
 package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.doman.Statement;
-import com.prokofeva.deal_api.doman.StatusHistory;
+import com.prokofeva.deal_api.doman.dto.StatusHistory;
 import com.prokofeva.deal_api.doman.dto.ClientDto;
 import com.prokofeva.deal_api.doman.dto.CreditDto;
 import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
@@ -15,6 +15,7 @@ import com.prokofeva.deal_api.service.StatementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class StatementServiceImpl implements StatementService {
     @Override
     public void setAppliedOffer(LoanOfferDto loanOfferDto) {
         Optional<Statement> statementOptional = statementRepo.findById(loanOfferDto.getStatementId());
-        Statement statement = statementOptional.orElseThrow(RuntimeException::new); //todo ex
+        Statement statement = statementOptional.orElseThrow(EntityNotFoundException::new);
         statement.setAppliedOffer(loanOfferDto);
         statementRepo.save(statement);
     }
@@ -55,7 +56,7 @@ public class StatementServiceImpl implements StatementService {
     @Override
     public StatementDto getStatementById(String statementId) {
         Statement statement = statementRepo.findById(UUID.fromString(statementId))
-                .orElseThrow(RuntimeException::new); //todo ex
+                .orElseThrow(EntityNotFoundException::new);
         return statementMapper.convertEntityToDto(statement);
     }
 

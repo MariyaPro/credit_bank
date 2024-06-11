@@ -1,6 +1,5 @@
 package com.prokofeva.deal_api.doman.dto;
 
-import com.prokofeva.deal_api.doman.StatusHistory;
 import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
 import lombok.Data;
 

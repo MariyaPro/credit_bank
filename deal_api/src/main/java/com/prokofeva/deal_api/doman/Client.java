@@ -1,5 +1,7 @@
 package com.prokofeva.deal_api.doman;
 
+import com.prokofeva.deal_api.doman.dto.EmploymentDto;
+import com.prokofeva.deal_api.doman.dto.PassportDto;
 import com.prokofeva.deal_api.doman.enums.Gender;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import lombok.Data;
@@ -41,10 +43,10 @@ public class Client {
     private Integer dependentAmount;
 
     @Type(type = "jsonb")
-    private Passport passport;
+    private PassportDto passport;
 
     @Type(type = "jsonb")
-    private Employment employment;
+    private EmploymentDto employment;
 
     private String accountNumber;
 
