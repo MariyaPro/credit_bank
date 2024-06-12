@@ -38,8 +38,8 @@ public class dealController {
 
     @PostMapping("/offer/select")
     @Operation(description = "Выбор одного из кредитных предложений.")
-    public void setAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
-        dealService.setAppliedOffer(loanOfferDto);
+    public void selectAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
+         dealService.selectAppliedOffer(loanOfferDto);
     }
 
     @PostMapping("/calculate/{statementId}")

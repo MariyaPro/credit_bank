@@ -2,7 +2,7 @@ package com.prokofeva.deal_api.doman.dto;
 
 import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
 import com.prokofeva.deal_api.doman.enums.ChangeType;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.TypeDef;
@@ -12,7 +12,7 @@ import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 @Data
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@TypeDef(name = "json", typeClass = JsonType.class)
 @AllArgsConstructor
 public class StatusHistory {
     @Enumerated(EnumType.STRING)

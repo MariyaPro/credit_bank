@@ -7,9 +7,12 @@ import com.prokofeva.deal_api.service.CreditService;
 import com.prokofeva.deal_api.service.DealService;
 import com.prokofeva.deal_api.service.StatementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +27,15 @@ public class DealServiceImpl implements DealService {
         ClientDto clientDto = clientService.createClient(loanStatementRequestDto);
         StatementDto statementDto = statementService.createStatement(clientDto);
 
-        List<LoanOfferDto> listOffers = calcFeignClient.getListOffers(loanStatementRequestDto);
+        ResponseEntity<List<LoanOfferDto>> responseCalc = calcFeignClient.getListOffers(loanStatementRequestDto);
+
+        if (!responseCalc.hasBody()) {
+            System.out.println("not has body");
+        }
+        if (!responseCalc.getStatusCode().equals(HttpStatus.OK)) {
+            System.out.println("status bad request");
+        }
+        List<LoanOfferDto> listOffers = Optional.ofNullable(responseCalc.getBody()).orElseThrow();
 
         for (LoanOfferDto offer : listOffers)
             offer.setStatementId(statementDto.getStatementId());
@@ -33,8 +44,8 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public void setAppliedOffer(LoanOfferDto loanOfferDto) {
-        statementService.setAppliedOffer(loanOfferDto);
+    public void selectAppliedOffer(LoanOfferDto loanOfferDto) {
+        statementService.selectAppliedOffer(loanOfferDto);
     }
 
     @Override
@@ -47,7 +58,7 @@ public class DealServiceImpl implements DealService {
         CreditDto creditDto = calcFeignClient.calculateCredit(scoringDataDto);
         CreditDto creditDtoFromDb = creditService.createCredit(creditDto);
 
-        statementService.registrationCredit(statementDto,creditDtoFromDb);
+        statementService.registrationCredit(statementDto, creditDtoFromDb);
     }
 
     private ScoringDataDto createScoringData(LoanOfferDto loanOfferDto, ClientDto clientDto) {

@@ -1,11 +1,7 @@
 package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.doman.Statement;
-import com.prokofeva.deal_api.doman.dto.StatusHistory;
-import com.prokofeva.deal_api.doman.dto.ClientDto;
-import com.prokofeva.deal_api.doman.dto.CreditDto;
-import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
-import com.prokofeva.deal_api.doman.dto.StatementDto;
+import com.prokofeva.deal_api.doman.dto.*;
 import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
 import com.prokofeva.deal_api.doman.enums.ChangeType;
 import com.prokofeva.deal_api.mapper.ClientMapper;
@@ -29,16 +25,17 @@ public class StatementServiceImpl implements StatementService {
     private final ClientMapper clientMapper;
 
     @Override
-    public void setAppliedOffer(LoanOfferDto loanOfferDto) {
+    public void selectAppliedOffer(LoanOfferDto loanOfferDto) {
         Optional<Statement> statementOptional = statementRepo.findById(loanOfferDto.getStatementId());
         Statement statement = statementOptional.orElseThrow(EntityNotFoundException::new);
         statement.setAppliedOffer(loanOfferDto);
-        statementRepo.save(statement);
+        statementRepo.saveAndFlush(statement);
+        System.out.println("uel!");
     }
 
     @Override
     public StatementDto saveStatement(Statement statement) {
-        return statementMapper.convertEntityToDto(statementRepo.save(statement));
+        return statementMapper.convertEntityToDto(statementRepo.saveAndFlush(statement));
     }
 
     @Override
@@ -47,8 +44,10 @@ public class StatementServiceImpl implements StatementService {
         statement.setClientId(clientMapper.convertDtoToEntity(clientDto));
         statement.setCreationDate(LocalDateTime.now());
         statement.setStatusHistoryList(new LinkedList<>());
+        statement.setAppliedOffer(new LoanOfferDto());
 
-        addStatusHistory(statement, ApplicationStatus.APPROVED);
+        addStatusHistory(statement, ApplicationStatus.PREAPPROVAL);
+
 
         return saveStatement(statement);
     }

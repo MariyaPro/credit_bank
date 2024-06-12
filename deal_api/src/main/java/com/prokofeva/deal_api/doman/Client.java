@@ -1,11 +1,15 @@
+
+
 package com.prokofeva.deal_api.doman;
 
 import com.prokofeva.deal_api.doman.dto.EmploymentDto;
 import com.prokofeva.deal_api.doman.dto.PassportDto;
 import com.prokofeva.deal_api.doman.enums.Gender;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.Data;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,10 +18,11 @@ import java.util.UUID;
 
 @Entity
 @Data
+@TypeDef(name = "json", typeClass = JsonType.class)
 public class Client {
     @Id
     @GeneratedValue
-    @Column(name = "client_id")
+    @Type(type = "pg-uuid")
     private UUID clientId;
 
     @NotNull
@@ -42,10 +47,12 @@ public class Client {
 
     private Integer dependentAmount;
 
-    @Type(type = "jsonb")
+    @Type(type = "json")
+    @Column(columnDefinition = "jsonb")
     private PassportDto passport;
 
-    @Type(type = "jsonb")
+    @Type(type = "json")
+    @Column(columnDefinition = "jsonb")
     private EmploymentDto employment;
 
     private String accountNumber;

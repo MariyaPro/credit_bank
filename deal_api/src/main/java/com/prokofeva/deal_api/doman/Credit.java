@@ -2,8 +2,10 @@ package com.prokofeva.deal_api.doman;
 
 import com.prokofeva.deal_api.doman.dto.PaymentScheduleElementDto;
 import com.prokofeva.deal_api.doman.enums.CreditStatus;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.Data;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,9 +15,11 @@ import java.util.UUID;
 
 @Entity
 @Data
+@TypeDef(name = "json", typeClass = JsonType.class)
 public class Credit {
     @Id
     @GeneratedValue
+    @Type(type = "pg-uuid")
     private UUID creditId;
 
     @NotNull
@@ -34,7 +38,8 @@ public class Credit {
     private BigDecimal psk;
 
     @NotNull
-    @Type(type = "jsonb")
+    @Type(type = "json")
+    @Column(columnDefinition = "jsonb")
     private List<PaymentScheduleElementDto> paymentSchedule;
 
     @NotNull

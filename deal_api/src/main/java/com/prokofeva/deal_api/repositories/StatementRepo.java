@@ -9,5 +9,4 @@ import java.util.UUID;
 @Repository
 public interface StatementRepo extends JpaRepository<Statement, UUID> {
 
-
 }

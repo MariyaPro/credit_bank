@@ -9,7 +9,7 @@ import java.util.List;
 public interface DealService {
     List<LoanOfferDto> getListOffers(LoanStatementRequestDto loanStatementRequestDto);
 
-    void setAppliedOffer(LoanOfferDto loanOfferDto);
+    void selectAppliedOffer(LoanOfferDto loanOfferDto);
 
     void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto, String statementId);
 }

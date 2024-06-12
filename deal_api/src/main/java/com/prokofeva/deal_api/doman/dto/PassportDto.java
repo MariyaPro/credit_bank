@@ -1,6 +1,6 @@
 package com.prokofeva.deal_api.doman.dto;
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.annotations.TypeDef;
@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Data
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@TypeDef(name = "json", typeClass = JsonType.class)
 public class PassportDto {
 
     @Schema(description = "Серия паспорта", example = "5566")

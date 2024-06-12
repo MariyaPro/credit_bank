@@ -1,12 +1,9 @@
 package com.prokofeva.deal_api.doman.dto;
 
-
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -15,10 +12,7 @@ import java.time.LocalDate;
 
 @Schema(description = "Ежемесячный платеж по кредиту")
 @Data
-@TypeDefs({
-        @TypeDef(name = "json", typeClass = JsonStringType.class),
-        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-})
+@TypeDef(name = "json", typeClass = JsonType.class)
 public class PaymentScheduleElementDto {
 
     @Schema(description = "Номер платежа")

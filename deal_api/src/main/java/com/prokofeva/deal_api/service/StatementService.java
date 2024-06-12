@@ -7,7 +7,7 @@ import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
 import com.prokofeva.deal_api.doman.dto.StatementDto;
 
 public interface StatementService {
-    void setAppliedOffer(LoanOfferDto loanOfferDto);
+    void selectAppliedOffer(LoanOfferDto loanOfferDto);
 
     StatementDto saveStatement(Statement statement);
 
