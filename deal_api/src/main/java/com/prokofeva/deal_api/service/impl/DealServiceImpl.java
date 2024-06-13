@@ -2,17 +2,17 @@ package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.client.CalcFeignClient;
 import com.prokofeva.deal_api.doman.dto.*;
+import com.prokofeva.deal_api.exeption.ExternalServiceException;
 import com.prokofeva.deal_api.service.ClientService;
 import com.prokofeva.deal_api.service.CreditService;
 import com.prokofeva.deal_api.service.DealService;
 import com.prokofeva.deal_api.service.StatementService;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,20 +22,24 @@ public class DealServiceImpl implements DealService {
     private final CalcFeignClient calcFeignClient;
     private final CreditService creditService;
 
+    @Value("${calc_feignclient_url}")
+    private String calcFeignClientUrl;
+
     @Override
     public List<LoanOfferDto> getListOffers(LoanStatementRequestDto loanStatementRequestDto) {
         ClientDto clientDto = clientService.createClient(loanStatementRequestDto);
         StatementDto statementDto = statementService.createStatement(clientDto);
 
-        ResponseEntity<List<LoanOfferDto>> responseCalc = calcFeignClient.getListOffers(loanStatementRequestDto);
+        List<LoanOfferDto> listOffers;
+        try {
+            listOffers = calcFeignClient.getListOffers(loanStatementRequestDto);
+        } catch (FeignException e) {
+            String message = e.status() == 406 ?
+                    new String(e.responseBody().get().array())
+                    : "Error from external service (" + calcFeignClientUrl + "offers).";
 
-        if (!responseCalc.hasBody()) {
-            System.out.println("not has body");
+            throw new ExternalServiceException(message);
         }
-        if (!responseCalc.getStatusCode().equals(HttpStatus.OK)) {
-            System.out.println("status bad request");
-        }
-        List<LoanOfferDto> listOffers = Optional.ofNullable(responseCalc.getBody()).orElseThrow();
 
         for (LoanOfferDto offer : listOffers)
             offer.setStatementId(statementDto.getStatementId());
@@ -55,7 +59,17 @@ public class DealServiceImpl implements DealService {
 
         ScoringDataDto scoringDataDto = createScoringData(statementDto.getAppliedOffer(), clientDtoUp);
 
-        CreditDto creditDto = calcFeignClient.calculateCredit(scoringDataDto);
+        CreditDto creditDto;
+        try {
+            creditDto = calcFeignClient.calculateCredit(scoringDataDto);
+        } catch (FeignException e) {
+            String message = e.status() == 406 ?
+                    new String(e.responseBody().get().array())
+                    : "Error from external service (" + calcFeignClientUrl + "calc).";
+
+            throw new ExternalServiceException(message);
+        }
+
         CreditDto creditDtoFromDb = creditService.createCredit(creditDto);
 
         statementService.registrationCredit(statementDto, creditDtoFromDb);
@@ -73,6 +87,8 @@ public class DealServiceImpl implements DealService {
         scoringDataDto.setBirthdate(clientDto.getBirthDate());
         scoringDataDto.setPassportSeries(clientDto.getPassport().getSeries());
         scoringDataDto.setPassportNumber(clientDto.getPassport().getNumber());
+        scoringDataDto.setPassportIssueDate(clientDto.getPassport().getIssueDate());
+        scoringDataDto.setPassportIssueBranch(clientDto.getPassport().getIssueBranch());
         scoringDataDto.setMaritalStatus(clientDto.getMaritalStatus());
         scoringDataDto.setDependentAmount(clientDto.getDependentAmount());
         scoringDataDto.setEmployment(clientDto.getEmployment());

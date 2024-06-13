@@ -30,4 +30,11 @@ public class HandlerExceptionControllerAdvice {
         return ResponseEntity.badRequest().body(errorsList);
     }
 
+    @ExceptionHandler(ExternalServiceException.class)
+    @ResponseBody
+    public ResponseEntity<String> handleExternalServiceError(ExternalServiceException e) {
+        return ResponseEntity.status(406).body(e.getMessage());
+    }
+
+
 }

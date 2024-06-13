@@ -30,7 +30,6 @@ public class StatementServiceImpl implements StatementService {
         Statement statement = statementOptional.orElseThrow(EntityNotFoundException::new);
         statement.setAppliedOffer(loanOfferDto);
         statementRepo.saveAndFlush(statement);
-        System.out.println("uel!");
     }
 
     @Override

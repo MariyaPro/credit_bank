@@ -31,10 +31,10 @@
             <column name="payment_schedule" type="jsonb">
                 <constraints nullable="false"/>
             </column>
-            <column name="psk" type="numeric(19, 2)">
+            <column name="psk" type="numeric(19, 3)">
                 <constraints nullable="false"/>
             </column>
-            <column name="rate" type="numeric(19, 2)">
+            <column name="rate" type="numeric(19, 3)">
                 <constraints nullable="false"/>
             </column>
             <column name="salary_client" type="boolean">

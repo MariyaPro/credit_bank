@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Schema(description = "Информация о занятости")
 @Data
 public class EmploymentDto {
-    @Schema(description = "Статус", example = "busy")
+    @Schema(description = "Статус", example = "employed")
     @NotNull
     @Enumerated(EnumType.STRING)
     private EmploymentStatus status;
@@ -31,7 +31,7 @@ public class EmploymentDto {
     @NotNull
     private BigDecimal salary;
 
-    @Schema(description = "Должность", example = "top_manager")
+    @Schema(description = "Должность", example = "top manager")
     @NotNull
     @Enumerated(EnumType.STRING)
     private EmploymentPosition position;

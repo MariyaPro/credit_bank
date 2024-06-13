@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  calculator_api:
+  calculator-api:
     build:
       context: .
       dockerfile: Dockerfile_Calc
-    container_name: calculator_app
+    container_name: calculator-app
     restart: no
     ports:
       - "8090:8090"
@@ -13,15 +13,15 @@ services:
       - SERVER_PORT=8090
 
 
-  deal_api:
+  deal-api:
     build:
       context: .
       dockerfile: Dockerfile_Deal
-    container_name: deal_app
+    container_name: deal-app
     restart: no
     depends_on:
       - db
-      - calculator_api
+      - calculator-api
     ports:
       - "8080:8080"
     environment:

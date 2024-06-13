@@ -18,7 +18,7 @@ public class HandlerExceptionControllerAdvice {
     @ExceptionHandler(DeniedLoanException.class)
     @ResponseBody
     public ResponseEntity<String> handleDeniedLoanException(DeniedLoanException e) {
-        return ResponseEntity.ok(e.getMessage());
+        return ResponseEntity.status(406).body(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

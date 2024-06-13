@@ -54,6 +54,5 @@ public class ClientServiceImpl implements ClientService {
         clientDto.setAccountNumber(finRegRequestDto.getAccountNumber());
 
         return saveClient(clientMapper.convertDtoToEntity(clientDto));
-
     }
 }
