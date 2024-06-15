@@ -2,6 +2,7 @@ package com.prokofeva.deal_api.doman.dto;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.TypeDef;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 @Data
+@Builder
 @TypeDef(name = "json", typeClass = JsonType.class)
 public class PassportDto {
 

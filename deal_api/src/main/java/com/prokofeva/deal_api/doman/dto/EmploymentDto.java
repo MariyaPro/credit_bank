@@ -4,6 +4,7 @@ import com.prokofeva.deal_api.doman.enums.EmploymentPosition;
 import com.prokofeva.deal_api.doman.enums.EmploymentStatus;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.TypeDef;
 
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 @TypeDef(name = "json", typeClass = JsonType.class)
 @Schema(description = "Информация о занятости")
 @Data
+@Builder
 public class EmploymentDto {
     @Schema(description = "Статус", example = "employed")
     @NotNull

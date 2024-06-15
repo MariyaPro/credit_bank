@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,8 +33,7 @@ public class StatementServiceImpl implements StatementService {
         statementRepo.saveAndFlush(statement);
     }
 
-    @Override
-    public StatementDto saveStatement(Statement statement) {
+    private StatementDto saveStatement(Statement statement) {
         return statementMapper.convertEntityToDto(statementRepo.saveAndFlush(statement));
     }
 
@@ -41,12 +41,10 @@ public class StatementServiceImpl implements StatementService {
     public StatementDto createStatement(ClientDto clientDto) {
         Statement statement = new Statement();
         statement.setClientId(clientMapper.convertDtoToEntity(clientDto));
-        statement.setCreationDate(LocalDateTime.now());
+        statement.setCreationDate(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
         statement.setStatusHistoryList(new LinkedList<>());
-        statement.setAppliedOffer(new LoanOfferDto());
 
         addStatusHistory(statement, ApplicationStatus.PREAPPROVAL);
-
 
         return saveStatement(statement);
     }
@@ -67,12 +65,12 @@ public class StatementServiceImpl implements StatementService {
         saveStatement(statement);
     }
 
-    public void addStatusHistory(Statement statement, ApplicationStatus status) {
-        LocalDateTime localDateTime = LocalDateTime.now();
+    private void addStatusHistory(Statement statement, ApplicationStatus status) {
+        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
         statement.setStatus(status);
 
-        StatusHistory statusHistory = new StatusHistory(status, localDateTime, ChangeType.AUTOMATIC);
+        StatusHistory statusHistory = new StatusHistory(status, now, ChangeType.AUTOMATIC);
         statement.getStatusHistoryList().add(statusHistory);
     }
 }

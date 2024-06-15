@@ -22,7 +22,7 @@ public class CreditServiceImpl implements CreditService {
         return saveCredit(credit);
     }
 
-    public CreditDto saveCredit(Credit credit) {
+    private CreditDto saveCredit(Credit credit) {
         return creditMapper.convertEntityToDto(creditRepo.saveAndFlush(credit));
     }
 }

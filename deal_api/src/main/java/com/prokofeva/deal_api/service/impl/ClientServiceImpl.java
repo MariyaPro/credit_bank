@@ -16,9 +16,10 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto createClient(LoanStatementRequestDto loanStatementRequestDto) {
-        PassportDto passport = new PassportDto();
-        passport.setSeries(loanStatementRequestDto.getPassportSeries());
-        passport.setNumber(loanStatementRequestDto.getPassportNumber());
+        PassportDto passport = PassportDto.builder()
+                .series(loanStatementRequestDto.getPassportSeries())
+                .number(loanStatementRequestDto.getPassportNumber())
+                .build();
 
         Client client = new Client();
         client.setLastName(loanStatementRequestDto.getLastName());
@@ -31,8 +32,7 @@ public class ClientServiceImpl implements ClientService {
         return saveClient(client);
     }
 
-    @Override
-    public ClientDto saveClient(Client client) {
+    private ClientDto saveClient(Client client) {
         return clientMapper.convertEntityToDto(clientRepo.saveAndFlush(client));
     }
 
@@ -52,6 +52,7 @@ public class ClientServiceImpl implements ClientService {
         clientDto.setPassport(passportDto);
         clientDto.setEmployment(employmentDto);
         clientDto.setAccountNumber(finRegRequestDto.getAccountNumber());
+
 
         return saveClient(clientMapper.convertDtoToEntity(clientDto));
     }

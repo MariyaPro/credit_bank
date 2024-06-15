@@ -36,16 +36,16 @@ class CreditMapperTest {
 
     @BeforeAll
     static void prepareCreditDtoAc() {
-        creditDtoAc = new CreditDto();
-
-        creditDtoAc.setAmount(BigDecimal.valueOf(50000));
-        creditDtoAc.setTerm(6);
-        creditDtoAc.setMonthlyPayment(BigDecimal.valueOf(8826.14));
-        creditDtoAc.setRate(BigDecimal.valueOf(20.00));
-        creditDtoAc.setPsk(BigDecimal.valueOf(19.974));
-        creditDtoAc.setInsuranceEnabled(false);
-        creditDtoAc.setSalaryClient(false);
-        creditDtoAc.setPaymentSchedule(new ArrayList<>());
+        creditDtoAc = CreditDto.builder()
+                .amount(BigDecimal.valueOf(50000))
+                .term(6)
+                .monthlyPayment(BigDecimal.valueOf(8826.14))
+                .rate(BigDecimal.valueOf(20.00))
+                .psk(BigDecimal.valueOf(19.974))
+                .insuranceEnabled(false)
+                .salaryClient(false)
+                .paymentSchedule(new ArrayList<>())
+                .build();
     }
 
     @Test

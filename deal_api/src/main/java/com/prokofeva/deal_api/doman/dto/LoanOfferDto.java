@@ -2,6 +2,7 @@ package com.prokofeva.deal_api.doman.dto;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.TypeDef;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Schema(description = "Предложение условий займа")
 @Data
+@Builder
 @TypeDef(name = "json", typeClass = JsonType.class)
 public class LoanOfferDto {
 

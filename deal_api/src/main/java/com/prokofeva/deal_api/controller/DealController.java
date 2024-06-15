@@ -27,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Deal", description = "Обрабатывает и регистрирует поступившие заявки на кредит.")
 @RequestMapping("/deal")
-public class dealController {
+public class DealController {
     private final DealService dealService;
 
     @PostMapping("/statement")

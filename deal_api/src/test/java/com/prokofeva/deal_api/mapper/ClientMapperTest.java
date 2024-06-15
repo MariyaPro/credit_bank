@@ -39,18 +39,19 @@ class ClientMapperTest {
 
     @BeforeAll
     static void prepareClientDtoEx() {
-        clientDtoAc = new ClientDto();
-        clientDtoAc.setClientId(UUID.fromString("123e4567-e89b-12d3-a456-426655440000"));
-        clientDtoAc.setLastName("testLastName");
-        clientDtoAc.setFirstName("testFirstName");
-        clientDtoAc.setMiddleName("testMiddleName");
-        clientDtoAc.setBirthDate(LocalDate.of(2000, 8, 21));
-        clientDtoAc.setEmail("testExample@gmail.com");
-        clientDtoAc.setMaritalStatus(MaritalStatus.MARRIED);
-        clientDtoAc.setDependentAmount(2);
-        clientDtoAc.setPassport(null);
-        clientDtoAc.setEmployment(null);
-        clientDtoAc.setAccountNumber("123454321");
+        clientDtoAc = ClientDto.builder()
+                .clientId(UUID.fromString("123e4567-e89b-12d3-a456-426655440000"))
+                .lastName("testLastName")
+                .firstName("testFirstName")
+                .middleName("testMiddleName")
+                .birthDate(LocalDate.of(2000, 8, 21))
+                .email("testExample@gmail.com")
+                .maritalStatus(MaritalStatus.MARRIED)
+                .dependentAmount(2)
+                .passport(null)
+                .employment(null)
+                .accountNumber("123454321")
+                .build();
     }
 
     @Test

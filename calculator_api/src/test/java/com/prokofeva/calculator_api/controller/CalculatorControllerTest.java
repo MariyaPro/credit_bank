@@ -311,7 +311,7 @@ class CalculatorControllerTest {
                 );
 
         // валидация employment
-         requestBuilder = post("/calculator/calc")
+        requestBuilder = post("/calculator/calc")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                          {

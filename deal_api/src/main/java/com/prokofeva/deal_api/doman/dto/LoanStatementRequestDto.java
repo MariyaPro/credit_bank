@@ -1,6 +1,7 @@
 package com.prokofeva.deal_api.doman.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.*;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 
 @Schema(description = "Заявка на расчет вариантов займа.")
 @Data
+@Builder
 public class LoanStatementRequestDto {
     @Schema(description = "Сумма кредита", example = "100000")
     @NotNull

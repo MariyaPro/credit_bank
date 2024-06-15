@@ -76,26 +76,27 @@ public class DealServiceImpl implements DealService {
     }
 
     private ScoringDataDto createScoringData(LoanOfferDto loanOfferDto, ClientDto clientDto) {
-        ScoringDataDto scoringDataDto = new ScoringDataDto();
+        return ScoringDataDto.builder()
 
-        scoringDataDto.setAmount(loanOfferDto.getRequestedAmount());
-        scoringDataDto.setTerm(loanOfferDto.getTerm());
-        scoringDataDto.setFirstName(clientDto.getFirstName());
-        scoringDataDto.setLastName(clientDto.getLastName());
-        scoringDataDto.setMiddleName(clientDto.getMiddleName());
-        scoringDataDto.setGender(clientDto.getGender());
-        scoringDataDto.setBirthdate(clientDto.getBirthDate());
-        scoringDataDto.setPassportSeries(clientDto.getPassport().getSeries());
-        scoringDataDto.setPassportNumber(clientDto.getPassport().getNumber());
-        scoringDataDto.setPassportIssueDate(clientDto.getPassport().getIssueDate());
-        scoringDataDto.setPassportIssueBranch(clientDto.getPassport().getIssueBranch());
-        scoringDataDto.setMaritalStatus(clientDto.getMaritalStatus());
-        scoringDataDto.setDependentAmount(clientDto.getDependentAmount());
-        scoringDataDto.setEmployment(clientDto.getEmployment());
-        scoringDataDto.setAccountNumber(clientDto.getAccountNumber());
-        scoringDataDto.setIsInsuranceEnabled(loanOfferDto.getIsInsuranceEnabled());
-        scoringDataDto.setIsSalaryClient(loanOfferDto.getIsSalaryClient());
+                .amount(loanOfferDto.getRequestedAmount())
+                .term(loanOfferDto.getTerm())
+                .isInsuranceEnabled(loanOfferDto.getIsInsuranceEnabled())
+                .isSalaryClient(loanOfferDto.getIsSalaryClient())
 
-        return scoringDataDto;
+                .firstName(clientDto.getFirstName())
+                .lastName(clientDto.getLastName())
+                .middleName(clientDto.getMiddleName())
+                .gender(clientDto.getGender())
+                .birthdate(clientDto.getBirthDate())
+                .passportSeries(clientDto.getPassport().getSeries())
+                .passportNumber(clientDto.getPassport().getNumber())
+                .passportIssueDate(clientDto.getPassport().getIssueDate())
+                .passportIssueBranch(clientDto.getPassport().getIssueBranch())
+                .maritalStatus(clientDto.getMaritalStatus())
+                .dependentAmount(clientDto.getDependentAmount())
+                .employment(clientDto.getEmployment())
+                .accountNumber(clientDto.getAccountNumber())
+
+                .build();
     }
 }

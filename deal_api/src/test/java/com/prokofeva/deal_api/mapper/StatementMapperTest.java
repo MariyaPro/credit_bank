@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,8 +35,8 @@ class StatementMapperTest {
         statementAc.setClientId(new Client());
         statementAc.setCreditId(new Credit());
         statementAc.setStatus(ApplicationStatus.APPROVED);
-        statementAc.setCreationDate(LocalDateTime.of(2024, 6, 12, 11, 54, 44));
-        statementAc.setAppliedOffer(new LoanOfferDto());
+        statementAc.setCreationDate(LocalDateTime.of(2024, 6, 12, 11, 54, 44).truncatedTo(ChronoUnit.SECONDS));
+        statementAc.setAppliedOffer(LoanOfferDto.builder().build());
         statementAc.setSignDate(null);
         statementAc.setSesCode("ses_code?");
     }
@@ -44,11 +45,11 @@ class StatementMapperTest {
     static void prepareStatementDtoAc() {
         statementDtoAc = new StatementDto();
         statementDtoAc.setStatementId(UUID.fromString("06115ad596-0873-0087-5764-c1f3730d90"));
-        statementDtoAc.setClientId(new ClientDto());
-        statementDtoAc.setCreditId(new CreditDto());
+        statementDtoAc.setClientId(ClientDto.builder().build());
+        statementDtoAc.setCreditId(CreditDto.builder().build());
         statementDtoAc.setStatus(ApplicationStatus.APPROVED);
-        statementDtoAc.setCreationDate(LocalDateTime.of(2024, 6, 12, 11, 54, 44));
-        statementDtoAc.setAppliedOffer(new LoanOfferDto());
+        statementDtoAc.setCreationDate(LocalDateTime.of(2024, 6, 12, 11, 54, 44).truncatedTo(ChronoUnit.SECONDS));
+        statementDtoAc.setAppliedOffer(LoanOfferDto.builder().build());
         statementDtoAc.setSignDate(null);
         statementDtoAc.setSesCode("ses_code?");
     }

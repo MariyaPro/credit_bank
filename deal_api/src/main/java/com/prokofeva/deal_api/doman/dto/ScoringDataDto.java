@@ -3,6 +3,7 @@ package com.prokofeva.deal_api.doman.dto;
 import com.prokofeva.deal_api.doman.enums.Gender;
 import com.prokofeva.deal_api.doman.enums.MaritalStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 
 @Schema(description = "Данные для детального расчета параметров кредита")
 @Data
+@Builder
 public class ScoringDataDto {
 
     @Schema(description = "Сумма кредита", example = "300000")
