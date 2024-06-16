@@ -33,19 +33,22 @@ public class DealController {
     @PostMapping("/statement")
     @Operation(description = "Paсчет возможных условий кредита.")
     public ResponseEntity<List<LoanOfferDto>> getLoanOffers(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
+        log.info("Получена заявка на расчет вариантов займа. {}", loanStatementRequestDto.toString());
         return ResponseEntity.ok(dealService.getListOffers(loanStatementRequestDto));
     }
 
     @PostMapping("/offer/select")
     @Operation(description = "Выбор одного из кредитных предложений.")
     public void selectAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
-         dealService.selectAppliedOffer(loanOfferDto);
+        log.info("Клиент выбрал вариант кредита: {}.", loanOfferDto);
+        dealService.selectAppliedOffer(loanOfferDto);
     }
 
     @PostMapping("/calculate/{statementId}")
     @Operation(description = "Завершение регистрации и полный подсчёт кредита.")
     public void registrationCredit(@RequestBody FinishRegistrationRequestDto finishRegistrationRequestDto,
                                    @PathVariable String statementId) {
+        log.info("Процедура регистрации кредита в базе данных. Заявка Id = {}.",statementId);
         dealService.registrationCredit(finishRegistrationRequestDto, statementId);
     }
 }

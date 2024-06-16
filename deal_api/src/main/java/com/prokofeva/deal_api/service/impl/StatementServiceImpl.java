@@ -9,6 +9,7 @@ import com.prokofeva.deal_api.mapper.StatementMapper;
 import com.prokofeva.deal_api.repositories.StatementRepo;
 import com.prokofeva.deal_api.service.StatementService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -18,6 +19,7 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class StatementServiceImpl implements StatementService {
@@ -34,7 +36,10 @@ public class StatementServiceImpl implements StatementService {
     }
 
     private StatementDto saveStatement(Statement statement) {
-        return statementMapper.convertEntityToDto(statementRepo.saveAndFlush(statement));
+        Statement statementFromDb = statementRepo.saveAndFlush(statement);
+        log.info("Изменения успешно сохранены в базу данных. {}", statementFromDb);
+
+        return statementMapper.convertEntityToDto(statementFromDb);
     }
 
     @Override
@@ -46,6 +51,7 @@ public class StatementServiceImpl implements StatementService {
 
         addStatusHistory(statement, ApplicationStatus.PREAPPROVAL);
 
+        log.info("Создана новая заявка на кредит: {}.", statement);
         return saveStatement(statement);
     }
 
@@ -53,24 +59,27 @@ public class StatementServiceImpl implements StatementService {
     public StatementDto getStatementById(String statementId) {
         Statement statement = statementRepo.findById(UUID.fromString(statementId))
                 .orElseThrow(EntityNotFoundException::new);
+        log.info("Заявка с Id {} успешно плучена из БД.", statementId);
         return statementMapper.convertEntityToDto(statement);
     }
 
     @Override
     public void registrationCredit(StatementDto statementDto, CreditDto creditDtoFromDb) {
         statementDto.setCreditId(creditDtoFromDb);
+        log.info("Изменение данных заявки: заполнено поле creditId = {}.", creditDtoFromDb.getCreditId());
         Statement statement = statementMapper.convertDtoToEntity(statementDto);
         addStatusHistory(statement, ApplicationStatus.APPROVED);
-
         saveStatement(statement);
     }
 
     private void addStatusHistory(Statement statement, ApplicationStatus status) {
+        log.info("Изменение статуса заявки (заявка id = {}, статус = {}).", statement.getStatementId(), status);
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
         statement.setStatus(status);
 
         StatusHistory statusHistory = new StatusHistory(status, now, ChangeType.AUTOMATIC);
         statement.getStatusHistoryList().add(statusHistory);
+        log.info("Статус заявки исменен. В журнал статусов добавлена новая запись: {}.", statusHistory);
     }
 }

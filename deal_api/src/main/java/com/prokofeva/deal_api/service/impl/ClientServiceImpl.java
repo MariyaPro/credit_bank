@@ -6,8 +6,10 @@ import com.prokofeva.deal_api.mapper.ClientMapper;
 import com.prokofeva.deal_api.repositories.ClientRepo;
 import com.prokofeva.deal_api.service.ClientService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClientServiceImpl implements ClientService {
@@ -28,18 +30,21 @@ public class ClientServiceImpl implements ClientService {
         client.setBirthDate(loanStatementRequestDto.getBirthdate());
         client.setEmail(loanStatementRequestDto.getEmail());
         client.setPassport(passport);
-
+        log.info("Создан новый клиент: {}.", client);
         return saveClient(client);
     }
 
-    private ClientDto saveClient(Client client) {
-        return clientMapper.convertEntityToDto(clientRepo.saveAndFlush(client));
+    public ClientDto saveClient(Client client) {
+        Client clientFromDb = clientRepo.saveAndFlush(client);
+        log.info("Изменения успешно сохранены: {}", clientFromDb);
+        return clientMapper.convertEntityToDto(clientFromDb);
     }
 
     @Override
     public ClientDto updateClientInfo(ClientDto clientDto,
                                       FinishRegistrationRequestDto finRegRequestDto
     ) {
+        log.info("Обновление данных клиента (id = {}).", clientDto.getClientId());
         PassportDto passportDto = clientDto.getPassport();
         passportDto.setIssueDate(finRegRequestDto.getPassportIssueDate());
         passportDto.setIssueBranch(finRegRequestDto.getPassportIssueBrach());
@@ -53,6 +58,7 @@ public class ClientServiceImpl implements ClientService {
         clientDto.setEmployment(employmentDto);
         clientDto.setAccountNumber(finRegRequestDto.getAccountNumber());
 
+        log.info("Данные клиента (id = {}) изменены.", clientDto.getClientId());
 
         return saveClient(clientMapper.convertDtoToEntity(clientDto));
     }

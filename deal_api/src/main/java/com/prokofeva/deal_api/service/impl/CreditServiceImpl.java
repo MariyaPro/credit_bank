@@ -7,8 +7,10 @@ import com.prokofeva.deal_api.mapper.CreditMapper;
 import com.prokofeva.deal_api.repositories.CreditRepo;
 import com.prokofeva.deal_api.service.CreditService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CreditServiceImpl implements CreditService {
@@ -19,10 +21,13 @@ public class CreditServiceImpl implements CreditService {
     public CreditDto createCredit(CreditDto creditDto) {
         Credit credit = creditMapper.convertDtoToEntity(creditDto);
         credit.setCreditStatus(CreditStatus.CALCULATED);
+        log.info("Создан новый кредит: {}.", credit);
         return saveCredit(credit);
     }
 
     private CreditDto saveCredit(Credit credit) {
-        return creditMapper.convertEntityToDto(creditRepo.saveAndFlush(credit));
+        Credit creditFromDb = creditRepo.saveAndFlush(credit);
+        log.info("Данные о кредите успешно сохранены: {}.", credit);
+        return creditMapper.convertEntityToDto(creditFromDb);
     }
 }
