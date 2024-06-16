@@ -107,7 +107,7 @@ class DealServiceImplTest {
     }
 
     @Test
-    void getListOffersFail() throws Exception {
+    void getListOffersFail() {
         LoanStatementRequestDto loanRequestDto = LoanStatementRequestDto.builder()
                 .amount(BigDecimal.valueOf(100000))
                 .term(12)
