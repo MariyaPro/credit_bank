@@ -50,7 +50,6 @@ public class DealServiceImpl implements DealService {
 
         for (LoanOfferDto offer : listOffers)
             offer.setStatementId(statementDto.getStatementId());
-
         log.info("В полученных вариантах займа уснановлен UUID заявки (statementId = {}).", statementDto.getStatementId());
 
         return listOffers;
@@ -76,7 +75,6 @@ public class DealServiceImpl implements DealService {
         try {
             creditDto = calcFeignClient.calculateCredit(scoringDataDto);
             log.info("Получен ответ от внешнего сервиса ({}calc).", calcFeignClientUrl);
-
         } catch (FeignException e) {
             String message = e.status() == 406 ?
                     new String(e.responseBody().get().array())
@@ -94,7 +92,6 @@ public class DealServiceImpl implements DealService {
     private ScoringDataDto createScoringData(LoanOfferDto loanOfferDto, ClientDto clientDto) {
         log.info("Формирование запроса к внешнему сервису.");
         return ScoringDataDto.builder()
-
                 .amount(loanOfferDto.getRequestedAmount())
                 .term(loanOfferDto.getTerm())
                 .isInsuranceEnabled(loanOfferDto.getIsInsuranceEnabled())

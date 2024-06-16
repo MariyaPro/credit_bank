@@ -1,6 +1,7 @@
 package com.prokofeva.deal_api.doman.dto;
 
 import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
+@Builder
 public class StatementDto {
     private UUID statementId;
     private ClientDto clientId;

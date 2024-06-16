@@ -43,15 +43,16 @@ class StatementMapperTest {
 
     @BeforeAll
     static void prepareStatementDtoAc() {
-        statementDtoAc = new StatementDto();
-        statementDtoAc.setStatementId(UUID.fromString("06115ad596-0873-0087-5764-c1f3730d90"));
-        statementDtoAc.setClientId(ClientDto.builder().build());
-        statementDtoAc.setCreditId(CreditDto.builder().build());
-        statementDtoAc.setStatus(ApplicationStatus.APPROVED);
-        statementDtoAc.setCreationDate(LocalDateTime.of(2024, 6, 12, 11, 54, 44).truncatedTo(ChronoUnit.SECONDS));
-        statementDtoAc.setAppliedOffer(LoanOfferDto.builder().build());
-        statementDtoAc.setSignDate(null);
-        statementDtoAc.setSesCode("ses_code?");
+        statementDtoAc = StatementDto.builder()
+                .statementId(UUID.fromString("06115ad596-0873-0087-5764-c1f3730d90"))
+                .clientId(ClientDto.builder().build())
+                .creditId(CreditDto.builder().build())
+                .status(ApplicationStatus.APPROVED)
+                .creationDate(LocalDateTime.of(2024, 6, 12, 11, 54, 44).truncatedTo(ChronoUnit.SECONDS))
+                .appliedOffer(LoanOfferDto.builder().build())
+                .signDate(null)
+                .sesCode("ses_code?")
+                .build();
     }
 
     @Test

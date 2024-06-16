@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -39,16 +40,18 @@ public class DealController {
 
     @PostMapping("/offer/select")
     @Operation(description = "Выбор одного из кредитных предложений.")
-    public void selectAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
+    public ResponseEntity<Void> selectAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
         log.info("Клиент выбрал вариант кредита: {}.", loanOfferDto);
         dealService.selectAppliedOffer(loanOfferDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/calculate/{statementId}")
     @Operation(description = "Завершение регистрации и полный подсчёт кредита.")
-    public void registrationCredit(@RequestBody FinishRegistrationRequestDto finishRegistrationRequestDto,
+    public ResponseEntity<Void> registrationCredit(@RequestBody @Valid FinishRegistrationRequestDto finishRegistrationRequestDto,
                                    @PathVariable String statementId) {
         log.info("Процедура регистрации кредита в базе данных. Заявка Id = {}.",statementId);
         dealService.registrationCredit(finishRegistrationRequestDto, statementId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
