@@ -18,6 +18,7 @@ public class HandlerExceptionControllerAdvice {
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseBody
     public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException e) {
+        log.info("Перехвачено исключение EntityNotFoundException.class : {}", e.getMessage());
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
@@ -27,12 +28,14 @@ public class HandlerExceptionControllerAdvice {
         final List<ValidationError> errorsList = e.getBindingResult().getFieldErrors().stream()
                 .map(error -> new ValidationError(error.getField(), error.getDefaultMessage()))
                 .collect(Collectors.toList());
+        log.info("Некорректные данные в запросе, перехвачено исключение MethodArgumentNotValidException.class : {}", errorsList);
         return ResponseEntity.badRequest().body(errorsList);
     }
 
     @ExceptionHandler(ExternalServiceException.class)
     @ResponseBody
     public ResponseEntity<String> handleExternalServiceError(ExternalServiceException e) {
+        log.info("Перехвачено исключение ExternalServiceException.class : {}", e.getMessage());
         return ResponseEntity.status(406).body(e.getMessage());
     }
 
