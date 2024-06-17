@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+feign:
+  client:
+    config:
+      calc:
+        read-timeout: 5000
+        connect-timeout: 5000
+
+deal_feignclient_url: http://deal-app:8085/deal/
+#deal_feignclient_url: http://localhost:8085/deal/
+
+logging:
+  file:
+    name: statement-logs
