@@ -1,4 +1,4 @@
-package com.prokofeva.deal_api.doman.enums;
+package com.prokofeva.deal_api.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

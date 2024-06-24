@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.controller;
 
-import com.prokofeva.deal_api.doman.dto.FinishRegistrationRequestDto;
-import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
-import com.prokofeva.deal_api.doman.dto.LoanStatementRequestDto;
+import com.prokofeva.deal_api.model.dto.FinishRegistrationRequestDto;
+import com.prokofeva.deal_api.model.dto.LoanOfferDto;
+import com.prokofeva.deal_api.model.dto.LoanStatementRequestDto;
 import com.prokofeva.deal_api.service.DealService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,14 +34,14 @@ public class DealController {
     @PostMapping("/statement")
     @Operation(description = "Paсчет возможных условий кредита.")
     public ResponseEntity<List<LoanOfferDto>> getLoanOffers(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
-        log.info("Получена заявка на расчет вариантов займа. {}", loanStatementRequestDto.toString());
+        log.info("{} -- Получена заявка на расчет вариантов займа: {}", loanStatementRequestDto.hashCode(), loanStatementRequestDto);
         return ResponseEntity.ok(dealService.getListOffers(loanStatementRequestDto));
     }
 
     @PostMapping("/offer/select")
     @Operation(description = "Выбор одного из кредитных предложений.")
     public ResponseEntity<Void> selectAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
-        log.info("Клиент выбрал вариант кредита: {}.", loanOfferDto);
+        log.info("{} -- Клиент выбрал вариант кредита: {}.", loanOfferDto.getStatementId(), loanOfferDto);
         dealService.selectAppliedOffer(loanOfferDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -50,7 +50,7 @@ public class DealController {
     @Operation(description = "Завершение регистрации и полный подсчёт кредита.")
     public ResponseEntity<Void> registrationCredit(@RequestBody @Valid FinishRegistrationRequestDto finishRegistrationRequestDto,
                                    @PathVariable String statementId) {
-        log.info("Процедура регистрации кредита в базе данных. Заявка Id = {}.",statementId);
+        log.info("{} -- Процедура регистрации кредита в базе данных. Дополнительные сведени: {}",statementId,finishRegistrationRequestDto);
         dealService.registrationCredit(finishRegistrationRequestDto, statementId);
         return new ResponseEntity<>(HttpStatus.OK);
     }

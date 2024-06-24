@@ -1,13 +1,15 @@
-package com.prokofeva.deal_api.doman.enums;
+package com.prokofeva.deal_api.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum ChangeType {
-    AUTOMATIC("automatic"),
-    MANUAL("manual");
+public enum EmploymentPosition {
+    WORKER("worker"),
+    MID_MANAGER("mid manager"),
+    TOP_MANAGER("top manager"),
+    OWNER("owner");
 
     private final String value;
 
@@ -17,8 +19,8 @@ public enum ChangeType {
     }
 
     @JsonCreator
-    public static ChangeType fromValue(String value) {
-        for (ChangeType b : ChangeType.values()) {
+    public static EmploymentPosition fromValue(String value) {
+        for (EmploymentPosition b : EmploymentPosition.values()) {
             if (b.value.equalsIgnoreCase(value)) {
                 return b;
             }

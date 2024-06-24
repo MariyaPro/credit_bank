@@ -1,7 +1,7 @@
 package com.prokofeva.deal_api.mapper;
 
-import com.prokofeva.deal_api.doman.Credit;
-import com.prokofeva.deal_api.doman.dto.CreditDto;
+import com.prokofeva.deal_api.model.Credit;
+import com.prokofeva.deal_api.model.dto.CreditDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

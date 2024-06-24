@@ -1,13 +1,13 @@
 package com.prokofeva.deal_api.mapper;
 
-import com.prokofeva.deal_api.doman.Client;
-import com.prokofeva.deal_api.doman.Credit;
-import com.prokofeva.deal_api.doman.Statement;
-import com.prokofeva.deal_api.doman.dto.ClientDto;
-import com.prokofeva.deal_api.doman.dto.CreditDto;
-import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
-import com.prokofeva.deal_api.doman.dto.StatementDto;
-import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
+import com.prokofeva.deal_api.model.Client;
+import com.prokofeva.deal_api.model.Credit;
+import com.prokofeva.deal_api.model.Statement;
+import com.prokofeva.deal_api.model.dto.ClientDto;
+import com.prokofeva.deal_api.model.dto.CreditDto;
+import com.prokofeva.deal_api.model.dto.LoanOfferDto;
+import com.prokofeva.deal_api.model.dto.StatementDto;
+import com.prokofeva.deal_api.model.enums.ApplicationStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

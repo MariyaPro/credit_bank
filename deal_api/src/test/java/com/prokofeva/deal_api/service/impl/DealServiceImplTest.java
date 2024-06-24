@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.client.CalcFeignClient;
-import com.prokofeva.deal_api.doman.dto.*;
-import com.prokofeva.deal_api.doman.enums.*;
+import com.prokofeva.deal_api.model.dto.*;
+import com.prokofeva.deal_api.model.enums.*;
 import com.prokofeva.deal_api.exeption.ExternalServiceException;
 import com.prokofeva.deal_api.service.ClientService;
 import com.prokofeva.deal_api.service.CreditService;
@@ -82,8 +82,8 @@ class DealServiceImplTest {
                 ))
                 .build();
 
-        when(clientService.createClient(loanRequestDto)).thenReturn(ClientDto.builder().build());
-        when(statementService.createStatement(any())).thenReturn(statementDtoFromService);
+        when(clientService.createClient(loanRequestDto, "logId")).thenReturn(ClientDto.builder().build());
+        when(statementService.createStatement(any(), "logId")).thenReturn(statementDtoFromService);
         when(calcFeignClient.getListOffers(any(LoanStatementRequestDto.class))).thenReturn(List.of(
                 LoanOfferDto.builder().build(),
                 LoanOfferDto.builder().build(),
@@ -101,8 +101,8 @@ class DealServiceImplTest {
         assertEquals(statementDtoFromService.getStatementId(), listOffersAc.get(2).getStatementId());
         assertEquals(statementDtoFromService.getStatementId(), listOffersAc.get(3).getStatementId());
 
-        verify(clientService, times(1)).createClient(any(LoanStatementRequestDto.class));
-        verify(statementService, times(1)).createStatement(any(ClientDto.class));
+        verify(clientService, times(1)).createClient(any(LoanStatementRequestDto.class), "logId");
+        verify(statementService, times(1)).createStatement(any(ClientDto.class), "logId");
         verify(calcFeignClient, times(1)).getListOffers(any(LoanStatementRequestDto.class));
     }
 
@@ -150,8 +150,8 @@ class DealServiceImplTest {
                         .request(Request.create(Request.HttpMethod.POST, "ii", Map.of(), null, null, null))
                         .build());
 
-        when(clientService.createClient(loanRequestDto)).thenReturn(ClientDto.builder().build());
-        when(statementService.createStatement(any())).thenReturn(statementDtoFromService);
+        when(clientService.createClient(loanRequestDto, "logId")).thenReturn(ClientDto.builder().build());
+        when(statementService.createStatement(any(), "logId")).thenReturn(statementDtoFromService);
         when(calcFeignClient.getListOffers(any(LoanStatementRequestDto.class))).thenThrow(feignException);
 
         Exception e = assertThrows(ExternalServiceException.class, () -> dealService.getListOffers(loanRequestDto));
@@ -160,8 +160,8 @@ class DealServiceImplTest {
         assertArrayEquals("Test message".getBytes(StandardCharsets.UTF_8),
                 e.getMessage().getBytes(StandardCharsets.UTF_8));
 
-        verify(clientService, times(1)).createClient(any(LoanStatementRequestDto.class));
-        verify(statementService, times(1)).createStatement(any(ClientDto.class));
+        verify(clientService, times(1)).createClient(any(LoanStatementRequestDto.class),"logId");
+        verify(statementService, times(1)).createStatement(any(ClientDto.class), "logId");
         verify(calcFeignClient, times(1)).getListOffers(any(LoanStatementRequestDto.class));
 
     }
@@ -255,16 +255,16 @@ class DealServiceImplTest {
 
 
         when(statementService.getStatementById("fceaf46f-08f4-462f-9267-cc03047835a5")).thenReturn(statementDto);
-        when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto)).thenReturn(clientDto);
+        when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto, "logId")).thenReturn(clientDto);
         when(calcFeignClient.calculateCredit(any())).thenReturn(creditDto);
-        when(creditService.createCredit(creditDto)).thenReturn(creditDto);
+        when(creditService.createCredit(creditDto, "logId")).thenReturn(creditDto);
 
         dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5");
 
         verify(statementService, times(1)).getStatementById(any());
-        verify(clientService, times(1)).updateClientInfo(any(), any());
+        verify(clientService, times(1)).updateClientInfo(any(), any(), "logId");
         verify(calcFeignClient, times(1)).calculateCredit(any());
-        verify(creditService, times(1)).createCredit(any());
+        verify(creditService, times(1)).createCredit(any(), "logId");
 
     }
 
@@ -335,7 +335,7 @@ class DealServiceImplTest {
                         .build());
 
         when(statementService.getStatementById("fceaf46f-08f4-462f-9267-cc03047835a5")).thenReturn(statementDto);
-        when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto)).thenReturn(clientDto);
+        when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto, "logId")).thenReturn(clientDto);
         when(calcFeignClient.calculateCredit(any())).thenThrow(feignException);
 
         Exception e = assertThrows(ExternalServiceException.class,
@@ -346,8 +346,8 @@ class DealServiceImplTest {
                 e.getMessage().getBytes(StandardCharsets.UTF_8));
 
         verify(statementService, times(1)).getStatementById(any());
-        verify(clientService, times(1)).updateClientInfo(any(), any());
+        verify(clientService, times(1)).updateClientInfo(any(), any(), "logId");
         verify(calcFeignClient, times(1)).calculateCredit(any());
-        verify(creditService, times(0)).createCredit(any());
+        verify(creditService, times(0)).createCredit(any(), "logId");
     }
 }

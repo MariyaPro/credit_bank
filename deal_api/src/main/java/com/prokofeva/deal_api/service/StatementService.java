@@ -1,14 +1,14 @@
 package com.prokofeva.deal_api.service;
 
-import com.prokofeva.deal_api.doman.dto.ClientDto;
-import com.prokofeva.deal_api.doman.dto.CreditDto;
-import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
-import com.prokofeva.deal_api.doman.dto.StatementDto;
+import com.prokofeva.deal_api.model.dto.ClientDto;
+import com.prokofeva.deal_api.model.dto.CreditDto;
+import com.prokofeva.deal_api.model.dto.LoanOfferDto;
+import com.prokofeva.deal_api.model.dto.StatementDto;
 
 public interface StatementService {
     void selectAppliedOffer(LoanOfferDto loanOfferDto);
 
-    StatementDto createStatement(ClientDto clientDto);
+    StatementDto createStatement(ClientDto clientDto, String logId);
 
     StatementDto getStatementById(String statementId);
 

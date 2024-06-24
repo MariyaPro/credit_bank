@@ -1,7 +1,7 @@
 package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.client.CalcFeignClient;
-import com.prokofeva.deal_api.doman.dto.*;
+import com.prokofeva.deal_api.model.dto.*;
 import com.prokofeva.deal_api.exeption.ExternalServiceException;
 import com.prokofeva.deal_api.service.ClientService;
 import com.prokofeva.deal_api.service.CreditService;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -31,26 +32,27 @@ public class DealServiceImpl implements DealService {
     @Transactional
     @Override
     public List<LoanOfferDto> getListOffers(LoanStatementRequestDto loanStatementRequestDto) {
+        String logId = UUID.randomUUID().toString();
 
-        ClientDto clientDto = clientService.createClient(loanStatementRequestDto);
+        ClientDto clientDto = clientService.createClient(loanStatementRequestDto, logId);
 
-        StatementDto statementDto = statementService.createStatement(clientDto);
+        StatementDto statementDto = statementService.createStatement(clientDto, logId);
 
         List<LoanOfferDto> listOffers;
         try {
             listOffers = calcFeignClient.getListOffers(loanStatementRequestDto);
-            log.info("Получен ответ от внешнего сервиса ({}offers).", calcFeignClientUrl);
+            log.info("{} -- Получен ответ от внешнего сервиса ({}offers).", logId, calcFeignClientUrl);
         } catch (FeignException e) {
             String message = e.status() == 406 ?
                     new String(e.responseBody().get().array())
                     : "Error from external service (" + calcFeignClientUrl + "offers).";
-            log.info(message);
+            log.error("{} -- {}", logId, message);
             throw new ExternalServiceException(message);
         }
 
         for (LoanOfferDto offer : listOffers)
             offer.setStatementId(statementDto.getStatementId());
-        log.info("В полученных вариантах займа уснановлен UUID заявки (statementId = {}).", statementDto.getStatementId());
+        log.info("{} -- В полученных вариантах займа уснановлен UUID заявки (statementId = {}).", logId, statementDto.getStatementId());
 
         return listOffers;
     }
@@ -63,34 +65,34 @@ public class DealServiceImpl implements DealService {
     @Transactional
     @Override
     public void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto, String statementId) {
-        log.info("Получение заявки из БД (заявка id = {}).", statementId);
+        log.info("{} -- Получение заявки из БД.", statementId);
         StatementDto statementDto = statementService.getStatementById(statementId);
-        log.info("Необходимо заполнить недостающие данные клиента (заявка id = {}).", statementId);
-        ClientDto clientDtoUp = clientService.updateClientInfo(statementDto.getClientId(), finishRegistrationRequestDto);
+        log.info("{} -- Необходимо заполнить недостающие данные клиента.", statementId);
+        ClientDto clientDtoUp = clientService.updateClientInfo(statementDto.getClientId(), finishRegistrationRequestDto, statementId);
 
         ScoringDataDto scoringDataDto = createScoringData(statementDto.getAppliedOffer(), clientDtoUp);
-        log.info("Запрос сформирован: {}.", scoringDataDto);
+        log.info("{} -- Запрос сформирован: {}.", statementId, scoringDataDto);
 
         CreditDto creditDto;
         try {
             creditDto = calcFeignClient.calculateCredit(scoringDataDto);
-            log.info("Получен ответ от внешнего сервиса ({}calc).", calcFeignClientUrl);
+            log.info("{} -- Получен ответ от внешнего сервиса ({}calc).", statementId, calcFeignClientUrl);
         } catch (FeignException e) {
             String message = e.status() == 406 ?
                     new String(e.responseBody().get().array())
                     : "Error from external service (" + calcFeignClientUrl + "calc).";
-            log.info(message);
+            log.error("{} -- {}", statementId, message);
             throw new ExternalServiceException(message);
         }
 
-        CreditDto creditDtoFromDb = creditService.createCredit(creditDto);
+        CreditDto creditDtoFromDb = creditService.createCredit(creditDto, statementId);
 
         statementService.registrationCredit(statementDto, creditDtoFromDb);
-        log.info("Процедура регистрации кредита завершена успешно.");
+        log.info("{} -- Процедура регистрации кредита завершена успешно.", statementId);
     }
 
     private ScoringDataDto createScoringData(LoanOfferDto loanOfferDto, ClientDto clientDto) {
-        log.info("Формирование запроса к внешнему сервису.");
+        log.info("{} -- Формирование запроса к внешнему сервису.", loanOfferDto.getStatementId());
         return ScoringDataDto.builder()
                 .amount(loanOfferDto.getRequestedAmount())
                 .term(loanOfferDto.getTerm())

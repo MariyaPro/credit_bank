@@ -1,7 +1,7 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.doman.Client;
-import com.prokofeva.deal_api.doman.dto.*;
+import com.prokofeva.deal_api.model.Client;
+import com.prokofeva.deal_api.model.dto.*;
 import com.prokofeva.deal_api.mapper.ClientMapper;
 import com.prokofeva.deal_api.repositories.ClientRepo;
 import com.prokofeva.deal_api.service.ClientService;
@@ -17,7 +17,7 @@ public class ClientServiceImpl implements ClientService {
     private final ClientMapper clientMapper;
 
     @Override
-    public ClientDto createClient(LoanStatementRequestDto loanStatementRequestDto) {
+    public ClientDto createClient(LoanStatementRequestDto loanStatementRequestDto, String logId) {
         PassportDto passport = PassportDto.builder()
                 .series(loanStatementRequestDto.getPassportSeries())
                 .number(loanStatementRequestDto.getPassportNumber())
@@ -30,21 +30,21 @@ public class ClientServiceImpl implements ClientService {
         client.setBirthDate(loanStatementRequestDto.getBirthdate());
         client.setEmail(loanStatementRequestDto.getEmail());
         client.setPassport(passport);
-        log.info("Создан новый клиент: {}.", client);
-        return saveClient(client);
+        log.info("{} -- Создан новый клиент: {}.", logId, client);
+        return saveClient(client, logId);
     }
 
-    public ClientDto saveClient(Client client) {
+    private ClientDto saveClient(Client client, String logId) {
         Client clientFromDb = clientRepo.saveAndFlush(client);
-        log.info("Изменения успешно сохранены: {}", clientFromDb);
+        log.info("{} -- Изменения успешно сохранены: {}", logId, clientFromDb);
         return clientMapper.convertEntityToDto(clientFromDb);
     }
 
     @Override
     public ClientDto updateClientInfo(ClientDto clientDto,
-                                      FinishRegistrationRequestDto finRegRequestDto
-    ) {
-        log.info("Обновление данных клиента (id = {}).", clientDto.getClientId());
+                                      FinishRegistrationRequestDto finRegRequestDto,
+                                      String statementId) {
+        log.info("{} -- Обновление данных клиента (id = {}).", statementId, clientDto.getClientId());
         PassportDto passportDto = clientDto.getPassport();
         passportDto.setIssueDate(finRegRequestDto.getPassportIssueDate());
         passportDto.setIssueBranch(finRegRequestDto.getPassportIssueBrach());
@@ -58,8 +58,8 @@ public class ClientServiceImpl implements ClientService {
         clientDto.setEmployment(employmentDto);
         clientDto.setAccountNumber(finRegRequestDto.getAccountNumber());
 
-        log.info("Данные клиента (id = {}) изменены.", clientDto.getClientId());
+        log.info("{} -- Данные клиента (id = {}) изменены.", statementId, clientDto.getClientId());
 
-        return saveClient(clientMapper.convertDtoToEntity(clientDto));
+        return saveClient(clientMapper.convertDtoToEntity(clientDto),statementId);
     }
 }

@@ -1,6 +1,6 @@
-package com.prokofeva.deal_api.doman.dto;
+package com.prokofeva.deal_api.model.dto;
 
-import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
+import com.prokofeva.deal_api.model.enums.ApplicationStatus;
 import lombok.Builder;
 import lombok.Data;
 

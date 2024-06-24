@@ -1,10 +1,10 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.doman.Client;
-import com.prokofeva.deal_api.doman.dto.*;
-import com.prokofeva.deal_api.doman.enums.EmploymentPosition;
-import com.prokofeva.deal_api.doman.enums.EmploymentStatus;
-import com.prokofeva.deal_api.doman.enums.MaritalStatus;
+import com.prokofeva.deal_api.model.Client;
+import com.prokofeva.deal_api.model.dto.*;
+import com.prokofeva.deal_api.model.enums.EmploymentPosition;
+import com.prokofeva.deal_api.model.enums.EmploymentStatus;
+import com.prokofeva.deal_api.model.enums.MaritalStatus;
 import com.prokofeva.deal_api.repositories.ClientRepo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -76,7 +76,7 @@ class ClientServiceImplTest {
 
         long countClientBefore = clientRepo.count();
 
-        ClientDto clientDtoEx = clientService.createClient(loanRequestDto);
+        ClientDto clientDtoEx = clientService.createClient(loanRequestDto, "logId");
 
         long countClientAfter = clientRepo.count();
 
@@ -148,7 +148,7 @@ class ClientServiceImplTest {
 
         long countClientBefore = clientRepo.count();
 
-        ClientDto clientDtoEx = clientService.updateClientInfo(clientDtoAc, finRegRequestDto);
+        ClientDto clientDtoEx = clientService.updateClientInfo(clientDtoAc, finRegRequestDto, "logId");
 
         long countClientAfter = clientRepo.count();
 

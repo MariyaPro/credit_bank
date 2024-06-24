@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.doman.Credit;
-import com.prokofeva.deal_api.doman.dto.CreditDto;
-import com.prokofeva.deal_api.doman.enums.CreditStatus;
+import com.prokofeva.deal_api.model.Credit;
+import com.prokofeva.deal_api.model.dto.CreditDto;
+import com.prokofeva.deal_api.model.enums.CreditStatus;
 import com.prokofeva.deal_api.mapper.CreditMapper;
 import com.prokofeva.deal_api.repositories.CreditRepo;
 import com.prokofeva.deal_api.service.CreditService;
@@ -18,16 +18,16 @@ public class CreditServiceImpl implements CreditService {
     private final CreditMapper creditMapper;
 
     @Override
-    public CreditDto createCredit(CreditDto creditDto) {
+    public CreditDto createCredit(CreditDto creditDto, String logId) {
         Credit credit = creditMapper.convertDtoToEntity(creditDto);
         credit.setCreditStatus(CreditStatus.CALCULATED);
-        log.info("Создан новый кредит: {}.", credit);
-        return saveCredit(credit);
+        log.info("{} -- Создан новый кредит: {}.",logId, credit);
+        return saveCredit(credit, logId);
     }
 
-    private CreditDto saveCredit(Credit credit) {
+    private CreditDto saveCredit(Credit credit, String logId) {
         Credit creditFromDb = creditRepo.saveAndFlush(credit);
-        log.info("Данные о кредите успешно сохранены: {}.", credit);
+        log.info("{} -- Данные о кредите успешно сохранены: {}.",logId, credit);
         return creditMapper.convertEntityToDto(creditFromDb);
     }
 }

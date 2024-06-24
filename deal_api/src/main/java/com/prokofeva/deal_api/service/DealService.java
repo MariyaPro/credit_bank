@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.service;
 
-import com.prokofeva.deal_api.doman.dto.FinishRegistrationRequestDto;
-import com.prokofeva.deal_api.doman.dto.LoanOfferDto;
-import com.prokofeva.deal_api.doman.dto.LoanStatementRequestDto;
+import com.prokofeva.deal_api.model.dto.FinishRegistrationRequestDto;
+import com.prokofeva.deal_api.model.dto.LoanOfferDto;
+import com.prokofeva.deal_api.model.dto.LoanStatementRequestDto;
 
 import java.util.List;
 

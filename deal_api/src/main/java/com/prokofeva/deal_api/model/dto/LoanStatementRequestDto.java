@@ -1,4 +1,4 @@
-package com.prokofeva.deal_api.doman.dto;
+package com.prokofeva.deal_api.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

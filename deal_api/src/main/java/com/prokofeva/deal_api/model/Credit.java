@@ -1,7 +1,7 @@
-package com.prokofeva.deal_api.doman;
+package com.prokofeva.deal_api.model;
 
-import com.prokofeva.deal_api.doman.dto.PaymentScheduleElementDto;
-import com.prokofeva.deal_api.doman.enums.CreditStatus;
+import com.prokofeva.deal_api.model.dto.PaymentScheduleElementDto;
+import com.prokofeva.deal_api.model.enums.CreditStatus;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.Data;
 import org.hibernate.annotations.Type;

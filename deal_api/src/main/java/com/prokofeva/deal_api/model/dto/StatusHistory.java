@@ -1,7 +1,7 @@
-package com.prokofeva.deal_api.doman.dto;
+package com.prokofeva.deal_api.model.dto;
 
-import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
-import com.prokofeva.deal_api.doman.enums.ChangeType;
+import com.prokofeva.deal_api.model.enums.ApplicationStatus;
+import com.prokofeva.deal_api.model.enums.ChangeType;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.AllArgsConstructor;
 import lombok.Data;

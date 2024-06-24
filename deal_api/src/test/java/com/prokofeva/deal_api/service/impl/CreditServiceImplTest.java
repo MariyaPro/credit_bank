@@ -1,7 +1,7 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.doman.dto.CreditDto;
-import com.prokofeva.deal_api.doman.enums.CreditStatus;
+import com.prokofeva.deal_api.model.dto.CreditDto;
+import com.prokofeva.deal_api.model.enums.CreditStatus;
 import com.prokofeva.deal_api.repositories.CreditRepo;
 import com.prokofeva.deal_api.service.CreditService;
 import org.junit.jupiter.api.AfterAll;
@@ -73,7 +73,7 @@ class CreditServiceImplTest {
 
         long countCreditBefore = creditRepo.count();
 
-        CreditDto creditDtoEx = creditService.createCredit(creditDtoAc);
+        CreditDto creditDtoEx = creditService.createCredit(creditDtoAc, "logId");
 
         long countCreditAfter = creditRepo.count();
 

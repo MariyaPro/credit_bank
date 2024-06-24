@@ -1,6 +1,6 @@
-package com.prokofeva.deal_api.doman.dto;
+package com.prokofeva.deal_api.model.dto;
 
-import com.prokofeva.deal_api.doman.enums.CreditStatus;
+import com.prokofeva.deal_api.model.enums.CreditStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;

@@ -1,10 +1,10 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.doman.Client;
-import com.prokofeva.deal_api.doman.Statement;
-import com.prokofeva.deal_api.doman.dto.*;
-import com.prokofeva.deal_api.doman.enums.ApplicationStatus;
-import com.prokofeva.deal_api.doman.enums.ChangeType;
+import com.prokofeva.deal_api.model.Client;
+import com.prokofeva.deal_api.model.Statement;
+import com.prokofeva.deal_api.model.dto.*;
+import com.prokofeva.deal_api.model.enums.ApplicationStatus;
+import com.prokofeva.deal_api.model.enums.ChangeType;
 import com.prokofeva.deal_api.repositories.ClientRepo;
 import com.prokofeva.deal_api.repositories.StatementRepo;
 import org.junit.jupiter.api.AfterAll;
@@ -85,7 +85,7 @@ class StatementServiceImplTest {
 
         long countStatementBefore = statementRepo.count();
 
-        StatementDto statementDtoEx = statementService.createStatement(clientDtoAc);
+        StatementDto statementDtoEx = statementService.createStatement(clientDtoAc, "logId");
 
         long countStatementAfter = statementRepo.count();
 
