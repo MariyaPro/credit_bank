@@ -1,6 +1,7 @@
-package com.prokofeva.calculator_api.doman.dto;
+package com.prokofeva.calculator_api.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 
 @Schema(description = "Ежемесячный платеж по кредиту")
 @Data
+@Builder
 public class PaymentScheduleElementDto {
 
     @Schema(description = "Номер платежа")

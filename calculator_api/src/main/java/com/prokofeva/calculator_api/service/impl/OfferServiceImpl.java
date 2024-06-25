@@ -1,7 +1,7 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.doman.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.doman.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.model.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.model.dto.LoanStatementRequestDto;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.InsuranceService;
 import com.prokofeva.calculator_api.service.OfferService;
@@ -23,29 +23,31 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public LoanOfferDto createOffer(LoanStatementRequestDto loanStatementRequestDto,
-                                    boolean isInsuranceEnabled, boolean isSalaryClient) {
-        log.info("Расчет предложения займа с параметрами: страховка кредита({}), зарплатный клиент({}).",
-                isInsuranceEnabled,isSalaryClient);
+                                    boolean isInsuranceEnabled, boolean isSalaryClient, String logId) {
+        log.info("{} -- Расчет предложения займа с параметрами: страховка кредита({}), зарплатный клиент({}).",
+                logId, isInsuranceEnabled, isSalaryClient);
         BigDecimal amount = loanStatementRequestDto.getAmount();
         Integer term = loanStatementRequestDto.getTerm();
-        BigDecimal rate = scoringService.calculateRate(isInsuranceEnabled, isSalaryClient);
+        BigDecimal rate = scoringService.calculateRate(isInsuranceEnabled, isSalaryClient,logId);
         BigDecimal insurance = isInsuranceEnabled
-                ? insuranceService.calculateInsurance(amount, term)
+                ? insuranceService.calculateInsurance(amount, term,logId)
                 : BigDecimal.ZERO;
-        BigDecimal monthlyPayment = creditService.calculateMonthlyPayment(amount, term, rate);
+        BigDecimal monthlyPayment = creditService.calculateMonthlyPayment(amount, term, rate, logId);
         BigDecimal totalAmount = monthlyPayment.multiply(BigDecimal.valueOf(term)).add(insurance);
 
-        LoanOfferDto offerDto = new LoanOfferDto();
-        offerDto.setStatementId(UUID.randomUUID());
-        offerDto.setRequestedAmount(amount);
-        offerDto.setTotalAmount(totalAmount);
-        offerDto.setTerm(term);
-        offerDto.setMonthlyPayment(monthlyPayment);
-        offerDto.setRate(rate);
-        offerDto.setIsInsuranceEnabled(isInsuranceEnabled);
-        offerDto.setIsSalaryClient(isSalaryClient);
+        LoanOfferDto offerDto = LoanOfferDto.builder()
+                .statementId(UUID.randomUUID())
+                .requestedAmount(amount)
+                .totalAmount(totalAmount)
+                .term(term)
+                .monthlyPayment(monthlyPayment)
+                .rate(rate)
+                .isInsuranceEnabled(isInsuranceEnabled)
+                .isSalaryClient(isSalaryClient)
+                .build();
 
-        log.info("Предложение сформировано.");
+        log.info("{} -- Предложение сформировано.", logId);
+
         return offerDto;
     }
 }

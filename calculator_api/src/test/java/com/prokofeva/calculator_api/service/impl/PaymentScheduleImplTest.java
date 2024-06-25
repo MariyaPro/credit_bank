@@ -1,6 +1,6 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.doman.dto.PaymentScheduleElementDto;
+import com.prokofeva.calculator_api.model.dto.PaymentScheduleElementDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +23,7 @@ class PaymentScheduleImplTest {
         BigDecimal rate = BigDecimal.valueOf(20.0);
         BigDecimal insurance = BigDecimal.valueOf(2000.0);
         BigDecimal monthlyPayment = BigDecimal.valueOf(8826.14);
-        List<PaymentScheduleElementDto> schedule = paymentSchedule.createPaymentSchedule(amount, term, rate, monthlyPayment, insurance);
+        List<PaymentScheduleElementDto> schedule = paymentSchedule.createPaymentSchedule(amount, term, rate, monthlyPayment, insurance, "logId");
 
         assertNotNull(schedule);
         assertEquals(term + 1, schedule.size());

@@ -17,19 +17,19 @@ class InsuranceServiceImplTest {
     void calculateInsurance() {
         BigDecimal insuranceNormal = insuranceService.calculateInsurance(
                 insuranceService.getRateInsuranceAmountBig().subtract(BigDecimal.ONE)
-                , insuranceService.getRateInsuranceTermLong() - 1);
+                , insuranceService.getRateInsuranceTermLong() - 1, "logId");
         BigDecimal insurance_BigAmount = insuranceService.calculateInsurance(
                 insuranceService.getRateInsuranceAmountBig().add(BigDecimal.ONE)
-                , insuranceService.getRateInsuranceTermLong() - 1);
+                , insuranceService.getRateInsuranceTermLong() - 1, "logId");
         BigDecimal insurance_SmallAmount = insuranceService.calculateInsurance(
                 insuranceService.getRateInsuranceAmountSmall().subtract(BigDecimal.ONE)
-                , insuranceService.getRateInsuranceTermLong() - 1);
+                , insuranceService.getRateInsuranceTermLong() - 1, "logId");
         BigDecimal insurance_LongTerm = insuranceService.calculateInsurance(
                 insuranceService.getRateInsuranceAmountBig().subtract(BigDecimal.ONE)
-                , insuranceService.getRateInsuranceTermLong() + 1);
+                , insuranceService.getRateInsuranceTermLong() + 1, "logId");
         BigDecimal insurance_ShortTerm = insuranceService.calculateInsurance(
                 insuranceService.getRateInsuranceAmountBig().subtract(BigDecimal.ONE)
-                , insuranceService.getRateInsuranceTermShort() - 1);
+                , insuranceService.getRateInsuranceTermShort() - 1, "logId");
 
         assertNotEquals(insuranceNormal, insurance_BigAmount);
         assertNotEquals(insuranceNormal, insurance_SmallAmount);

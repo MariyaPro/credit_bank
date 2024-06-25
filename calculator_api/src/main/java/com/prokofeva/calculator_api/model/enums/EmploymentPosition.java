@@ -1,14 +1,15 @@
-package com.prokofeva.calculator_api.doman.enums;
+package com.prokofeva.calculator_api.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum Gender {
-    MALE("male"),
-    FEMALE("female"),
-    NON_BINARY("non binary");
+public enum EmploymentPosition {
+    WORKER("worker"),
+    MID_MANAGER("mid manager"),
+    TOP_MANAGER("top manager"),
+    OWNER("owner");
 
     private final String value;
 
@@ -18,8 +19,8 @@ public enum Gender {
     }
 
     @JsonCreator
-    public static Gender fromValue(String value) {
-        for (Gender b : Gender.values()) {
+    public static EmploymentPosition fromValue(String value) {
+        for (EmploymentPosition b : EmploymentPosition.values()) {
             if (b.value.equalsIgnoreCase(value)) {
                 return b;
             }

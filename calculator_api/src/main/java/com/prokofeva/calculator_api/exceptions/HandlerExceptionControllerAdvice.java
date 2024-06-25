@@ -27,6 +27,7 @@ public class HandlerExceptionControllerAdvice {
         final List<ValidationError> errorsList = e.getBindingResult().getFieldErrors().stream()
                 .map(error -> new ValidationError(error.getField(), error.getDefaultMessage()))
                 .collect(Collectors.toList());
+        log.error("Некорректные данные в запросе, перехвачено исключение MethodArgumentNotValidException.class : {}", errorsList);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsList);
     }
 

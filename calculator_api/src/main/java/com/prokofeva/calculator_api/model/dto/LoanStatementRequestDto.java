@@ -1,6 +1,7 @@
-package com.prokofeva.calculator_api.doman.dto;
+package com.prokofeva.calculator_api.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -9,8 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Schema(description = "Заявка на расчет вариантов займа.")
-@RequiredArgsConstructor
 @Data
+@Builder
 public class LoanStatementRequestDto {
     @Schema(description = "Сумма кредита", example = "100000")
     @NotNull

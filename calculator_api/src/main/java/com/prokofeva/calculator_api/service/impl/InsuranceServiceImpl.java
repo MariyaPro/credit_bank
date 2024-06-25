@@ -41,36 +41,36 @@ public class InsuranceServiceImpl implements InsuranceService {
     private BigDecimal rateInsuranceCorrectionBigAmount;
 
     @Override
-    public BigDecimal calculateInsurance(BigDecimal amount, Integer term) {
-        log.info("Расчет суммы за услугу страхования кредита.");
+    public BigDecimal calculateInsurance(BigDecimal amount, Integer term, String logId) {
+        log.info("{} -- Расчет суммы за услугу страхования кредита.", logId);
 
         BigDecimal rate = rateInsuranceBase;
 
-        log.info("Базовая ставка страховки: {}.",rateInsuranceBase);
+        log.info("{} -- Базовая ставка страховки: {}.", logId, rateInsuranceBase);
 
         if (term < rateInsuranceTermShort) {
             rate = rate.add(rateInsuranceCorrectionShortTerm);
-            log.info("Ставка скорректирована (срок кредита < {} мес., поправка: {}).", rateInsuranceTermShort, rateInsuranceCorrectionShortTerm);
+            log.info("{} -- Ставка скорректирована (срок кредита < {} мес., поправка: {}).", logId, rateInsuranceTermShort, rateInsuranceCorrectionShortTerm);
         }
         if (term >= rateInsuranceTermLong) {
             rate = rate.add(rateInsuranceCorrectionLongTerm);
-            log.info("Ставка скорректирована (срок кредита >= {} мес., поправка: {}).", rateInsuranceTermLong, rateInsuranceCorrectionLongTerm);
+            log.info("{} -- Ставка скорректирована (срок кредита >= {} мес., поправка: {}).", logId, rateInsuranceTermLong, rateInsuranceCorrectionLongTerm);
         }
 
         if (amount.compareTo(rateInsuranceAmountSmall) <= 0) {
             rate = rate.add(rateInsuranceCorrectionSmallAmount);
-            log.info("Ставка скорректирована (сумма кредита <= {}, поправка: {}).", rateInsuranceAmountSmall, rateInsuranceCorrectionSmallAmount);
+            log.info("{} -- Ставка скорректирована (сумма кредита <= {}, поправка: {}).", logId, rateInsuranceAmountSmall, rateInsuranceCorrectionSmallAmount);
         }
         if (amount.compareTo(rateInsuranceAmountBig) >= 0) {
             rate = rate.add(rateInsuranceCorrectionBigAmount);
-            log.info("Ставка скорректирована (сумма кредита > {}, поправка: {}).", rateInsuranceAmountBig, rateInsuranceCorrectionBigAmount);
+            log.info("{} -- Ставка скорректирована (сумма кредита > {}, поправка: {}).", logId, rateInsuranceAmountBig, rateInsuranceCorrectionBigAmount);
         }
 
-        log.info("Итоговая процентная ставка страхового взноса: {}.", rate);
+        log.info("{} -- Итоговая процентная ставка страхового взноса: {}.", logId, rate);
 
         BigDecimal amountInsurance = amount.multiply(rate).movePointLeft(2).setScale(2, RoundingMode.HALF_EVEN);
 
-        log.info("Сумма страхового взноса: {}.",amountInsurance);
+        log.info("{} -- Сумма страхового взноса: {}.", logId, amountInsurance);
 
         return amountInsurance;
     }

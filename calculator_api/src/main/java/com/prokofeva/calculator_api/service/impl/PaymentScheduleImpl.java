@@ -1,6 +1,6 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.doman.dto.PaymentScheduleElementDto;
+import com.prokofeva.calculator_api.model.dto.PaymentScheduleElementDto;
 import com.prokofeva.calculator_api.service.PaymentScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +22,9 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
     public List<PaymentScheduleElementDto> createPaymentSchedule(BigDecimal amount, Integer term,
                                                                  BigDecimal rate,
                                                                  BigDecimal monthlyPayment,
-                                                                 BigDecimal insurance) {
-        log.info("Идет расчет графика платежей.");
+                                                                 BigDecimal insurance,
+                                                                 String logId) {
+        log.info("{} -- Идет расчет графика платежей.", logId);
 
         List<PaymentScheduleElementDto> schedule = new ArrayList<>();
         BigDecimal remainingDebt = amount;
@@ -32,7 +33,7 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
 
         addFirstPayment(schedule, amount, insurance);
 
-        log.info("Платеж №0: {}.",schedule.get(0));
+        log.info("{} -- Платеж №0: {}.", logId, schedule.get(0));
 
         for (int i = 1; i <= term; i++) {
             LocalDate datePayment = date.plusMonths(1);
@@ -42,40 +43,42 @@ public class PaymentScheduleImpl implements PaymentScheduleService {
             remainingDebt = remainingDebt.subtract(debtPayment);
             date = datePayment;
 
-            PaymentScheduleElementDto scheduleElement = new PaymentScheduleElementDto();
-            scheduleElement.setNumber(i);
-            scheduleElement.setDate(datePayment);
-            scheduleElement.setTotalPayment(monthlyPayment);
-            scheduleElement.setInterestPayment(interestPayment);
-            scheduleElement.setDebtPayment(debtPayment);
-            scheduleElement.setRemainingDebt(remainingDebt);
+            PaymentScheduleElementDto scheduleElement = PaymentScheduleElementDto.builder()
+                    .number(i)
+                    .date(datePayment)
+                    .totalPayment(monthlyPayment)
+                    .interestPayment(interestPayment)
+                    .debtPayment(debtPayment)
+                    .remainingDebt(remainingDebt)
+                    .build();
 
-            log.info("Платеж №{}: {}.",i,scheduleElement);
+            log.info("{} -- Платеж №{}: {}.", logId, i, scheduleElement);
 
             schedule.add(scheduleElement);
         }
 
-        fixLastPayment(schedule.get(term));
+        fixLastPayment(schedule.get(term), logId);
 
-        log.info("Платеж №{}: {}.",term,schedule.get(term));
-        log.info("Формирование графика платежей завершено.");
+        log.info("{} -- Платеж №{}: {}.", logId, term, schedule.get(term));
+        log.info("{} -- Формирование графика платежей завершено.", logId);
 
         return schedule;
     }
 
     private void addFirstPayment(List<PaymentScheduleElementDto> schedule, BigDecimal amount, BigDecimal insurance) {
-        PaymentScheduleElementDto payment = new PaymentScheduleElementDto();
-        payment.setNumber(0);
-        payment.setDate(LocalDate.now());
-        payment.setTotalPayment(insurance);
-        payment.setInterestPayment(BigDecimal.ZERO);
-        payment.setDebtPayment(BigDecimal.ZERO);
-        payment.setRemainingDebt(amount);
+        PaymentScheduleElementDto payment = PaymentScheduleElementDto.builder()
+                .number(0)
+                .date(LocalDate.now())
+                .totalPayment(insurance)
+                .interestPayment(BigDecimal.ZERO)
+                .debtPayment(BigDecimal.ZERO)
+                .remainingDebt(amount)
+                .build();
         schedule.add(payment);
     }
 
-    private void fixLastPayment(PaymentScheduleElementDto payment) {
-        log.info("Коррекция последнего платежа.");
+    private void fixLastPayment(PaymentScheduleElementDto payment, String logId) {
+        log.info("{} -- Коррекция последнего платежа.", logId);
         BigDecimal totalPayment = payment.getTotalPayment().add(payment.getRemainingDebt());
         payment.setTotalPayment(totalPayment);
         payment.setRemainingDebt(BigDecimal.ZERO);

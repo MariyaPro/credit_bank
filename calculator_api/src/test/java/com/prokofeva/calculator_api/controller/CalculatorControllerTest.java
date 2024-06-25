@@ -1,10 +1,10 @@
 package com.prokofeva.calculator_api.controller;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.doman.dto.CreditDto;
-import com.prokofeva.calculator_api.doman.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.doman.dto.LoanStatementRequestDto;
-import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.model.dto.CreditDto;
+import com.prokofeva.calculator_api.model.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.model.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.model.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.CalculatorService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -43,7 +43,7 @@ class CalculatorControllerTest {
     @Test
     void createLoanOffer() {
         LoanStatementRequestDto requestDto = CreatorValidDto.createLoanStatementRequestDto();
-        when(calculatorService.createListOffer(requestDto))
+        when(calculatorService.createListOffer(any(), anyString()))
                 .thenReturn(List.of(
                         CreatorValidDto.createLoanOfferDto(),
                         CreatorValidDto.createLoanOfferDto(),
@@ -194,8 +194,10 @@ class CalculatorControllerTest {
     void calculateCredit() {
         ScoringDataDto requestDto = CreatorValidDto.createScoringDataDto();
 
-        when(calculatorService.calculateCredit(requestDto))
-                .thenReturn(CreatorValidDto.createCreditDto());
+        CreditDto creditDto = CreatorValidDto.createCreditDto();
+
+        when(calculatorService.calculateCredit(any(), anyString()))
+                .thenReturn(creditDto);
 
         ResponseEntity<CreditDto> response = controller.calculateCredit(requestDto);
 
@@ -205,7 +207,7 @@ class CalculatorControllerTest {
 
         assertEquals(Objects.requireNonNull(response.getBody()).getTerm() + 1,
                 Objects.requireNonNull(response.getBody()).getPaymentSchedule().size());
-        verify(calculatorService, times(1)).calculateCredit(requestDto);
+        verify(calculatorService, times(1)).calculateCredit(any(), anyString());
     }
 
     @Test
@@ -232,7 +234,7 @@ class CalculatorControllerTest {
                          "employmentStatus": "BUSY",
                          "employerINN": "1234322323",
                          "salary": 50000,
-                         "position": "employee",
+                         "position": "worker",
                          "workExperienceTotal": 100,
                          "workExperienceCurrent": 10
                          },
@@ -278,7 +280,7 @@ class CalculatorControllerTest {
                          "employmentStatus": "BUSY",
                          "employerINN": "1234322323",
                          "salary": 50000,
-                         "position": "employee",
+                         "position": "worker",
                          "workExperienceTotal": 100,
                          "workExperienceCurrent": 10
                          },
@@ -369,7 +371,7 @@ class CalculatorControllerTest {
                            "employmentStatus": "BUSY",
                            "employerINN": "1234322323",
                            "salary": 50000,
-                           "position": "employee",
+                           "position": "worker",
                            "workExperienceTotal": 100,
                            "workExperienceCurrent": 10
                            },

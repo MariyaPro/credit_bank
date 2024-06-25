@@ -1,8 +1,9 @@
-package com.prokofeva.calculator_api.doman.dto;
+package com.prokofeva.calculator_api.model.dto;
 
-import com.prokofeva.calculator_api.doman.enums.EmploymentStatus;
-import com.prokofeva.calculator_api.doman.enums.EmploymentPosition;
+import com.prokofeva.calculator_api.model.enums.EmploymentStatus;
+import com.prokofeva.calculator_api.model.enums.EmploymentPosition;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 
 @Schema(description = "Информация о занятости")
 @Data
+@Builder
 public class EmploymentDto {
     @Schema(description = "Статус", example = "busy")
     @NotNull
