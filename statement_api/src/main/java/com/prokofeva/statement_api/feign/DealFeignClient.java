@@ -1,7 +1,7 @@
 package com.prokofeva.statement_api.feign;
 
-import com.prokofeva.statement_api.doman.LoanOfferDto;
-import com.prokofeva.statement_api.doman.LoanStatementRequestDto;
+import com.prokofeva.statement_api.model.LoanOfferDto;
+import com.prokofeva.statement_api.model.LoanStatementRequestDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,5 +15,5 @@ public interface DealFeignClient {
     List<LoanOfferDto> getListOffers(@RequestBody LoanStatementRequestDto loanStatementRequestDto);
 
     @RequestMapping(method = RequestMethod.POST, value = "/offer/select", consumes = "application/json", produces = "application/json")
-    void calculateCredit(@RequestBody LoanOfferDto loanOfferDto);
+    void selectAppliedOffer(@RequestBody LoanOfferDto loanOfferDto);
 }

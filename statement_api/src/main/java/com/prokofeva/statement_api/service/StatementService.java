@@ -1,12 +1,12 @@
 package com.prokofeva.statement_api.service;
 
-import com.prokofeva.statement_api.doman.LoanOfferDto;
-import com.prokofeva.statement_api.doman.LoanStatementRequestDto;
+import com.prokofeva.statement_api.model.LoanOfferDto;
+import com.prokofeva.statement_api.model.LoanStatementRequestDto;
 
 import java.util.List;
 
 public interface StatementService {
-    List<LoanOfferDto> createListOffer(LoanStatementRequestDto loanStatementRequestDto);
+    List<LoanOfferDto> createListOffer(LoanStatementRequestDto loanStatementRequestDto, String logId);
 
-    void selectAppliedOffer(LoanOfferDto loanOfferDto);
+    void selectAppliedOffer(LoanOfferDto loanOfferDto, String logId);
 }

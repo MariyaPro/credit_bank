@@ -1,6 +1,7 @@
-package com.prokofeva.statement_api.doman;
+package com.prokofeva.statement_api.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 @Schema(description = "Предложение условий займа")
 @Data
+@Builder
 public class LoanOfferDto {
 
     @Schema(description = "Id предложения")
@@ -27,7 +29,7 @@ public class LoanOfferDto {
     @NotNull
     private Integer term;
 
-    @Schema(description = "Ужемясчный платеж")
+    @Schema(description = "Ежемесячный платеж")
     @NotNull
     private BigDecimal monthlyPayment;
 

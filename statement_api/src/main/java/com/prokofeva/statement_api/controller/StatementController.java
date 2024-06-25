@@ -1,7 +1,7 @@
 package com.prokofeva.statement_api.controller;
 
-import com.prokofeva.statement_api.doman.LoanOfferDto;
-import com.prokofeva.statement_api.doman.LoanStatementRequestDto;
+import com.prokofeva.statement_api.model.LoanOfferDto;
+import com.prokofeva.statement_api.model.LoanStatementRequestDto;
 import com.prokofeva.statement_api.service.StatementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 
 @Slf4j
@@ -29,17 +30,19 @@ public class StatementController {
     private final StatementService statementService;
 
     @Operation(description = "Прескоринг + запрос на расчёт возможных условий кредита.")
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<List<LoanOfferDto>> createLoanOffer(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
-        log.info("Поступила заявка на расчет вариантов займа. {}", loanStatementRequestDto);
-        return ResponseEntity.ok(statementService.createListOffer(loanStatementRequestDto));
+        String logId = UUID.randomUUID().toString();
+        log.info("{} -- Поступила заявка на расчет вариантов займа. {}",logId, loanStatementRequestDto);
+        return ResponseEntity.ok(statementService.createListOffer(loanStatementRequestDto,logId));
     }
 
     @PostMapping("/offer")
     @Operation(description = "Выбор одного из предложенных вариантов.")
     public ResponseEntity<Void> selectAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
-        log.info("Поступила заявка на кредит. {}", loanOfferDto);
-        statementService.selectAppliedOffer(loanOfferDto);
+        String logId = loanOfferDto.getStatementId().toString();
+        log.info("{} -- Поступила заявка на кредит. {}",logId, loanOfferDto);
+        statementService.selectAppliedOffer(loanOfferDto,logId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
