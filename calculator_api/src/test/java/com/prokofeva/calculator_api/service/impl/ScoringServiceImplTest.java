@@ -1,10 +1,10 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
-import com.prokofeva.calculator_api.doman.enums.EmploymentStatusEnum;
-import com.prokofeva.calculator_api.doman.enums.MaritalStatusEnum;
-import com.prokofeva.calculator_api.doman.enums.PositionEnum;
+import com.prokofeva.calculator_api.model.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.model.enums.EmploymentStatus;
+import com.prokofeva.calculator_api.model.enums.MaritalStatus;
+import com.prokofeva.calculator_api.model.enums.EmploymentPosition;
 import com.prokofeva.calculator_api.exceptions.DeniedLoanException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,10 @@ class ScoringServiceImplTest {
     @Test
     void calculateRate() {
 
-        BigDecimal rate1 = scoringService.calculateRate(true, true);
-        BigDecimal rate2 = scoringService.calculateRate(false, false);
-        BigDecimal rate3 = scoringService.calculateRate(false, true);
-        BigDecimal rate4 = scoringService.calculateRate(true, false);
+        BigDecimal rate1 = scoringService.calculateRate(true, true, "logId");
+        BigDecimal rate2 = scoringService.calculateRate(false, false, "logId");
+        BigDecimal rate3 = scoringService.calculateRate(false, true, "logId");
+        BigDecimal rate4 = scoringService.calculateRate(true, false, "logId");
 
         assertEquals(rate1, BigDecimal.valueOf(16.00).setScale(2, RoundingMode.HALF_EVEN));
         assertEquals(rate2, BigDecimal.valueOf(20.00).setScale(2, RoundingMode.HALF_EVEN));
@@ -40,16 +40,16 @@ class ScoringServiceImplTest {
     void scoringValid() {
         ScoringDataDto scoringDataDto = CreatorValidDto.createScoringDataDto();
 
-        BigDecimal rate = scoringService.scoring(scoringDataDto);
+        BigDecimal rate = scoringService.scoring(scoringDataDto, "logId");
 
         assertEquals(rate, BigDecimal.valueOf(20.00).setScale(2, RoundingMode.HALF_EVEN));
 
         scoringDataDto.setIsSalaryClient(true);
         scoringDataDto.setIsInsuranceEnabled(true);
-        scoringDataDto.getEmployment().setPosition(PositionEnum.MANAGER);
-        scoringDataDto.setMaritalStatus(MaritalStatusEnum.MARRIED);
+        scoringDataDto.getEmployment().setPosition(EmploymentPosition.MID_MANAGER);
+        scoringDataDto.setMaritalStatus(MaritalStatus.MARRIED);
 
-        rate = scoringService.scoring(scoringDataDto);
+        rate = scoringService.scoring(scoringDataDto, "logId");
 
         assertEquals(rate, BigDecimal.valueOf(12.00).setScale(2, RoundingMode.HALF_EVEN));
     }
@@ -58,10 +58,10 @@ class ScoringServiceImplTest {
     void scoringDeniedLoanException() {
         // статус - безработный
         ScoringDataDto scoringDataDto = CreatorValidDto.createScoringDataDto();
-        scoringDataDto.getEmployment().setEmploymentStatus(EmploymentStatusEnum.UNEMPLOYED);
+        scoringDataDto.getEmployment().setStatus(EmploymentStatus.UNEMPLOYED);
         BigDecimal rate = null;
         try {
-            rate = scoringService.scoring(scoringDataDto);
+            rate = scoringService.scoring(scoringDataDto, "logId");
         } catch (Exception e) {
             assertNull(rate);
             assertEquals(DeniedLoanException.class, e.getClass());
@@ -75,7 +75,7 @@ class ScoringServiceImplTest {
         scoringDataDto.getEmployment().setSalary(BigDecimal.valueOf(10000));
 
         try {
-            rate = scoringService.scoring(scoringDataDto);
+            rate = scoringService.scoring(scoringDataDto, "logId");
         } catch (Exception e) {
             assertNull(rate);
             assertEquals(DeniedLoanException.class, e.getClass());
@@ -87,7 +87,7 @@ class ScoringServiceImplTest {
         scoringDataDto = CreatorValidDto.createScoringDataDto();
         scoringDataDto.setBirthdate(LocalDate.now().minusYears(19));
         try {
-            rate = scoringService.scoring(scoringDataDto);
+            rate = scoringService.scoring(scoringDataDto, "logId");
         } catch (Exception e) {
             assertNull(rate);
             assertEquals(DeniedLoanException.class, e.getClass());
@@ -98,7 +98,7 @@ class ScoringServiceImplTest {
         scoringDataDto = CreatorValidDto.createScoringDataDto();
         scoringDataDto.setBirthdate(LocalDate.now().minusYears(66));
         try {
-            rate = scoringService.scoring(scoringDataDto);
+            rate = scoringService.scoring(scoringDataDto, "logId");
         } catch (Exception e) {
             assertNull(rate);
             assertEquals(DeniedLoanException.class, e.getClass());
@@ -110,7 +110,7 @@ class ScoringServiceImplTest {
         scoringDataDto = CreatorValidDto.createScoringDataDto();
         scoringDataDto.getEmployment().setWorkExperienceTotal(17);
         try {
-            rate = scoringService.scoring(scoringDataDto);
+            rate = scoringService.scoring(scoringDataDto, "logId");
         } catch (Exception e) {
             assertNull(rate);
             assertEquals(DeniedLoanException.class, e.getClass());
@@ -121,7 +121,7 @@ class ScoringServiceImplTest {
         scoringDataDto = CreatorValidDto.createScoringDataDto();
         scoringDataDto.getEmployment().setWorkExperienceCurrent(2);
         try {
-            rate = scoringService.scoring(scoringDataDto);
+            rate = scoringService.scoring(scoringDataDto, "logId");
         } catch (Exception e) {
             assertNull(rate);
             assertEquals(DeniedLoanException.class, e.getClass());

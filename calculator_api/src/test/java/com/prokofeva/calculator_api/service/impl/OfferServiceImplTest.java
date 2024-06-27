@@ -1,8 +1,8 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.doman.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.doman.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.model.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.model.dto.LoanStatementRequestDto;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.ScoringService;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.when;
 
@@ -33,10 +34,10 @@ class OfferServiceImplTest {
     @Test
     void createOffer() {
         LoanStatementRequestDto requestDto = CreatorValidDto.createLoanStatementRequestDto();
-        when(scoringService.calculateRate(anyBoolean(), anyBoolean())).thenReturn(BigDecimal.valueOf(19.00));
-        when(creditService.calculateMonthlyPayment(any(), any(), any())).thenReturn(BigDecimal.valueOf(8826.14));
+        when(scoringService.calculateRate(anyBoolean(), anyBoolean(), anyString())).thenReturn(BigDecimal.valueOf(19.00));
+        when(creditService.calculateMonthlyPayment(any(), any(), any(),anyString())).thenReturn(BigDecimal.valueOf(8826.14));
 
-        LoanOfferDto loanOfferDto = offerService.createOffer(requestDto, anyBoolean(), anyBoolean());
+        LoanOfferDto loanOfferDto = offerService.createOffer(requestDto, anyBoolean(), anyBoolean(),anyString());
 
         assertNotNull(loanOfferDto);
         assertNotNull(loanOfferDto.getStatementId());

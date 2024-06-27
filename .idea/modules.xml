@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/credit_bank.iml" filepath="$PROJECT_DIR$/credit_bank.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deal_api/deal_api.iml" filepath="$PROJECT_DIR$/deal_api/deal_api.iml" />
     </modules>
   </component>
 </project>

@@ -1,9 +1,9 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.doman.dto.CreditDto;
-import com.prokofeva.calculator_api.doman.dto.PaymentScheduleElementDto;
-import com.prokofeva.calculator_api.doman.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.model.dto.CreditDto;
+import com.prokofeva.calculator_api.model.dto.PaymentScheduleElementDto;
+import com.prokofeva.calculator_api.model.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.PaymentScheduleService;
 import com.prokofeva.calculator_api.service.ScoringService;
 import org.junit.jupiter.api.Test;
@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
@@ -46,18 +47,18 @@ class CreditServiceImplTest {
     @Test
     void calculateCredit() {
         ScoringDataDto scoringDataDto = CreatorValidDto.createScoringDataDto();
-        when(scoringService.scoring(any())).thenReturn(BigDecimal.valueOf(20.00));
-        when(paymentScheduleService.createPaymentSchedule(any(), any(), any(), any(), any())).thenReturn(CreatorValidDto.createPaymentSchedule());
+        when(scoringService.scoring(any(), anyString())).thenReturn(BigDecimal.valueOf(20.00));
+        when(paymentScheduleService.createPaymentSchedule(any(), any(), any(), any(), any(), anyString())).thenReturn(CreatorValidDto.createPaymentSchedule());
 
 
-        CreditDto creditDto = creditService.calculateCredit(scoringDataDto);
+        CreditDto creditDto = creditService.calculateCredit(scoringDataDto, "logId");
 
         assertNotNull(creditDto);
 
         assertEquals(creditDto.getAmount(), scoringDataDto.getAmount());
         assertEquals(creditDto.getTerm(), scoringDataDto.getTerm());
-        assertEquals(creditDto.getIsInsuranceEnabled(), scoringDataDto.getIsInsuranceEnabled());
-        assertEquals(creditDto.getIsSalaryClient(), scoringDataDto.getIsSalaryClient());
+        assertEquals(creditDto.getInsuranceEnabled(), scoringDataDto.getIsInsuranceEnabled());
+        assertEquals(creditDto.getSalaryClient(), scoringDataDto.getIsSalaryClient());
 
         assertNotNull(creditDto.getRate());
         assertNotNull(creditDto.getMonthlyPayment());
@@ -68,11 +69,11 @@ class CreditServiceImplTest {
     @Test
     void calculateMonthlyPayment() {
         BigDecimal payment1 = creditService.calculateMonthlyPayment(
-                BigDecimal.valueOf(50000), 6, BigDecimal.valueOf(30));
+                BigDecimal.valueOf(50000), 6, BigDecimal.valueOf(30),"logId");
         BigDecimal payment2 = creditService.calculateMonthlyPayment(
-                BigDecimal.valueOf(300000), 18, BigDecimal.valueOf(25));
+                BigDecimal.valueOf(300000), 18, BigDecimal.valueOf(25), "logId");
         BigDecimal payment3 = creditService.calculateMonthlyPayment(
-                BigDecimal.valueOf(5000000), 120, BigDecimal.valueOf(15));
+                BigDecimal.valueOf(5000000), 120, BigDecimal.valueOf(15),"logId");
 
         BigDecimal payment1Ex = BigDecimal.valueOf(9077.5);
         BigDecimal payment2Ex = BigDecimal.valueOf(20157.54);
@@ -95,7 +96,7 @@ class CreditServiceImplTest {
         BigDecimal psk1 = creditService.calculatePsk(
                 BigDecimal.valueOf(50000),
                 BigDecimal.valueOf(20),
-                schedule);
+                schedule, "logId");
         BigDecimal psk1Ex = BigDecimal.valueOf(19.937);
         BigDecimal dif1 = psk1.subtract(psk1Ex).abs().movePointRight(2).divide(psk1Ex, 3, RoundingMode.HALF_EVEN);
 
@@ -106,7 +107,7 @@ class CreditServiceImplTest {
         BigDecimal psk2 = creditService.calculatePsk(
                 BigDecimal.valueOf(50000),
                 BigDecimal.valueOf(20),
-                schedule);
+                schedule, "logId");
         BigDecimal psk2Ex = BigDecimal.valueOf(34.393);
         BigDecimal dif2 = psk2.subtract(psk2Ex).abs().movePointRight(2).divide(psk1Ex, 3, RoundingMode.HALF_EVEN);
 
