@@ -1,3 +1,4 @@
+
 rate_loan:
   base: '20.00'
   age:
@@ -53,4 +54,6 @@ scoring:
 
 logging:
   file:
-    name: calculator_api/calc-logs
+    name: calc-logs
+server:
+  port: 8090
