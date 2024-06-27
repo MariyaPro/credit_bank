@@ -1,9 +1,9 @@
 package com.prokofeva.deal_api.client;
 
-import com.prokofeva.deal_api.model.dto.CreditDto;
-import com.prokofeva.deal_api.model.dto.LoanOfferDto;
-import com.prokofeva.deal_api.model.dto.LoanStatementRequestDto;
-import com.prokofeva.deal_api.model.dto.ScoringDataDto;
+import com.prokofeva.deal_api.dto.CreditDto;
+import com.prokofeva.deal_api.dto.LoanOfferDto;
+import com.prokofeva.deal_api.dto.LoanStatementRequestDto;
+import com.prokofeva.deal_api.dto.ScoringDataDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

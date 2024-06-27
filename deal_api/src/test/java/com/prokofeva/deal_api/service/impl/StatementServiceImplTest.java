@@ -1,10 +1,10 @@
 package com.prokofeva.deal_api.service.impl;
 
+import com.prokofeva.deal_api.dto.*;
+import com.prokofeva.deal_api.enums.ApplicationStatus;
+import com.prokofeva.deal_api.enums.ChangeType;
 import com.prokofeva.deal_api.model.Client;
 import com.prokofeva.deal_api.model.Statement;
-import com.prokofeva.deal_api.model.dto.*;
-import com.prokofeva.deal_api.model.enums.ApplicationStatus;
-import com.prokofeva.deal_api.model.enums.ChangeType;
 import com.prokofeva.deal_api.repositories.ClientRepo;
 import com.prokofeva.deal_api.repositories.StatementRepo;
 import org.junit.jupiter.api.AfterAll;

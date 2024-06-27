@@ -1,7 +1,7 @@
 package com.prokofeva.deal_api.mapper;
 
+import com.prokofeva.deal_api.dto.CreditDto;
 import com.prokofeva.deal_api.model.Credit;
-import com.prokofeva.deal_api.model.dto.CreditDto;
 import org.mapstruct.Mapper;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;

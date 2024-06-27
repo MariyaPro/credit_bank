@@ -1,12 +1,12 @@
 package com.prokofeva.deal_api.controller;
 
-import com.prokofeva.deal_api.model.dto.EmploymentDto;
-import com.prokofeva.deal_api.model.dto.FinishRegistrationRequestDto;
-import com.prokofeva.deal_api.model.dto.LoanOfferDto;
-import com.prokofeva.deal_api.model.dto.LoanStatementRequestDto;
-import com.prokofeva.deal_api.model.enums.EmploymentPosition;
-import com.prokofeva.deal_api.model.enums.EmploymentStatus;
-import com.prokofeva.deal_api.model.enums.MaritalStatus;
+import com.prokofeva.deal_api.dto.EmploymentDto;
+import com.prokofeva.deal_api.dto.FinishRegistrationRequestDto;
+import com.prokofeva.deal_api.dto.LoanOfferDto;
+import com.prokofeva.deal_api.dto.LoanStatementRequestDto;
+import com.prokofeva.deal_api.enums.EmploymentPosition;
+import com.prokofeva.deal_api.enums.EmploymentStatus;
+import com.prokofeva.deal_api.enums.MaritalStatus;
 import com.prokofeva.deal_api.service.DealService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

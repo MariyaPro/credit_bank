@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.client.CalcFeignClient;
-import com.prokofeva.deal_api.model.dto.*;
-import com.prokofeva.deal_api.model.enums.*;
+import com.prokofeva.deal_api.dto.*;
+import com.prokofeva.deal_api.enums.*;
 import com.prokofeva.deal_api.exeption.ExternalServiceException;
 import com.prokofeva.deal_api.service.ClientService;
 import com.prokofeva.deal_api.service.CreditService;
@@ -160,7 +160,7 @@ class DealServiceImplTest {
         assertArrayEquals("Test message".getBytes(StandardCharsets.UTF_8),
                 e.getMessage().getBytes(StandardCharsets.UTF_8));
 
-        verify(clientService, times(1)).createClient(any(LoanStatementRequestDto.class),anyString());
+        verify(clientService, times(1)).createClient(any(LoanStatementRequestDto.class), anyString());
         verify(statementService, times(1)).createStatement(any(ClientDto.class), anyString());
         verify(calcFeignClient, times(1)).getListOffers(any(LoanStatementRequestDto.class));
 

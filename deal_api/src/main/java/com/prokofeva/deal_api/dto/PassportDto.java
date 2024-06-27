@@ -1,4 +1,4 @@
-package com.prokofeva.deal_api.model.dto;
+package com.prokofeva.deal_api.dto;
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import io.swagger.v3.oas.annotations.media.Schema;

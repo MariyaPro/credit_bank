@@ -1,15 +1,15 @@
-package com.prokofeva.deal_api.model.enums;
+package com.prokofeva.deal_api.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum EmploymentStatus {
-    UNEMPLOYED("unemployed"),
-    SELF_EMPLOYED("self employed"),
-    EMPLOYED("employed"),
-    BUSINESS_OWNER("business owner");
+public enum MaritalStatus {
+    MARRIED("married"),
+    DIVORCED("divorced"),
+    SINGLE("single"),
+    WIDOW_WIDOWER("widow widower");
 
     private final String value;
 
@@ -19,8 +19,8 @@ public enum EmploymentStatus {
     }
 
     @JsonCreator
-    public static EmploymentStatus fromValue(String value) {
-        for (EmploymentStatus b : EmploymentStatus.values()) {
+    public static MaritalStatus fromValue(String value) {
+        for (MaritalStatus b : MaritalStatus.values()) {
             if (b.value.equalsIgnoreCase(value)) {
                 return b;
             }

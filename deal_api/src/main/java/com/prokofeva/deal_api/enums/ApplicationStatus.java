@@ -1,8 +1,8 @@
-package com.prokofeva.deal_api.model.enums;
+package com.prokofeva.deal_api.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import lombok.*;
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum ApplicationStatus {

@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/statement-logs
+/statement-logs.2024-06-26.0.gz

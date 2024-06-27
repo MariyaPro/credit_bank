@@ -1,9 +1,9 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.model.Credit;
-import com.prokofeva.deal_api.model.dto.CreditDto;
-import com.prokofeva.deal_api.model.enums.CreditStatus;
+import com.prokofeva.deal_api.dto.CreditDto;
+import com.prokofeva.deal_api.enums.CreditStatus;
 import com.prokofeva.deal_api.mapper.CreditMapper;
+import com.prokofeva.deal_api.model.Credit;
 import com.prokofeva.deal_api.repositories.CreditRepo;
 import com.prokofeva.deal_api.service.CreditService;
 import lombok.RequiredArgsConstructor;

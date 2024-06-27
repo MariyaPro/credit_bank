@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.model;
 
-import com.prokofeva.deal_api.model.dto.LoanOfferDto;
-import com.prokofeva.deal_api.model.dto.StatusHistory;
-import com.prokofeva.deal_api.model.enums.ApplicationStatus;
+import com.prokofeva.deal_api.dto.LoanOfferDto;
+import com.prokofeva.deal_api.dto.StatusHistory;
+import com.prokofeva.deal_api.enums.ApplicationStatus;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.Data;
 import org.hibernate.annotations.Type;

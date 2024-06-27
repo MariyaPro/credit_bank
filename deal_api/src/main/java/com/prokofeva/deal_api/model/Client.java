@@ -2,10 +2,10 @@
 
 package com.prokofeva.deal_api.model;
 
-import com.prokofeva.deal_api.model.dto.EmploymentDto;
-import com.prokofeva.deal_api.model.dto.PassportDto;
-import com.prokofeva.deal_api.model.enums.Gender;
-import com.prokofeva.deal_api.model.enums.MaritalStatus;
+import com.prokofeva.deal_api.dto.EmploymentDto;
+import com.prokofeva.deal_api.dto.PassportDto;
+import com.prokofeva.deal_api.enums.Gender;
+import com.prokofeva.deal_api.enums.MaritalStatus;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.Data;
 import org.hibernate.annotations.Type;

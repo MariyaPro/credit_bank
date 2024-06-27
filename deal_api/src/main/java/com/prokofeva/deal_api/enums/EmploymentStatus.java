@@ -1,14 +1,15 @@
-package com.prokofeva.deal_api.model.enums;
+package com.prokofeva.deal_api.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum Gender {
-    MALE("male"),
-    FEMALE("female"),
-    NON_BINARY("non binary");
+public enum EmploymentStatus {
+    UNEMPLOYED("unemployed"),
+    SELF_EMPLOYED("self employed"),
+    EMPLOYED("employed"),
+    BUSINESS_OWNER("business owner");
 
     private final String value;
 
@@ -18,8 +19,8 @@ public enum Gender {
     }
 
     @JsonCreator
-    public static Gender fromValue(String value) {
-        for (Gender b : Gender.values()) {
+    public static EmploymentStatus fromValue(String value) {
+        for (EmploymentStatus b : EmploymentStatus.values()) {
             if (b.value.equalsIgnoreCase(value)) {
                 return b;
             }

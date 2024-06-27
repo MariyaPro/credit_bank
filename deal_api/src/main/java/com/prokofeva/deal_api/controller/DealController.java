@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.controller;
 
-import com.prokofeva.deal_api.model.dto.FinishRegistrationRequestDto;
-import com.prokofeva.deal_api.model.dto.LoanOfferDto;
-import com.prokofeva.deal_api.model.dto.LoanStatementRequestDto;
+import com.prokofeva.deal_api.dto.FinishRegistrationRequestDto;
+import com.prokofeva.deal_api.dto.LoanOfferDto;
+import com.prokofeva.deal_api.dto.LoanStatementRequestDto;
 import com.prokofeva.deal_api.service.DealService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
