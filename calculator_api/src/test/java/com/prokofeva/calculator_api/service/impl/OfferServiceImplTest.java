@@ -1,8 +1,8 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.model.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.model.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.dto.LoanStatementRequestDto;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.ScoringService;
 import org.junit.jupiter.api.Test;

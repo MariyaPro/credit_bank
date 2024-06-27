@@ -1,9 +1,8 @@
-package com.prokofeva.calculator_api.model.dto;
+package com.prokofeva.calculator_api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;

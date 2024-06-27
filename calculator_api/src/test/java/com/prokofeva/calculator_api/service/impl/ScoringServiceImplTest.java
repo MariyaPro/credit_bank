@@ -1,10 +1,10 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.model.dto.ScoringDataDto;
-import com.prokofeva.calculator_api.model.enums.EmploymentStatus;
-import com.prokofeva.calculator_api.model.enums.MaritalStatus;
-import com.prokofeva.calculator_api.model.enums.EmploymentPosition;
+import com.prokofeva.calculator_api.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.enums.EmploymentPosition;
+import com.prokofeva.calculator_api.enums.EmploymentStatus;
+import com.prokofeva.calculator_api.enums.MaritalStatus;
 import com.prokofeva.calculator_api.exceptions.DeniedLoanException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
