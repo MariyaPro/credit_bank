@@ -1,9 +1,13 @@
 package com.prokofeva.statement_api.service.impl;
 
+import com.prokofeva.statement_api.exception.DeniedLoanException;
+import com.prokofeva.statement_api.exception.ExternalServiceException;
 import com.prokofeva.statement_api.feign.DealFeignClient;
 import com.prokofeva.statement_api.model.LoanOfferDto;
 import com.prokofeva.statement_api.model.LoanStatementRequestDto;
-import org.junit.jupiter.api.BeforeEach;
+import feign.FeignException;
+import feign.Request;
+import feign.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -14,12 +18,13 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
@@ -36,14 +41,11 @@ class StatementServiceImplTest {
     @Mock
     private DealFeignClient dealFeignClient;
 
-    @BeforeEach
-    void setProperties() {
-        statementService.setPrescoringMinAge(prescoringMinAge);
-        statementService.setDealFeignClientUrl(dealFeignClientUrl);
-    }
-
     @Test
     void createListOffer() {
+        statementService.setPrescoringMinAge(prescoringMinAge);
+        statementService.setDealFeignClientUrl(dealFeignClientUrl);
+
         LoanStatementRequestDto loanRequestDto = LoanStatementRequestDto.builder()
                 .amount(BigDecimal.valueOf(100000))
                 .term(12)
@@ -67,6 +69,69 @@ class StatementServiceImplTest {
 
         assertNotNull(listOffersAc);
         assertEquals(4, listOffersAc.size());
+
+        verify(dealFeignClient, times(1)).getListOffers(any(LoanStatementRequestDto.class));
+    }
+
+    @Test
+    void createListOfferFailPrescoring() {
+        statementService.setPrescoringMinAge(prescoringMinAge);
+        statementService.setDealFeignClientUrl(dealFeignClientUrl);
+
+        LoanStatementRequestDto loanRequestDto = LoanStatementRequestDto.builder()
+                .amount(BigDecimal.valueOf(100000))
+                .term(12)
+                .firstName("FirstName")
+                .lastName("LastName")
+                .middleName("MiddleName")
+                .email("mail.example@gmail.com")
+                .birthdate(LocalDate.of(2020, 2, 21))
+                .passportSeries("1234")
+                .passportNumber("123456")
+                .build();
+
+        List<LoanOfferDto> loanOfferDtoList = null;
+        try {
+            loanOfferDtoList = statementService.createListOffer(loanRequestDto, "logId");
+        } catch (Exception e) {
+            assertNull(loanOfferDtoList);
+            assertEquals(DeniedLoanException.class, e.getClass());
+            assertArrayEquals(e.getMessage().getBytes(StandardCharsets.UTF_8)
+                    , "Loan was denied. Cause: age does not meet established requirements.".getBytes(StandardCharsets.UTF_8));
+        }
+        assertNull(loanOfferDtoList);
+    }
+
+    @Test
+    void createListOfferFailFeign() {
+        statementService.setPrescoringMinAge(prescoringMinAge);
+        statementService.setDealFeignClientUrl(dealFeignClientUrl);
+
+        LoanStatementRequestDto loanRequestDto = LoanStatementRequestDto.builder()
+                .amount(BigDecimal.valueOf(100000))
+                .term(12)
+                .firstName("FirstName")
+                .lastName("LastName")
+                .middleName("MiddleName")
+                .email("mail.example@gmail.com")
+                .birthdate(LocalDate.of(2000, 2, 21))
+                .passportSeries("1234")
+                .passportNumber("123456")
+                .build();
+        FeignException feignException = FeignException.errorStatus("dealFeignClientUrl.getListOffers",
+                Response.builder()
+                        .body("Test error message".getBytes())
+                        .status(406)
+                        .request(Request.create(Request.HttpMethod.POST, "ii", Map.of(), null, null, null))
+                        .build());
+
+        when(dealFeignClient.getListOffers(any(LoanStatementRequestDto.class))).thenThrow(feignException);
+
+        Exception e = assertThrows(ExternalServiceException.class, () -> statementService.createListOffer(loanRequestDto, anyString()));
+
+        assertNotNull(e);
+        assertArrayEquals("Test error message".getBytes(StandardCharsets.UTF_8),
+                e.getMessage().getBytes(StandardCharsets.UTF_8));
 
         verify(dealFeignClient, times(1)).getListOffers(any(LoanStatementRequestDto.class));
     }
