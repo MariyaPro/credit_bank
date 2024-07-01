@@ -7,6 +7,7 @@
         <option value="$PROJECT_DIR$/calculator_api/pom.xml" />
         <option value="$PROJECT_DIR$/deal_api/pom.xml" />
         <option value="$PROJECT_DIR$/statemant_api/pom.xml" />
+        <option value="$PROJECT_DIR$/dossier/pom.xml" />
       </list>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />
