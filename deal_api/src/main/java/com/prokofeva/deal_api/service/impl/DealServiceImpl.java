@@ -2,11 +2,10 @@ package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.client.CalcFeignClient;
 import com.prokofeva.deal_api.dto.*;
+import com.prokofeva.deal_api.enums.ApplicationStatus;
+import com.prokofeva.deal_api.enums.Theme;
 import com.prokofeva.deal_api.exeption.ExternalServiceException;
-import com.prokofeva.deal_api.service.ClientService;
-import com.prokofeva.deal_api.service.CreditService;
-import com.prokofeva.deal_api.service.DealService;
-import com.prokofeva.deal_api.service.StatementService;
+import com.prokofeva.deal_api.service.*;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +24,7 @@ public class DealServiceImpl implements DealService {
     private final StatementService statementService;
     private final CalcFeignClient calcFeignClient;
     private final CreditService creditService;
+    private final MessageService messageService;
 
     @Value("${calc_feignclient_url}")
     private String calcFeignClientUrl;
@@ -43,9 +43,13 @@ public class DealServiceImpl implements DealService {
             listOffers = calcFeignClient.getListOffers(loanStatementRequestDto);
             log.info("{} -- Получен ответ от внешнего сервиса ({}offers).", logId, calcFeignClientUrl);
         } catch (FeignException e) {
-            String message = e.status() == 406 ?
-                    new String(e.responseBody().get().array())
-                    : "Error from external service (" + calcFeignClientUrl + "offers).";
+            String message;
+            if (e.status() == 406 && e.responseBody().isPresent()) {
+                message = new String(e.responseBody().get().array());
+                messageService.sendMessage(clientDto.getEmail(), Theme.STATEMENT_DENIED, statementDto.getStatementId());  //todo 6
+            } else {
+                message = "Error from external service (" + calcFeignClientUrl + "offers).";
+            }
             log.error("{} -- {}", logId, message);
             throw new ExternalServiceException(message);
         }
@@ -60,6 +64,9 @@ public class DealServiceImpl implements DealService {
     @Override
     public void selectAppliedOffer(LoanOfferDto loanOfferDto) {
         statementService.selectAppliedOffer(loanOfferDto);
+
+        String email = statementService.getStatementById(String.valueOf(loanOfferDto.getStatementId())).getClientId().getEmail();
+        messageService.sendMessage(email, Theme.FINISH_REGISTRATION, loanOfferDto.getStatementId());  //todo 1
     }
 
     @Transactional
@@ -78,9 +85,14 @@ public class DealServiceImpl implements DealService {
             creditDto = calcFeignClient.calculateCredit(scoringDataDto);
             log.info("{} -- Получен ответ от внешнего сервиса ({}calc).", statementId, calcFeignClientUrl);
         } catch (FeignException e) {
-            String message = e.status() == 406 ?
-                    new String(e.responseBody().get().array())
-                    : "Error from external service (" + calcFeignClientUrl + "calc).";
+            String message;
+            if (e.status() == 406 && e.responseBody().isPresent()) {
+                message = new String(e.responseBody().get().array());
+                messageService.sendMessage(clientDtoUp.getEmail(), Theme.STATEMENT_DENIED, statementDto.getStatementId());//todo 6
+                statementService.addStatusHistory(statementId,ApplicationStatus.CC_DENIED, statementId);
+            } else {
+                message = "Error from external service (" + calcFeignClientUrl + "calc).";
+            }
             log.error("{} -- {}", statementId, message);
             throw new ExternalServiceException(message);
         }
@@ -89,6 +101,9 @@ public class DealServiceImpl implements DealService {
 
         statementService.registrationCredit(statementDto, creditDtoFromDb);
         log.info("{} -- Процедура регистрации кредита завершена успешно.", statementId);
+
+        String email = clientDtoUp.getEmail();
+        messageService.sendMessage(email, Theme.CREATE_DOCUMENTS, statementDto.getStatementId());  //todo 2
     }
 
     private ScoringDataDto createScoringData(LoanOfferDto loanOfferDto, ClientDto clientDto) {
@@ -114,5 +129,23 @@ public class DealServiceImpl implements DealService {
                 .accountNumber(clientDto.getAccountNumber())
 
                 .build();
+    }
+
+    @Override
+    public void sendDocuments(String statementId) {
+        String email = statementService.getStatementById(statementId).getClientId().getEmail();
+        messageService.sendMessage(email, Theme.SEND_DOCUMENTS, UUID.fromString(statementId));  //todo 3
+    }
+
+    @Override
+    public void signDocuments(String statementId) {
+        String email = statementService.getStatementById(statementId).getClientId().getEmail();
+        messageService.sendMessage(email, Theme.SEND_SES, UUID.fromString(statementId));  //todo 4
+    }
+
+    @Override
+    public void codeDocuments(String statementId) {
+        String email = statementService.getStatementById(statementId).getClientId().getEmail();
+        messageService.sendMessage(email, Theme.CREDIT_ISSUED, UUID.fromString(statementId));  //todo 5
     }
 }

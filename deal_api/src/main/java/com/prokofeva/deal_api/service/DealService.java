@@ -12,4 +12,10 @@ public interface DealService {
     void selectAppliedOffer(LoanOfferDto loanOfferDto);
 
     void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto, String statementId);
+
+    void sendDocuments(String statementId);
+
+    void signDocuments(String statementId);
+
+    void codeDocuments(String statementId);
 }

@@ -4,6 +4,8 @@ import com.prokofeva.deal_api.dto.ClientDto;
 import com.prokofeva.deal_api.dto.CreditDto;
 import com.prokofeva.deal_api.dto.LoanOfferDto;
 import com.prokofeva.deal_api.dto.StatementDto;
+import com.prokofeva.deal_api.enums.ApplicationStatus;
+import com.prokofeva.deal_api.model.Statement;
 
 public interface StatementService {
     void selectAppliedOffer(LoanOfferDto loanOfferDto);
@@ -13,5 +15,9 @@ public interface StatementService {
     StatementDto getStatementById(String statementId);
 
     void registrationCredit(StatementDto statementDto, CreditDto creditDtoFromDb);
+
+    void addStatusHistory(Statement statement, ApplicationStatus status, String logId);
+
+    void addStatusHistory(String statementId, ApplicationStatus status, String logId);
 }
 

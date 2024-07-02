@@ -72,7 +72,8 @@ public class StatementServiceImpl implements StatementService {
         saveStatement(statement, statementDto.getStatementId().toString());
     }
 
-    private void addStatusHistory(Statement statement, ApplicationStatus status, String logId) {
+    @Override
+    public void addStatusHistory(Statement statement, ApplicationStatus status, String logId) {
         if (statement.getStatementId() != null)
             logId = statement.getStatementId().toString();
         log.info("{} -- Изменение статуса заявки (статус = {}).", logId, status);
@@ -83,5 +84,11 @@ public class StatementServiceImpl implements StatementService {
         StatusHistory statusHistory = new StatusHistory(status, now, ChangeType.AUTOMATIC);
         statement.getStatusHistoryList().add(statusHistory);
         log.info("{} -- Статус заявки изменен. В журнал статусов добавлена новая запись: {}.", logId, statusHistory);
+    }
+
+    @Override
+    public void addStatusHistory(String statementId, ApplicationStatus status, String logId) {
+
+
     }
 }

@@ -17,9 +17,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * POST: /deal/statement - расчёт возможных условий кредита. Request - LoanStatementRequestDto, response - List<LoanOfferDto>
- * POST: /deal/offer/select - Выбор одного из предложений. Request LoanOfferDto, response void.
- * POST: /deal/calculate/{statementId} - завершение регистрации + полный подсчёт кредита. Request - FinishRegistrationRequestDto, param - String, response void.
+ POST: /deal/statement - расчёт возможных условий кредита. Request - LoanStatementRequestDto, response - List<LoanOfferDto>
+ POST: /deal/offer/select - Выбор одного из предложений. Request LoanOfferDto, response void.
+ POST: /deal/calculate/{statementId} - завершение регистрации + полный подсчёт кредита. Request - FinishRegistrationRequestDto, param - String, response void.
+
+ POST: /deal/document/{statementId}/send - запрос на отправку документов.
+ POST: /deal/document/{statementId}/sign - запрос на подписание документов
+ POST: /deal/document/{statementId}/code - подписание документов
  */
 
 @Slf4j
@@ -43,6 +47,7 @@ public class DealController {
     public ResponseEntity<Void> selectAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
         log.info("{} -- Клиент выбрал вариант кредита: {}.", loanOfferDto.getStatementId(), loanOfferDto);
         dealService.selectAppliedOffer(loanOfferDto);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -52,6 +57,30 @@ public class DealController {
                                    @PathVariable String statementId) {
         log.info("{} -- Процедура регистрации кредита в базе данных. Дополнительные сведени: {}",statementId,finishRegistrationRequestDto);
         dealService.registrationCredit(finishRegistrationRequestDto, statementId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/document/{statementId}/send")
+    @Operation(description = "Запрос на отправку документов.")
+    public ResponseEntity<Void> sendDocuments(@PathVariable String statementId) {
+        log.info("{} -- Запрос на отправку документов.",statementId);
+        dealService.sendDocuments(statementId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/document/{statementId}/sign")
+    @Operation(description = "Запрос на подписание документов.")
+    public ResponseEntity<Void> signDocuments(@PathVariable String statementId) {
+        log.info("{} -- Запрос на подписание документов.",statementId);
+        dealService.signDocuments(statementId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/document/{statementId}/code")
+    @Operation(description = "Подписание документов.")
+    public ResponseEntity<Void> codeDocuments(@PathVariable String statementId) {
+        log.info("{} -- Подписание документов.",statementId);
+        dealService.codeDocuments(statementId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
