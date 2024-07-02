@@ -23,3 +23,7 @@ spring:
       spring.json.value.default.type: ru.home.kafka.dto.JsonMessage
       spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
       spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+
+logging:
+  file:
+    name: logs/dossier/log_dossier

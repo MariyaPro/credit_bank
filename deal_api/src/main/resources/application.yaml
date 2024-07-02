@@ -26,7 +26,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 server:
-  port: 8080
+  port: 8085
 
 feign:
   client:
@@ -40,4 +40,4 @@ calc_feignclient_url: http://calculator-app:8090/calculator/
 
 logging:
   file:
-    name: deal-logs
+    name: logs/deal/log_deal

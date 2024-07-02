@@ -31,4 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-/deal-logs
+
+### ignore all logs
+*.log

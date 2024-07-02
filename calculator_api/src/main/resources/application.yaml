@@ -54,6 +54,6 @@ scoring:
 
 logging:
   file:
-    name: calc-logs
+    name: logs/calc/log_calc
 server:
   port: 8090
