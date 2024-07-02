@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="dossier" />
+        <module name="statement_api" />
         <module name="calculator_api" />
       </profile>
       <profile name="Annotation profile for deal_api" enabled="true">
@@ -23,15 +24,13 @@
         <module name="deal_api" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="statement_api" target="17" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="calculator_api" options="-parameters" />
       <module name="deal_api" options="-parameters" />
       <module name="dossier" options="-parameters" />
+      <module name="statement_api" options="-parameters" />
     </option>
   </component>
 </project>
