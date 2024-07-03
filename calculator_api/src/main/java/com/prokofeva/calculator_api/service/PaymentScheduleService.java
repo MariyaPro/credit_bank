@@ -1,6 +1,6 @@
 package com.prokofeva.calculator_api.service;
 
-import com.prokofeva.calculator_api.model.dto.PaymentScheduleElementDto;
+import com.prokofeva.calculator_api.dto.PaymentScheduleElementDto;
 
 import java.math.BigDecimal;
 import java.util.List;

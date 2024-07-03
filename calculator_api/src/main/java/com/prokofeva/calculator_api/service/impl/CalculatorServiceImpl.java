@@ -1,20 +1,17 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.exceptions.DeniedLoanException;
-import com.prokofeva.calculator_api.model.dto.CreditDto;
-import com.prokofeva.calculator_api.model.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.model.dto.LoanStatementRequestDto;
-import com.prokofeva.calculator_api.model.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.dto.CreditDto;
+import com.prokofeva.calculator_api.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.CalculatorService;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.OfferService;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,21 +20,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Setter
 public class CalculatorServiceImpl implements CalculatorService {
-    @Value("${prescoring_min_age}")
-    private Integer prescoringMinAge;
-
     private final OfferService offerService;
     private final CreditService creditService;
 
     @Override
     public List<LoanOfferDto> createListOffer(LoanStatementRequestDto loanStatementRequestDto, String logId) {
 
-        log.info("{} -- Перед расчетом возможных вариантов заявка должна пройти прескоринг.", logId);
-        if (!prescoring(loanStatementRequestDto.getBirthdate(), logId)) {
-            log.error("{} -- Заявка не прошла прескоринг.", logId);
-            throw new DeniedLoanException("Loan was denied. Cause: age does not meet established requirements.");
-        }
-        log.info("{} -- Заявка удачно прошла прескоринг. Идет формирование предложений.", logId);
         List<LoanOfferDto> offers = new ArrayList<>(List.of(
                 offerService.createOffer(loanStatementRequestDto, false, false, logId),
                 offerService.createOffer(loanStatementRequestDto, false, true, logId),
@@ -59,10 +47,5 @@ public class CalculatorServiceImpl implements CalculatorService {
         CreditDto creditDto = creditService.calculateCredit(scoringDataDto, logId);
         log.info("{} -- Расчет окончен. Передаем клиенту полную информацию по кредиту. {}", logId, creditDto);
         return creditDto;
-    }
-
-    private boolean prescoring(LocalDate birthdate, String logId) {
-        log.info("{} -- прескоринг...", logId);
-        return LocalDate.now().minusYears(prescoringMinAge).isAfter(birthdate);
     }
 }

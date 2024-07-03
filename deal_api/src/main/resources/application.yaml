@@ -10,7 +10,7 @@ spring:
     generate-ddl: off
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -40,4 +40,4 @@ calc_feignclient_url: http://calculator-app:8090/calculator/
 
 logging:
   file:
-    name: logs/deal/log_deal
+    name: logs/log_deal

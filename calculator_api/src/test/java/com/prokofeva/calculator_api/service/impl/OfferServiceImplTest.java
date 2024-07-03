@@ -1,8 +1,8 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.model.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.model.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.dto.LoanStatementRequestDto;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.ScoringService;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ class OfferServiceImplTest {
         LoanOfferDto loanOfferDto = offerService.createOffer(requestDto, anyBoolean(), anyBoolean(),anyString());
 
         assertNotNull(loanOfferDto);
-        assertNotNull(loanOfferDto.getStatementId());
+        assertNull(loanOfferDto.getStatementId());
         assertEquals(requestDto.getAmount(), loanOfferDto.getRequestedAmount());
         assertEquals(requestDto.getTerm(), loanOfferDto.getTerm());
         assertEquals(BigDecimal.valueOf(8826.14), loanOfferDto.getMonthlyPayment());

@@ -1,6 +1,6 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.model.dto.PaymentScheduleElementDto;
+import com.prokofeva.calculator_api.dto.PaymentScheduleElementDto;
 import com.prokofeva.calculator_api.service.PaymentScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

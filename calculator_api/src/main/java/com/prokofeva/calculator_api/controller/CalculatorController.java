@@ -1,9 +1,9 @@
 package com.prokofeva.calculator_api.controller;
 
-import com.prokofeva.calculator_api.model.dto.CreditDto;
-import com.prokofeva.calculator_api.model.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.model.dto.LoanStatementRequestDto;
-import com.prokofeva.calculator_api.model.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.dto.CreditDto;
+import com.prokofeva.calculator_api.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.CalculatorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

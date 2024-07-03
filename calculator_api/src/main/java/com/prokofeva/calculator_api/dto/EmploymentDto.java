@@ -1,7 +1,7 @@
-package com.prokofeva.calculator_api.model.dto;
+package com.prokofeva.calculator_api.dto;
 
-import com.prokofeva.calculator_api.model.enums.EmploymentStatus;
-import com.prokofeva.calculator_api.model.enums.EmploymentPosition;
+import com.prokofeva.calculator_api.enums.EmploymentPosition;
+import com.prokofeva.calculator_api.enums.EmploymentStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;

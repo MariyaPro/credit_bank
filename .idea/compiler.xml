@@ -11,7 +11,7 @@
         <module name="statement_api" />
         <module name="calculator_api" />
       </profile>
-      <profile name="Annotation profile for deal_api" enabled="true">
+      <profile name="Annotation profile for statement_api" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -22,8 +22,12 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.30/lombok-1.18.30.jar" />
         </processorPath>
         <module name="deal_api" />
+        <module name="statement_api" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="dossier" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
