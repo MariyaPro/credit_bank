@@ -29,9 +29,9 @@ feign:
         read-timeout: 5000
         connect-timeout: 5000
 
-calc_feignclient_url: http://calculator-app:8090/calculator/
-#calc_feignclient_url: http://localhost:8090/calculator/
+#calc_feignclient_url: http://calculator-app:8090/calculator/
+calc_feignclient_url: http://localhost:8090/calculator/
 
 logging:
   file:
-    name: deal-logs
+    name: logs/log_deal

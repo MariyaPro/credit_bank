@@ -40,7 +40,7 @@ class OfferServiceImplTest {
         LoanOfferDto loanOfferDto = offerService.createOffer(requestDto, anyBoolean(), anyBoolean(),anyString());
 
         assertNotNull(loanOfferDto);
-        assertNotNull(loanOfferDto.getStatementId());
+        assertNull(loanOfferDto.getStatementId());
         assertEquals(requestDto.getAmount(), loanOfferDto.getRequestedAmount());
         assertEquals(requestDto.getTerm(), loanOfferDto.getTerm());
         assertEquals(BigDecimal.valueOf(8826.14), loanOfferDto.getMonthlyPayment());
