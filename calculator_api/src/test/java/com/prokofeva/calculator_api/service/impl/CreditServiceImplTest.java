@@ -1,9 +1,9 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.model.dto.CreditDto;
-import com.prokofeva.calculator_api.model.dto.PaymentScheduleElementDto;
-import com.prokofeva.calculator_api.model.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.dto.CreditDto;
+import com.prokofeva.calculator_api.dto.PaymentScheduleElementDto;
+import com.prokofeva.calculator_api.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.PaymentScheduleService;
 import com.prokofeva.calculator_api.service.ScoringService;
 import org.junit.jupiter.api.Test;

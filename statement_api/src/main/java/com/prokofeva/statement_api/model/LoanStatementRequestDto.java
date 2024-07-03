@@ -1,9 +1,8 @@
-package com.prokofeva.calculator_api.model.dto;
+package com.prokofeva.statement_api.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
@@ -23,7 +22,7 @@ public class LoanStatementRequestDto {
     @Min(value = 6, message = "Минимальный срок кредита 6 месяцев")
     private Integer term;
 
-    @Schema(description = "Имя",example = "Yuri")
+    @Schema(description = "Имя", example = "Yuri")
     @NotNull
     @Pattern(regexp = "^[a-zA-Z]*", message = "Только латинские бувкы.")
     @Size(min = 2, max = 30, message = "От 2 до 30 символов.")
@@ -54,7 +53,7 @@ public class LoanStatementRequestDto {
     @Pattern(regexp = "^[0-9]{4}", message = "Серия паспорта состоит из 4х цифр.")
     private String passportSeries;
 
-    @Schema(description = "Номер паспорта",example = "123123")
+    @Schema(description = "Номер паспорта", example = "123123")
     @NotNull
     @Pattern(regexp = "^[0-9]{6}", message = "Номер паспорта состоит из 6ти цифр.")
     private String passportNumber;

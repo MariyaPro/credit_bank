@@ -1,4 +1,4 @@
-package com.prokofeva.calculator_api.model.dto;
+package com.prokofeva.statement_api.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -12,6 +12,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class LoanOfferDto {
+
     @Schema(description = "Id предложения")
     @NotNull
     private UUID statementId;

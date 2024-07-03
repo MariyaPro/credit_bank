@@ -1,9 +1,9 @@
 package com.prokofeva.calculator_api.service;
 
-import com.prokofeva.calculator_api.model.dto.CreditDto;
-import com.prokofeva.calculator_api.model.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.model.dto.LoanStatementRequestDto;
-import com.prokofeva.calculator_api.model.dto.ScoringDataDto;
+import com.prokofeva.calculator_api.dto.CreditDto;
+import com.prokofeva.calculator_api.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.dto.ScoringDataDto;
 
 import java.util.List;
 

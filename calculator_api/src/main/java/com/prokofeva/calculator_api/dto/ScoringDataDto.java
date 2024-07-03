@@ -1,7 +1,7 @@
-package com.prokofeva.calculator_api.model.dto;
+package com.prokofeva.calculator_api.dto;
 
-import com.prokofeva.calculator_api.model.enums.Gender;
-import com.prokofeva.calculator_api.model.enums.MaritalStatus;
+import com.prokofeva.calculator_api.enums.Gender;
+import com.prokofeva.calculator_api.enums.MaritalStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;

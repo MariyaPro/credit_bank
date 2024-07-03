@@ -41,8 +41,6 @@ rate_insurance:
     small_amount: '1'
     big_amount: '-1'
 
-prescoring_min_age: '18'
-
 scoring:
   age:
     min: '20'
@@ -54,6 +52,6 @@ scoring:
 
 logging:
   file:
-    name: calc-logs
+    name: logs/log_calculator
 server:
   port: 8090

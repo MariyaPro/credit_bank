@@ -1,35 +1,26 @@
 package com.prokofeva.calculator_api.service.impl;
 
 import com.prokofeva.calculator_api.CreatorValidDto;
-import com.prokofeva.calculator_api.model.dto.CreditDto;
-import com.prokofeva.calculator_api.model.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.model.dto.LoanStatementRequestDto;
-import com.prokofeva.calculator_api.model.dto.ScoringDataDto;
-import com.prokofeva.calculator_api.exceptions.DeniedLoanException;
+import com.prokofeva.calculator_api.dto.CreditDto;
+import com.prokofeva.calculator_api.dto.LoanOfferDto;
+import com.prokofeva.calculator_api.dto.LoanStatementRequestDto;
+import com.prokofeva.calculator_api.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.OfferService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@TestPropertySource("/application-test.yaml")
+@ExtendWith(MockitoExtension.class)
 public class CalculatorServiceImplTest {
-    @Value("${prescoring_min_age}")
-    private Integer prescoringMinAge;
 
     @Mock
     private OfferService offerService;
@@ -42,12 +33,9 @@ public class CalculatorServiceImplTest {
 
     @Test
     void createListOffer() {
-
-        calculatorService.setPrescoringMinAge(prescoringMinAge);
-
         LoanStatementRequestDto requestDto = CreatorValidDto.createLoanStatementRequestDto();
 
-        when(offerService.createOffer(any(), anyBoolean(), anyBoolean(),anyString())).thenReturn(CreatorValidDto.createLoanOfferDto());
+        when(offerService.createOffer(any(), anyBoolean(), anyBoolean(), anyString())).thenReturn(CreatorValidDto.createLoanOfferDto());
 
         List<LoanOfferDto> loanOfferDtoList = calculatorService.createListOffer(requestDto, "logId");
 
@@ -58,24 +46,6 @@ public class CalculatorServiceImplTest {
         verify(offerService, times(1)).createOffer(requestDto, false, false, "logId");
         verify(offerService, times(1)).createOffer(requestDto, false, true, "logId");
         verify(offerService, times(1)).createOffer(requestDto, true, true, "logId");
-    }
-
-    @Test
-    public void createListOfferFail() {
-        LoanStatementRequestDto requestDto = CreatorValidDto.createLoanStatementRequestDto();
-
-        requestDto.setBirthdate(LocalDate.of(2022, 2, 21));
-        calculatorService.setPrescoringMinAge(18);
-        List<LoanOfferDto> loanOfferDtoList = null;
-
-        try {
-            loanOfferDtoList = calculatorService.createListOffer(requestDto, "logId");
-        } catch (Exception e) {
-            assertNull(loanOfferDtoList);
-            assertEquals(DeniedLoanException.class, e.getClass());
-            assertArrayEquals(e.getMessage().getBytes(StandardCharsets.UTF_8)
-                    , "Loan was denied. Cause: age does not meet established requirements.".getBytes(StandardCharsets.UTF_8));
-        }
     }
 
     @Test

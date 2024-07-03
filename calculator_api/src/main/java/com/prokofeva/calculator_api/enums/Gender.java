@@ -1,4 +1,4 @@
-package com.prokofeva.calculator_api.model.enums;
+package com.prokofeva.calculator_api.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

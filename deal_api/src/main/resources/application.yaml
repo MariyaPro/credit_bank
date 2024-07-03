@@ -10,7 +10,7 @@ spring:
     generate-ddl: off
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -20,7 +20,7 @@ spring:
     change-log: db/changelog/db.changelog-master.xml
 
 server:
-  port: 8080
+  port: 8085
 
 feign:
   client:
@@ -29,9 +29,9 @@ feign:
         read-timeout: 5000
         connect-timeout: 5000
 
-calc_feignclient_url: http://calculator-app:8090/calculator/
-#calc_feignclient_url: http://localhost:8090/calculator/
+#calc_feignclient_url: http://calculator-app:8090/calculator/
+calc_feignclient_url: http://localhost:8090/calculator/
 
 logging:
   file:
-    name: deal-logs
+    name: logs/log_deal
