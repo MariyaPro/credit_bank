@@ -1,0 +1,11 @@
+server:
+  port: 8095
+spring:
+  application:
+    name: Neo-credit-bank
+  mail:
+    host: smtp.yandex.ru
+    username: ProkofevaMariyaS@yandex.ru
+    password: iwkeziltzbifnllg
+    port: 465
+    protocol: smtps

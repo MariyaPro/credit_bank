@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="calculator_api" />
+        <module name="dossier_api" />
       </profile>
       <profile name="Annotation profile for statement_api" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -31,6 +32,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="calculator_api" options="-parameters" />
       <module name="deal_api" options="-parameters" />
+      <module name="dossier_api" options="-parameters" />
       <module name="statement_api" options="-parameters" />
     </option>
   </component>
