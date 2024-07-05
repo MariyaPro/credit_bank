@@ -23,13 +23,13 @@ services:
     depends_on:
       - db
       - calculator-api
-      - zookeeper
       - kafka
     ports:
       - "8085:8085"
     environment:
       - SERVER_PORT=8085
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db/deal_db
+      - KAFKA_SERVER=kafka:9092
     volumes:
       - /home/dev/IdeaProjects/credit_bank/logs/deal:/app/logs
 
@@ -48,6 +48,20 @@ services:
     volumes:
       - /home/dev/IdeaProjects/credit_bank/logs/statement:/app/logs
 
+  dossier-api:
+    build:
+      context: .
+      dockerfile: Dockerfile_Dossier
+    container_name: dossier-app
+    restart: no
+    depends_on:
+      - kafka
+    ports:
+      - "8095:8095"
+    environment:
+      - SERVER_PORT=8095
+      - KAFKA_SERVER=kafka:9092
+
   db:
     image: postgres:14.7-alpine
     environment:
@@ -61,60 +75,43 @@ services:
     restart: always
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.2.1
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - 22181:2181
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - 22181:2181
 
   kafka:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
-      - zookeeper
+    image: confluentinc/cp-kafka:7.3.2
+    hostname: kafka
     ports:
       - 29092:29092
-    hostname: kafka
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
 
-#    kafka-ui:
-#      image: provectuslabs/kafka-ui
-#      container_name: kafka-ui
-#      ports:
-#        - 8090:8080
-#      restart: always
-#      environment:
-#        - KAFKA_CLUSTERS_0_NAME=local
-#        - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092,kafka2:29093
-#        - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-#      links:
-#        - kafka
-#        - kafka2
-#        - zookeeper
-
-#    producer:
-#      build:
-#        context: .
-#        dockerfile: producer/Dockerfile_Dossier
-#      ports:
-#        - 8080:8080
-#      links:
-#        - kafka-ui
-#
-#    consumer:
-#      build:
-#        context: .
-#        dockerfile: consumer/Dockerfile_Dossier
-#      ports:
-#        - 8081:8080
-#      links:
-#        - kafka-ui
+#  kafka-ui:
+#    image: provectuslabs/kafka-ui
+#    container_name: kafka-ui
+#    ports:
+#      - 8090:8080
+#    restart: always
+#    environment:
+#      - KAFKA_CLUSTERS_0_NAME=local
+#      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+#      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+#    links:
+#      - kafka
+#      - zookeeper
 
 volumes:
   deal_db:

@@ -1,10 +1,12 @@
+server:
+  port: 8085
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5433/deal_db
     username: deal_user
     password: 123
     driver-class-name: org.postgresql.Driver
-
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: off
@@ -15,18 +17,22 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-
   liquibase:
     change-log: db/changelog/db.changelog-master.xml
-
   kafka:
-    bootstrap-servers: host.docker.internal:29092
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: bank
+#  kafka:
+#    bootstrap-servers: http://localhost:29092
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
-server:
-  port: 8085
+io:
+  kafka:
+    bootstrap-servers: localhost:9092
+
 
 feign:
   client:
