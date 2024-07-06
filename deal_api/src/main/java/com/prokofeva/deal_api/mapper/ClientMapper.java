@@ -1,6 +1,6 @@
 package com.prokofeva.deal_api.mapper;
 
-import com.prokofeva.deal_api.dto.ClientDto;
+import com.prokofeva.dto.ClientDto;
 import com.prokofeva.deal_api.model.Client;
 import org.mapstruct.Mapper;
 

@@ -1,7 +1,7 @@
 package com.prokofeva.deal_api.model;
 
-import com.prokofeva.deal_api.dto.PaymentScheduleElementDto;
-import com.prokofeva.deal_api.enums.CreditStatus;
+import com.prokofeva.dto.PaymentScheduleElementDto;
+import com.prokofeva.enums.CreditStatus;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.Data;
 import org.hibernate.annotations.Type;
@@ -51,5 +51,4 @@ public class Credit {
     @NotNull
     @Enumerated(EnumType.STRING)
     private CreditStatus creditStatus;
-
 }

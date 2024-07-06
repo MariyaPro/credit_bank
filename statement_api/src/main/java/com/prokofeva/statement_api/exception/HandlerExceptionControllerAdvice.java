@@ -37,5 +37,4 @@ public class HandlerExceptionControllerAdvice {
         log.error("Перехвачено исключение DeniedLoanException.class : {}", e.getMessage());
         return ResponseEntity.ok(e.getMessage());
     }
-
 }

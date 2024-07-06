@@ -1,9 +1,9 @@
 package com.prokofeva.deal_api.controller;
 
-import com.prokofeva.deal_api.dto.FinishRegistrationRequestDto;
-import com.prokofeva.deal_api.dto.LoanOfferDto;
-import com.prokofeva.deal_api.dto.LoanStatementRequestDto;
+import com.prokofeva.dto.FinishRegistrationRequestDto;
 import com.prokofeva.deal_api.service.DealService;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.LoanStatementRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

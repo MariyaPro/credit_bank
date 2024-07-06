@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.dto.*;
-import com.prokofeva.deal_api.enums.ApplicationStatus;
-import com.prokofeva.deal_api.enums.ChangeType;
+import com.prokofeva.dto.*;
+import com.prokofeva.enums.ApplicationStatus;
+import com.prokofeva.enums.ChangeType;
 import com.prokofeva.deal_api.mapper.ClientMapper;
 import com.prokofeva.deal_api.mapper.StatementMapper;
 import com.prokofeva.deal_api.model.Statement;

@@ -1,7 +1,7 @@
 package com.prokofeva.statement_api.service;
 
-import com.prokofeva.statement_api.model.LoanOfferDto;
-import com.prokofeva.statement_api.model.LoanStatementRequestDto;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.LoanStatementRequestDto;
 
 import java.util.List;
 

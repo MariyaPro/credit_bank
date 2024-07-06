@@ -1,8 +1,8 @@
 package com.prokofeva.dossier_api.controller;
 
-import com.prokofeva.dossier_api.dto.EmailMessageDto;
-import com.prokofeva.dossier_api.enums.Theme;
 import com.prokofeva.dossier_api.service.DossierService;
+import com.prokofeva.dto.EmailMessageDto;
+import com.prokofeva.enums.Theme;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class MailController {
         log.info("Попытка отравить сообщение: {}", "kk");
         EmailMessageDto emailMessageDto = EmailMessageDto.builder()
                 .address("mariaprokof@gmail.com")
-                .theme(Theme.SEND_DOCUMENTS)
+                .theme(Theme.SEND_DOCUMENTS.SEND_DOCUMENTS)
                 .statementId(UUID.randomUUID())
                 .build();
 

@@ -1,9 +1,9 @@
 package com.prokofeva.deal_api.service;
 
-import com.prokofeva.deal_api.dto.ClientDto;
-import com.prokofeva.deal_api.dto.CreditDto;
-import com.prokofeva.deal_api.dto.LoanOfferDto;
-import com.prokofeva.deal_api.dto.StatementDto;
+import com.prokofeva.dto.ClientDto;
+import com.prokofeva.dto.CreditDto;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.StatementDto;
 
 public interface StatementService {
     void selectAppliedOffer(LoanOfferDto loanOfferDto);

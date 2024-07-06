@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.service;
 
-import com.prokofeva.deal_api.dto.FinishRegistrationRequestDto;
-import com.prokofeva.deal_api.dto.LoanOfferDto;
-import com.prokofeva.deal_api.dto.LoanStatementRequestDto;
+import com.prokofeva.dto.FinishRegistrationRequestDto;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.LoanStatementRequestDto;
 
 import java.util.List;
 

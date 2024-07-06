@@ -38,6 +38,4 @@ public class HandlerExceptionControllerAdvice {
         log.error("Перехвачено исключение ExternalServiceException.class : {}", e.getMessage());
         return ResponseEntity.status(406).body(e.getMessage());
     }
-
-
 }

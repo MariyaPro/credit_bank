@@ -1,8 +1,8 @@
 package com.prokofeva.calculator_api.service;
 
-import com.prokofeva.calculator_api.dto.CreditDto;
-import com.prokofeva.calculator_api.dto.PaymentScheduleElementDto;
-import com.prokofeva.calculator_api.dto.ScoringDataDto;
+import com.prokofeva.dto.CreditDto;
+import com.prokofeva.dto.PaymentScheduleElementDto;
+import com.prokofeva.dto.ScoringDataDto;
 
 import java.math.BigDecimal;
 import java.util.List;

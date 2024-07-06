@@ -1,7 +1,7 @@
 package com.prokofeva.statement_api.controller;
 
-import com.prokofeva.statement_api.model.LoanOfferDto;
-import com.prokofeva.statement_api.model.LoanStatementRequestDto;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.LoanStatementRequestDto;
 import com.prokofeva.statement_api.service.StatementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
-
 
 @Slf4j
 @Validated

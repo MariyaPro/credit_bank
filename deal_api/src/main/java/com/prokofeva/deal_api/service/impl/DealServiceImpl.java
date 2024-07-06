@@ -1,7 +1,7 @@
 package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.client.CalcFeignClient;
-import com.prokofeva.deal_api.dto.*;
+import com.prokofeva.dto.*;
 import com.prokofeva.deal_api.exeption.ExternalServiceException;
 import com.prokofeva.deal_api.service.ClientService;
 import com.prokofeva.deal_api.service.CreditService;

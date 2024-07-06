@@ -1,6 +1,6 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.dto.ScoringDataDto;
+import com.prokofeva.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.exceptions.DeniedLoanException;
 import com.prokofeva.calculator_api.service.ScoringService;
 import lombok.RequiredArgsConstructor;

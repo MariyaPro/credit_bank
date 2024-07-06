@@ -1,7 +1,7 @@
 package com.prokofeva.calculator_api.service;
 
-import com.prokofeva.calculator_api.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.dto.LoanStatementRequestDto;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.LoanStatementRequestDto;
 
 public interface OfferService {
     LoanOfferDto createOffer(LoanStatementRequestDto loanStatementRequestDto,

@@ -1,7 +1,7 @@
 package com.prokofeva.statement_api.controller;
 
-import com.prokofeva.statement_api.model.LoanOfferDto;
-import com.prokofeva.statement_api.model.LoanStatementRequestDto;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.LoanStatementRequestDto;
 import com.prokofeva.statement_api.service.impl.StatementServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

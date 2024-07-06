@@ -1,10 +1,10 @@
 package com.prokofeva.deal_api.mapper;
 
-import com.prokofeva.deal_api.dto.ClientDto;
-import com.prokofeva.deal_api.dto.CreditDto;
-import com.prokofeva.deal_api.dto.LoanOfferDto;
-import com.prokofeva.deal_api.dto.StatementDto;
-import com.prokofeva.deal_api.enums.ApplicationStatus;
+import com.prokofeva.dto.ClientDto;
+import com.prokofeva.dto.CreditDto;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.StatementDto;
+import com.prokofeva.enums.ApplicationStatus;
 import com.prokofeva.deal_api.model.Client;
 import com.prokofeva.deal_api.model.Credit;
 import com.prokofeva.deal_api.model.Statement;

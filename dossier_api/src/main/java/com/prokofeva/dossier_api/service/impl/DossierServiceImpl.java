@@ -1,6 +1,6 @@
 package com.prokofeva.dossier_api.service.impl;
 
-import com.prokofeva.dossier_api.dto.EmailMessageDto;
+import com.prokofeva.dto.EmailMessageDto;
 import com.prokofeva.dossier_api.service.ContentService;
 import com.prokofeva.dossier_api.service.DossierService;
 import com.prokofeva.dossier_api.service.FileService;
