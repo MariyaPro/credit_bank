@@ -8,7 +8,5 @@ public class DossierApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DossierApiApplication.class, args);
-
 	}
-
 }
