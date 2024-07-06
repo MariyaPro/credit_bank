@@ -9,3 +9,6 @@ spring:
     password: iwkeziltzbifnllg
     port: 465
     protocol: smtps
+
+mail:
+  debug: true
