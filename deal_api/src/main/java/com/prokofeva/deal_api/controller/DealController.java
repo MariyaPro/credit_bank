@@ -1,9 +1,11 @@
 package com.prokofeva.deal_api.controller;
 
-import com.prokofeva.dto.FinishRegistrationRequestDto;
 import com.prokofeva.deal_api.service.DealService;
+import com.prokofeva.dto.FinishRegistrationRequestDto;
 import com.prokofeva.dto.LoanOfferDto;
 import com.prokofeva.dto.LoanStatementRequestDto;
+import com.prokofeva.dto.StatementDto;
+import com.prokofeva.enums.ApplicationStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,12 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-
-/**
- * POST: /deal/statement - расчёт возможных условий кредита. Request - LoanStatementRequestDto, response - List<LoanOfferDto>
- * POST: /deal/offer/select - Выбор одного из предложений. Request LoanOfferDto, response void.
- * POST: /deal/calculate/{statementId} - завершение регистрации + полный подсчёт кредита. Request - FinishRegistrationRequestDto, param - String, response void.
- */
 
 @Slf4j
 @Validated
@@ -49,9 +45,49 @@ public class DealController {
     @PostMapping("/calculate/{statementId}")
     @Operation(description = "Завершение регистрации и полный подсчёт кредита.")
     public ResponseEntity<Void> registrationCredit(@RequestBody @Valid FinishRegistrationRequestDto finishRegistrationRequestDto,
-                                   @PathVariable String statementId) {
-        log.info("{} -- Процедура регистрации кредита в базе данных. Дополнительные сведени: {}",statementId,finishRegistrationRequestDto);
+                                                   @PathVariable String statementId) {
+        log.info("{} -- Процедура регистрации кредита в базе данных. Дополнительные сведения: {}", statementId, finishRegistrationRequestDto);
         dealService.registrationCredit(finishRegistrationRequestDto, statementId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/document/{statementId}/send")
+    @Operation(description = "Запрос на отправку документов.")
+    public ResponseEntity<Void> sendDocuments(@PathVariable String statementId) {
+        log.info("{} -- ", statementId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/document/{statementId}/sign")
+    @Operation(description = "Запрос на подписание документов.")
+    public ResponseEntity<Void> signDocuments(@PathVariable String statementId) {
+        log.info("{} -- ", statementId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/document/{statementId}/code")
+    @Operation(description = "Подписание документов.")
+    public ResponseEntity<Void> checkSesCode(@RequestBody String sesCode, @PathVariable String statementId) {
+        log.info("{} -- ", statementId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/admin/statement/{statementId}")
+    @Operation(description = "Получить заявку по id.")
+    public ResponseEntity<StatementDto> getStatement(@PathVariable String statementId) {
+        log.info("{} -- ", statementId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/admin/statement/{statementId}/status")
+    @Operation(description = "Обновить статус заявки.")
+    public ResponseEntity<StatementDto> updateStatementStatus(@RequestBody ApplicationStatus status, @PathVariable String statementId) {
+        log.info("{} -- ", statementId);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
