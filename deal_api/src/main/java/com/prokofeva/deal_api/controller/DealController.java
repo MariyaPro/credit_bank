@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Validated
@@ -28,7 +29,7 @@ public class DealController {
     private final DealService dealService;
 
     @PostMapping("/statement")
-    @Operation(description = "Paсчет возможных условий кредита.")
+    @Operation(description = "Расчет возможных условий кредита.")
     public ResponseEntity<List<LoanOfferDto>> getLoanOffers(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
         log.info("{} -- Получена заявка на расчет вариантов займа: {}", loanStatementRequestDto.hashCode(), loanStatementRequestDto);
         return ResponseEntity.ok(dealService.getListOffers(loanStatementRequestDto));
@@ -39,6 +40,7 @@ public class DealController {
     public ResponseEntity<Void> selectAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
         log.info("{} -- Клиент выбрал вариант кредита: {}.", loanOfferDto.getStatementId(), loanOfferDto);
         dealService.selectAppliedOffer(loanOfferDto);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -48,13 +50,31 @@ public class DealController {
                                                    @PathVariable String statementId) {
         log.info("{} -- Процедура регистрации кредита в базе данных. Дополнительные сведения: {}", statementId, finishRegistrationRequestDto);
         dealService.registrationCredit(finishRegistrationRequestDto, statementId);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/document/{statementId}/send")
     @Operation(description = "Запрос на отправку документов.")
     public ResponseEntity<Void> sendDocuments(@PathVariable String statementId) {
-        log.info("{} -- ", statementId);
+        String logId = String.valueOf(UUID.randomUUID());
+        log.info("{} -- Запрос на отправку документов (заявка id={}).", logId, statementId);
+        log.info("отработал метод POST");
+        dealService.updateStatementStatus(ApplicationStatus.PREPARE_DOCUMENTS, statementId, logId);
+
+        //todo send-doc
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @GetMapping("/document/{statementId}/send")
+    @Operation(description = "Запрос на отправку документов.")
+    public ResponseEntity<Void> sendDocumentsTEST(@PathVariable String statementId) {
+        String logId = String.valueOf(UUID.randomUUID());
+        log.info("{} -- Запрос на отправку документов (заявка id={}).", logId, statementId);
+        log.info("отработал метод GET");
+        dealService.updateStatementStatus(ApplicationStatus.PREPARE_DOCUMENTS, statementId, logId);
+
+        //todo send-doc
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -62,7 +82,10 @@ public class DealController {
     @PostMapping("/document/{statementId}/sign")
     @Operation(description = "Запрос на подписание документов.")
     public ResponseEntity<Void> signDocuments(@PathVariable String statementId) {
-        log.info("{} -- ", statementId);
+        String logId = String.valueOf(UUID.randomUUID());
+        log.info("{} -- Поступил запрос на подписание документов (заявка id={}).", logId, statementId);
+
+        dealService.signDocuments(statementId,logId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -70,7 +93,9 @@ public class DealController {
     @PostMapping("/document/{statementId}/code")
     @Operation(description = "Подписание документов.")
     public ResponseEntity<Void> checkSesCode(@RequestBody String sesCode, @PathVariable String statementId) {
-        log.info("{} -- ", statementId);
+        String logId = String.valueOf(UUID.randomUUID());
+        log.info("{} -- Получен ses-код от клиента (заявка id={}).", logId, statementId);
+        dealService.checkSesCode(sesCode, statementId, logId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -78,16 +103,18 @@ public class DealController {
     @GetMapping("/admin/statement/{statementId}")
     @Operation(description = "Получить заявку по id.")
     public ResponseEntity<StatementDto> getStatement(@PathVariable String statementId) {
-        log.info("{} -- ", statementId);
+        String logId = String.valueOf(UUID.randomUUID());
+        log.info("{} -- Поступил запрос на получение заяки id = {}.", logId, statementId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok(dealService.getStatement(statementId, logId));
     }
 
     @PutMapping("/admin/statement/{statementId}/status")
     @Operation(description = "Обновить статус заявки.")
-    public ResponseEntity<StatementDto> updateStatementStatus(@RequestBody ApplicationStatus status, @PathVariable String statementId) {
-        log.info("{} -- ", statementId);
-
+    public ResponseEntity<Void> updateStatementStatus(@RequestBody ApplicationStatus status, @PathVariable String statementId) {
+        String logId = String.valueOf(UUID.randomUUID());
+        log.info("{} -- Требуется изменить статус заявки (id={}) на {}.", logId, statementId, status.getValue());
+        dealService.updateStatementStatus(status, statementId, logId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

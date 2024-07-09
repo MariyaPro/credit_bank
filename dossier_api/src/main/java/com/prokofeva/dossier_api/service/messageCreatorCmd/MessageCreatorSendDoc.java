@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 @Slf4j
@@ -32,6 +31,8 @@ public class MessageCreatorSendDoc implements MessageCreator {
         messageHelper.addAttachment(String.valueOf(creditAgreementFile.getFileName()), creditAgreementFile.toFile());
         messageHelper.addAttachment(String.valueOf(questionnaireFile.getFileName()), questionnaireFile.toFile());
         messageHelper.addAttachment(String.valueOf(paymentScheduleFile.getFileName()), paymentScheduleFile.toFile());
+        log.info("{} -- В сообщение вложены файлы: {}, {}, {}", logId, creditAgreementFile.getFileName().toString(),
+                questionnaireFile.getFileName().toString(), paymentScheduleFile.getFileName().toString());
 
         String text = "Направляем документы на ознакомление:\n" +
                 "1. Кредитный договор - внимательно ознакомьтесь с условиями.\n" +
@@ -40,9 +41,6 @@ public class MessageCreatorSendDoc implements MessageCreator {
                 "Если вы согласны с условиями предоставления кредита, перейдите по ссылке:\n" +
                 "http://localhost:8085/deal/document/" + statementId + "/sing";
         messageHelper.setText(text);
-        log.info("{} -- Сообщение и ссылка для подтверждения согласия установлены в тело письма.", logId);
-        //for test
-        messageHelper.addAttachment("statementId", Paths.get("/home/dev/IdeaProjects/Neo-Task-SQL/src/main/resources/neostudy_task_sql_1.txt").toFile());
-
+        log.info("{} -- Сообщение, ses-код и ссылка для подписания кредитного договора установлены в тело письма.", logId);
     }
 }

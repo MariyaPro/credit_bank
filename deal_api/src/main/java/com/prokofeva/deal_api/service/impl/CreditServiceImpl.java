@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,6 +25,13 @@ public class CreditServiceImpl implements CreditService {
         credit.setCreditStatus(CreditStatus.CALCULATED);
         log.info("{} -- Создан новый кредит: {}.",logId, credit);
         return saveCredit(credit, logId);
+    }
+
+    @Override
+    public void updateCreditStatus(CreditStatus status, CreditDto creditDto,String logId) {
+        Credit credit = creditRepo.findById(creditDto.getCreditId()).orElseThrow(EntityNotFoundException::new);
+        credit.setCreditStatus(status);
+        saveCredit(credit,logId);
     }
 
     private CreditDto saveCredit(Credit credit, String logId) {

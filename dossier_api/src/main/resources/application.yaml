@@ -13,5 +13,5 @@ spring:
 mail:
   debug: true
 
-deal_feignclient_url: http://deal-app:8085/deal/
-#deal_feignclient_url: http://localhost:8085/deal/
+#deal_feignclient_url: http://deal-app:8085/deal/
+deal_feignclient_url: http://localhost:8085/deal/

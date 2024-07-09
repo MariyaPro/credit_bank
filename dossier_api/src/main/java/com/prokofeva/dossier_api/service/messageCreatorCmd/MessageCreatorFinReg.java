@@ -13,8 +13,8 @@ import java.util.UUID;
 public class MessageCreatorFinReg implements MessageCreator {
 
     @Override
-    public void fill(MimeMessageHelper messageHelper, UUID statementId, String lodId) throws MessagingException {
+    public void fill(MimeMessageHelper messageHelper, UUID statementId, String logId) throws MessagingException {
         messageHelper.setText("Ваша заявка на кредит предварительно одобрена, завершите оформление.");
-        log.info("{} -- Сообщение записано в тело сообщения." , lodId);
+        log.info("{} -- Сообщение записано в тело сообщения." , logId);
     }
 }

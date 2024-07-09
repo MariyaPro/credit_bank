@@ -1,12 +1,14 @@
 package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.client.CalcFeignClient;
-import com.prokofeva.dto.*;
 import com.prokofeva.deal_api.exeption.ExternalServiceException;
 import com.prokofeva.deal_api.service.ClientService;
 import com.prokofeva.deal_api.service.CreditService;
 import com.prokofeva.deal_api.service.DealService;
 import com.prokofeva.deal_api.service.StatementService;
+import com.prokofeva.dto.*;
+import com.prokofeva.enums.ApplicationStatus;
+import com.prokofeva.enums.CreditStatus;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +62,7 @@ public class DealServiceImpl implements DealService {
     @Override
     public void selectAppliedOffer(LoanOfferDto loanOfferDto) {
         statementService.selectAppliedOffer(loanOfferDto);
+        //todo fin-reg
     }
 
     @Transactional
@@ -89,6 +92,43 @@ public class DealServiceImpl implements DealService {
 
         statementService.registrationCredit(statementDto, creditDtoFromDb);
         log.info("{} -- Процедура регистрации кредита завершена успешно.", statementId);
+
+        //todo create-doc
+    }
+
+    @Override
+    public StatementDto getStatement(String statementId, String logId) {
+        return statementService.getStatementById(statementId);
+    }
+
+    @Override
+    public void updateStatementStatus(ApplicationStatus status, String statementId, String logId) {
+        statementService.updateStatementStatus(status, statementId, logId);
+    }
+
+    @Override
+    public void checkSesCode(String sesCode, String statementId, String logId) {
+        log.info("{} -- Получен ses-код от клиента.",logId);
+
+
+        if (statementService.checkSesCode(sesCode, statementId, logId)) {
+            log.info("{} -- Сверка кода прошла успешно.",logId);
+            statementService.updateStatementStatus(ApplicationStatus.DOCUMENT_SIGNED, statementId, logId);
+            CreditDto creditDto = statementService.getStatementById(statementId).getCreditId();
+            creditService.updateCreditStatus(CreditStatus.ISSUED, creditDto, logId);
+
+            //todo credit-issued
+        }
+        else {log.info("{} --Полученный код не соответсвует сохраненному.",logId);}
+    }
+
+    @Override
+    public void signDocuments(String statementId, String logId) {
+        statementService.setupSesCode(statementId, logId);
+        log.info("{} -- Установлен ses-код в заявке id={}.",logId,statementId);
+        statementService.updateStatementStatus(ApplicationStatus.DOCUMENT_CREATED,statementId,logId);
+
+        //todo ses
     }
 
     private ScoringDataDto createScoringData(LoanOfferDto loanOfferDto, ClientDto clientDto) {
