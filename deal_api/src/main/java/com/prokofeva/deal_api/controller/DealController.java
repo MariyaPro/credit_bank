@@ -31,15 +31,17 @@ public class DealController {
     @PostMapping("/statement")
     @Operation(description = "Расчет возможных условий кредита.")
     public ResponseEntity<List<LoanOfferDto>> getLoanOffers(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
-        log.info("{} -- Получена заявка на расчет вариантов займа: {}", loanStatementRequestDto.hashCode(), loanStatementRequestDto);
-        return ResponseEntity.ok(dealService.getListOffers(loanStatementRequestDto));
+        String logId = String.valueOf(UUID.randomUUID());
+        log.info("{} -- Получена заявка на расчет вариантов займа: {}", logId, loanStatementRequestDto);
+        return ResponseEntity.ok(dealService.getListOffers(loanStatementRequestDto,logId));
     }
 
     @PostMapping("/offer/select")
     @Operation(description = "Выбор одного из кредитных предложений.")
     public ResponseEntity<Void> selectAppliedOffer(@RequestBody @Valid LoanOfferDto loanOfferDto) {
-        log.info("{} -- Клиент выбрал вариант кредита: {}.", loanOfferDto.getStatementId(), loanOfferDto);
-        dealService.selectAppliedOffer(loanOfferDto);
+        String logId = String.valueOf(UUID.randomUUID());
+        log.info("{} -- Клиент выбрал вариант кредита: {}.", logId, loanOfferDto);
+        dealService.selectAppliedOffer(loanOfferDto,logId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -48,8 +50,9 @@ public class DealController {
     @Operation(description = "Завершение регистрации и полный подсчёт кредита.")
     public ResponseEntity<Void> registrationCredit(@RequestBody @Valid FinishRegistrationRequestDto finishRegistrationRequestDto,
                                                    @PathVariable String statementId) {
-        log.info("{} -- Процедура регистрации кредита в базе данных. Дополнительные сведения: {}", statementId, finishRegistrationRequestDto);
-        dealService.registrationCredit(finishRegistrationRequestDto, statementId);
+        String logId = String.valueOf(UUID.randomUUID());
+        log.info("{} -- Процедура регистрации кредита в базе данных. Дополнительные сведения: {}", logId, finishRegistrationRequestDto);
+        dealService.registrationCredit(finishRegistrationRequestDto, statementId,logId);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -61,20 +64,6 @@ public class DealController {
         log.info("{} -- Запрос на отправку документов (заявка id={}).", logId, statementId);
         log.info("отработал метод POST");
         dealService.updateStatementStatus(ApplicationStatus.PREPARE_DOCUMENTS, statementId, logId);
-
-        //todo send-doc
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @GetMapping("/document/{statementId}/send")
-    @Operation(description = "Запрос на отправку документов.")
-    public ResponseEntity<Void> sendDocumentsTEST(@PathVariable String statementId) {
-        String logId = String.valueOf(UUID.randomUUID());
-        log.info("{} -- Запрос на отправку документов (заявка id={}).", logId, statementId);
-        log.info("отработал метод GET");
-        dealService.updateStatementStatus(ApplicationStatus.PREPARE_DOCUMENTS, statementId, logId);
-
-        //todo send-doc
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

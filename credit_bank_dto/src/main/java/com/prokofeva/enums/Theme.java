@@ -2,6 +2,7 @@ package com.prokofeva.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public enum Theme {
     }
 
     @JsonCreator
+    @JsonDeserialize
     public static Theme fromValue(String value) {
         for (Theme b : Theme.values()) {
             if (b.value.equalsIgnoreCase(value)) {

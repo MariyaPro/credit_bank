@@ -2,13 +2,11 @@ package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.client.CalcFeignClient;
 import com.prokofeva.deal_api.exeption.ExternalServiceException;
-import com.prokofeva.deal_api.service.ClientService;
-import com.prokofeva.deal_api.service.CreditService;
-import com.prokofeva.deal_api.service.DealService;
-import com.prokofeva.deal_api.service.StatementService;
+import com.prokofeva.deal_api.service.*;
 import com.prokofeva.dto.*;
 import com.prokofeva.enums.ApplicationStatus;
 import com.prokofeva.enums.CreditStatus;
+import com.prokofeva.enums.Theme;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -27,17 +24,15 @@ public class DealServiceImpl implements DealService {
     private final StatementService statementService;
     private final CalcFeignClient calcFeignClient;
     private final CreditService creditService;
+    private final KafkaProducer kafkaProducer;
 
     @Value("${calc_feignclient_url}")
     private String calcFeignClientUrl;
 
     @Transactional
     @Override
-    public List<LoanOfferDto> getListOffers(LoanStatementRequestDto loanStatementRequestDto) {
-        String logId = UUID.randomUUID().toString();
-
+    public List<LoanOfferDto> getListOffers(LoanStatementRequestDto loanStatementRequestDto,String logId) {
         ClientDto clientDto = clientService.createClient(loanStatementRequestDto, logId);
-
         StatementDto statementDto = statementService.createStatement(clientDto, logId);
 
         List<LoanOfferDto> listOffers;
@@ -60,14 +55,14 @@ public class DealServiceImpl implements DealService {
     }
 
     @Override
-    public void selectAppliedOffer(LoanOfferDto loanOfferDto) {
+    public void selectAppliedOffer(LoanOfferDto loanOfferDto, String logId) {
         statementService.selectAppliedOffer(loanOfferDto);
-        //todo fin-reg
+        kafkaProducer.sendMessage(loanOfferDto.getStatementId().toString(), Theme.FINISH_REGISTRATION);
     }
 
     @Transactional
     @Override
-    public void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto, String statementId) {
+    public void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto, String statementId, String logId) {
         log.info("{} -- Получение заявки из БД.", statementId);
         StatementDto statementDto = statementService.getStatementById(statementId);
         log.info("{} -- Необходимо заполнить недостающие данные клиента.", statementId);
@@ -81,9 +76,14 @@ public class DealServiceImpl implements DealService {
             creditDto = calcFeignClient.calculateCredit(scoringDataDto);
             log.info("{} -- Получен ответ от внешнего сервиса ({}calc).", statementId, calcFeignClientUrl);
         } catch (FeignException e) {
-            String message = e.status() == 406 ?
-                    new String(e.responseBody().get().array())
-                    : "Error from external service (" + calcFeignClientUrl + "calc).";
+            String message;
+            if (e.status() == 406 && e.responseBody().isPresent()) {
+                message = new String(e.responseBody().get().array());
+                kafkaProducer.sendMessage(statementId, Theme.STATEMENT_DENIED);
+                statementService.updateStatementStatus(ApplicationStatus.CC_DENIED,statementId, logId);
+            } else {
+                message = "Error from external service (" + calcFeignClientUrl + "calc).";
+            }
             log.error("{} -- {}", statementId, message);
             throw new ExternalServiceException(message);
         }
@@ -93,7 +93,7 @@ public class DealServiceImpl implements DealService {
         statementService.registrationCredit(statementDto, creditDtoFromDb);
         log.info("{} -- Процедура регистрации кредита завершена успешно.", statementId);
 
-        //todo create-doc
+        kafkaProducer.sendMessage(statementId,Theme.CREATE_DOCUMENTS);
     }
 
     @Override
@@ -109,15 +109,13 @@ public class DealServiceImpl implements DealService {
     @Override
     public void checkSesCode(String sesCode, String statementId, String logId) {
         log.info("{} -- Получен ses-код от клиента.",logId);
-
-
         if (statementService.checkSesCode(sesCode, statementId, logId)) {
             log.info("{} -- Сверка кода прошла успешно.",logId);
             statementService.updateStatementStatus(ApplicationStatus.DOCUMENT_SIGNED, statementId, logId);
             CreditDto creditDto = statementService.getStatementById(statementId).getCreditId();
             creditService.updateCreditStatus(CreditStatus.ISSUED, creditDto, logId);
 
-            //todo credit-issued
+            kafkaProducer.sendMessage(statementId,Theme.CREDIT_ISSUED);
         }
         else {log.info("{} --Полученный код не соответсвует сохраненному.",logId);}
     }
@@ -128,7 +126,7 @@ public class DealServiceImpl implements DealService {
         log.info("{} -- Установлен ses-код в заявке id={}.",logId,statementId);
         statementService.updateStatementStatus(ApplicationStatus.DOCUMENT_CREATED,statementId,logId);
 
-        //todo ses
+       kafkaProducer.sendMessage(statementId,Theme.SEND_SES);
     }
 
     private ScoringDataDto createScoringData(LoanOfferDto loanOfferDto, ClientDto clientDto) {

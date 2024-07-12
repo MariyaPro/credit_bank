@@ -9,11 +9,11 @@ import com.prokofeva.enums.ApplicationStatus;
 import java.util.List;
 
 public interface DealService {
-    List<LoanOfferDto> getListOffers(LoanStatementRequestDto loanStatementRequestDto);
+    List<LoanOfferDto> getListOffers(LoanStatementRequestDto loanStatementRequestDto, String logId);
 
-    void selectAppliedOffer(LoanOfferDto loanOfferDto);
+    void selectAppliedOffer(LoanOfferDto loanOfferDto, String logId);
 
-    void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto, String statementId);
+    void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto, String statementId, String logId);
 
     StatementDto getStatement(String statementId, String logId);
 

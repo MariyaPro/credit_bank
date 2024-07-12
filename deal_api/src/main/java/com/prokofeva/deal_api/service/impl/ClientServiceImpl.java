@@ -1,10 +1,10 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.dto.*;
 import com.prokofeva.deal_api.mapper.ClientMapper;
 import com.prokofeva.deal_api.model.Client;
 import com.prokofeva.deal_api.repositories.ClientRepo;
 import com.prokofeva.deal_api.service.ClientService;
+import com.prokofeva.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -17,6 +17,6 @@ public class MessageCreatorCreateDoc implements MessageCreator {
         String text = "Ваша заявка на кредит одобрена. Для получения документов перейдите по ссылке\n" +
                 "http://localhost:8085/deal/document/" + statementId + "/send";
         messageHelper.setText(text);
-        log.info("{} -- Сообщение и ссылка для получения документов установлены в тело письма.",logId);
+        log.info("{} -- {}: сообщение и ссылка для получения документов установлены в тело письма.",logId,this.getClass().getSimpleName());
     }
 }

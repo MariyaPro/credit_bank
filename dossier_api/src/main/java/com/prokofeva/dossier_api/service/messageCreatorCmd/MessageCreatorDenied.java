@@ -14,6 +14,6 @@ public class MessageCreatorDenied implements MessageCreator {
     @Override
     public void fill(MimeMessageHelper messageHelper, UUID statementId, String logId) throws MessagingException {
         messageHelper.setText("Отказ в получении кредита.");
-        log.info("{} -- Сообщение записано в тело сообщения." , logId);
+        log.info("{} -- {}: сообщение записано в тело сообщения." , logId,this.getClass().getSimpleName());
     }
 }

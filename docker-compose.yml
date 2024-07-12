@@ -23,6 +23,7 @@ services:
     depends_on:
       - db
       - calculator-api
+      - kafka
     ports:
       - "8085:8085"
     environment:
@@ -46,6 +47,21 @@ services:
     volumes:
       - /home/dev/IdeaProjects/credit_bank/logs/statement:/app/logs
 
+  dossier-api:
+    build:
+      context: .
+      dockerfile: Dockerfile_Dossier
+    container_name: dossier-app
+    restart: no
+    depends_on:
+      - kafka
+    ports:
+      - "8095:8095"
+    environment:
+      - SERVER_PORT=8095
+    volumes:
+      - /home/dev/IdeaProjects/credit_bank/logs/dossier:/app/logs
+
   db:
     image: postgres:14.7-alpine
     environment:
@@ -57,6 +73,43 @@ services:
     volumes:
       - deal_db:/var/lib/postgresql/data
     restart: always
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.2.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 10000
+    ports:
+      - "22181:2181"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.2
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    hostname: kafka
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - 8099:8080
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    links:
+      - kafka
+      - zookeeper
 
 volumes:
   deal_db:

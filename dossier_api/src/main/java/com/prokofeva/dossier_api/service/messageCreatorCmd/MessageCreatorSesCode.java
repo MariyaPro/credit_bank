@@ -24,6 +24,6 @@ public class MessageCreatorSesCode implements MessageCreator {
         messageHelper.setText("Для подписания крелитного договора отправьте код: \n" +
                 sesCode+"\n по адресу:\n" +
                 "http://localhost:8085/deal/document/" + statementId + "/code/" );
-        log.info("{} -- Сообщение записано в тело сообщения." , logId);
+        log.info("{} -- {}: сообщение записано в тело сообщения." , logId, this.getClass().getSimpleName());
     }
 }

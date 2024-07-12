@@ -41,6 +41,6 @@ public class MessageCreatorSendDoc implements MessageCreator {
                 "Если вы согласны с условиями предоставления кредита, перейдите по ссылке:\n" +
                 "http://localhost:8085/deal/document/" + statementId + "/sing";
         messageHelper.setText(text);
-        log.info("{} -- Сообщение, ses-код и ссылка для подписания кредитного договора установлены в тело письма.", logId);
+        log.info("{} -- {}: сообщение, ses-код и ссылка для подписания кредитного договора установлены в тело письма.", logId, this.getClass().getSimpleName());
     }
 }

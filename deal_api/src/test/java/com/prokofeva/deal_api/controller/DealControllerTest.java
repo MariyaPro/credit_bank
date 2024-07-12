@@ -1,5 +1,6 @@
 package com.prokofeva.deal_api.controller;
 
+import com.prokofeva.deal_api.service.DealService;
 import com.prokofeva.dto.EmploymentDto;
 import com.prokofeva.dto.FinishRegistrationRequestDto;
 import com.prokofeva.dto.LoanOfferDto;
@@ -7,7 +8,6 @@ import com.prokofeva.dto.LoanStatementRequestDto;
 import com.prokofeva.enums.EmploymentPosition;
 import com.prokofeva.enums.EmploymentStatus;
 import com.prokofeva.enums.MaritalStatus;
-import com.prokofeva.deal_api.service.DealService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -56,7 +56,7 @@ class DealControllerTest {
                 .passportSeries("1234")
                 .passportNumber("123456")
                 .build();
-        when(dealService.getListOffers(requestDto))
+        when(dealService.getListOffers(requestDto,anyString()))
                 .thenReturn(List.of(
                         LoanOfferDto.builder().build(), LoanOfferDto.builder().build(),
                         LoanOfferDto.builder().build(), LoanOfferDto.builder().build()
@@ -191,7 +191,7 @@ class DealControllerTest {
 
         ResponseEntity<Void> response = dealController.selectAppliedOffer(loanOfferDto);
 
-        verify(dealService, times(1)).selectAppliedOffer(loanOfferDto);
+        verify(dealService, times(1)).selectAppliedOffer(loanOfferDto, anyString());
         assertEquals(response.getStatusCodeValue(), 200);
     }
 
@@ -216,7 +216,7 @@ class DealControllerTest {
 
         ResponseEntity<Void> response = dealController.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5");
 
-        verify(dealService, times(1)).registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5");
+        verify(dealService, times(1)).registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5", anyString());
         assertEquals(response.getStatusCodeValue(), 200);
     }
 }

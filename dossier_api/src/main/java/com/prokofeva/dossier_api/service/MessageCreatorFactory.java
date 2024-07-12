@@ -32,6 +32,7 @@ public class MessageCreatorFactory {
                 throw new IllegalArgumentException("Неизвестная тема письма.");
             }
         }
+        log.info("{} -- Для заполнения тела сообщения будет использован {}.", logId,creator.getClass().getSimpleName());
         return creator;
     }
 }
