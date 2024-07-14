@@ -18,7 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DossierConsumer {
     private final DossierService dossierService;
-    private final ObjectMapper objectMapper;
+//    private final ObjectMapper objectMapper;
 
     @KafkaListener(groupId = "all", topics = "${kafka.topics.topicFinReg}")
     public void sendFinReg(ConsumerRecord<String, String> record) {
@@ -65,6 +65,7 @@ public class DossierConsumer {
     private void read(ConsumerRecord<String,String> record, String logId){
         EmailMessageDto emailMessageDto;
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
             emailMessageDto = objectMapper.readValue(record.value().getBytes(StandardCharsets.UTF_8), EmailMessageDto.class);
         } catch (IOException e) {
             log.error("{} -- Перехвачено исключение при десериализации записи ({})",logId,record);

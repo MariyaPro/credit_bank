@@ -1,34 +1,48 @@
 package com.prokofeva.dossier_api.service.impl;
 
+import com.prokofeva.dossier_api.exception.ExternalServiceException;
+import com.prokofeva.dossier_api.feign.DealFeignClient;
 import com.prokofeva.dto.*;
 import com.prokofeva.enums.*;
+import feign.FeignException;
+import feign.Request;
+import feign.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-class FileServiceImplTest {
+@TestPropertySource("/application-test.yaml")
+class StatementServiceImplTest {
 
-    private final FileServiceImpl fileService = new FileServiceImpl();
+    @Value("${deal_feignclient_url}")
+    private String dealFeignClientUrl;
+    @InjectMocks
+    private StatementServiceImpl statementService;
+    @Mock
+    private DealFeignClient dealFeignClient;
     private static StatementDto statementDto;
 
     @BeforeAll
-    static void setupStatementDto() {
+    public static void setupStatementDto() {
         EmploymentDto employmentDto = EmploymentDto.builder()
                 .status(EmploymentStatus.EMPLOYED)
                 .employerInn("505021556592")
@@ -91,32 +105,37 @@ class FileServiceImplTest {
     }
 
     @Test
-    void createCreditAgreementFile() throws IOException {
-        Path creditAgreementFile = fileService.createCreditAgreementFile(statementDto, anyString());
+    void getInfoFromDb() {
+        statementService.setDealFeignClientUrl(dealFeignClientUrl);
+        when(dealFeignClient.getStatementDto(anyString())).thenReturn(statementDto);
 
-        assertNotNull(creditAgreementFile);
-        assertTrue(Files.size(creditAgreementFile) > 0L);
-        assertTrue(creditAgreementFile.getFileName().toString()
-                .startsWith("Credit_agreement_" + statementDto.getStatementId().toString()));
+        StatementDto statementDtoFromService = statementService.getInfoFromDb(UUID.fromString("fceaf46f-08f4-462f-9267-cc03047835a5"), anyString());
+
+        assertNotNull(statementDtoFromService);
+        assertEquals(statementDtoFromService, statementDto);
+
+        verify(dealFeignClient, times(1)).getStatementDto(anyString());
     }
 
     @Test
-    void createQuestionnaireFile() throws IOException {
-        Path questionnaireFile = fileService.createQuestionnaireFile(statementDto, anyString());
+    void getInfoFromDbFailFeign() {
+        statementService.setDealFeignClientUrl(dealFeignClientUrl);
+        FeignException feignException = FeignException.errorStatus("dealFeignClientUrl.getStatementDto",
+                Response.builder()
+                        .body("Test error message".getBytes())
+                        .status(406)
+                        .request(Request.create(Request.HttpMethod.POST, "ii", Map.of(), null, null, null))
+                        .build());
 
-        assertNotNull(questionnaireFile);
-        assertTrue(Files.size(questionnaireFile) > 0L);
-        assertTrue(questionnaireFile.getFileName().toString()
-                .startsWith("Questionnaire_" + statementDto.getStatementId().toString()));
-    }
+        when(dealFeignClient.getStatementDto(anyString())).thenThrow(feignException);
 
-    @Test
-    void createPaymentScheduleFile() throws IOException {
-        Path paymentScheduleFile = fileService.createPaymentScheduleFile(statementDto, anyString());
+        Exception e = assertThrows(ExternalServiceException.class, () ->
+                statementService.getInfoFromDb(UUID.fromString("fceaf46f-08f4-462f-9267-cc03047835a5"), anyString()));
 
-        assertNotNull(paymentScheduleFile);
-        assertTrue(Files.size(paymentScheduleFile) > 0L);
-        assertTrue(paymentScheduleFile.getFileName().toString()
-                .startsWith("Payment_Schedule_" + statementDto.getStatementId().toString()));
+        assertNotNull(e);
+        assertArrayEquals("Test error message".getBytes(StandardCharsets.UTF_8),
+                e.getMessage().getBytes(StandardCharsets.UTF_8));
+
+        verify(dealFeignClient, times(1)).getStatementDto(anyString());
     }
 }

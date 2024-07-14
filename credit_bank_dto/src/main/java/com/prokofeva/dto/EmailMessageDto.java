@@ -12,7 +12,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EmailMessageDto {
     private String address;
-
     private Theme theme;
     private UUID statementId;
 }

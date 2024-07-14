@@ -6,6 +6,7 @@ import com.prokofeva.dossier_api.service.StatementService;
 import com.prokofeva.dto.StatementDto;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Setter
 public class StatementServiceImpl implements StatementService {
     private final DealFeignClient dealFeignClient;
 
@@ -23,7 +25,7 @@ public class StatementServiceImpl implements StatementService {
 
     @Override
     public StatementDto getInfoFromDb(UUID statementId, String logId) {
-        log.info("{} -- Для формирования письма необходимо получить информацию о заявке.", statementId.toString());
+        log.info("{} -- Для формирования письма необходимо получить информацию о заявке.", logId);
         StatementDto statementDto;
         try {
             statementDto = dealFeignClient.getStatementDto(statementId.toString());

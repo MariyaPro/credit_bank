@@ -1,0 +1,11 @@
+deal_feignclient_url: http://deal-app:8090/for_test/
+
+spring:
+  mail:
+    host: smtp.yandex.ru
+    username: ProkofevaForTest@yandex.ru
+    password: iwkeziltzbifnllg
+    port: 465
+    protocol: smtps
+mail:
+  debug: true

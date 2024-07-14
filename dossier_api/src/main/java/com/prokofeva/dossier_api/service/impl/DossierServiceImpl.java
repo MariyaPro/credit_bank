@@ -6,6 +6,7 @@ import com.prokofeva.dossier_api.service.MessageCreatorFactory;
 import com.prokofeva.dossier_api.service.SenderService;
 import com.prokofeva.dto.EmailMessageDto;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Setter
 public class DossierServiceImpl implements DossierService {
     private final JavaMailSender mailSender;
     private final SenderService senderService;
