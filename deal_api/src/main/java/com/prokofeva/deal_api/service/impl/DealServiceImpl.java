@@ -60,7 +60,6 @@ public class DealServiceImpl implements DealService {
         kafkaProducer.sendMessage(loanOfferDto.getStatementId().toString(), Theme.FINISH_REGISTRATION);
     }
 
-    @Transactional
     @Override
     public void registrationCredit(FinishRegistrationRequestDto finishRegistrationRequestDto, String statementId, String logId) {
         log.info("{} -- Получение заявки из БД.", statementId);
@@ -124,9 +123,14 @@ public class DealServiceImpl implements DealService {
     public void signDocuments(String statementId, String logId) {
         statementService.setupSesCode(statementId, logId);
         log.info("{} -- Установлен ses-код в заявке id={}.",logId,statementId);
-        statementService.updateStatementStatus(ApplicationStatus.DOCUMENT_CREATED,statementId,logId);
+        statementService.updateStatementStatus(ApplicationStatus.DOCUMENT_SIGNED,statementId,logId);
 
        kafkaProducer.sendMessage(statementId,Theme.SEND_SES);
+    }
+
+    @Override
+    public void sendDoc(String statementId, String logId) {
+        kafkaProducer.sendMessage(statementId,Theme.SEND_DOCUMENTS);
     }
 
     private ScoringDataDto createScoringData(LoanOfferDto loanOfferDto, ClientDto clientDto) {

@@ -1,11 +1,38 @@
 deal_feignclient_url: http://deal-app:8090/for_test/
 
 spring:
-  mail:
-    host: smtp.yandex.ru
-    username: ProkofevaForTest@yandex.ru
-    password: iwkeziltzbifnllg
-    port: 465
-    protocol: smtps
+#  mail:
+#    host: smtp.yandex.ru
+#    username: ProkofevaMariyaS@yandex.ru
+#    password: iwkeziltzbifnllg
+#    port: 465
+#    protocol: smtps
+  kafka:
+    bootstrap-servers: kafka:29092
+    listener:
+      ack-mode: record
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: com.prokofeva.dossier_api.config.DltMessageSerializer
+      retries: 3
+    consumer:
+      group-id: all
+      autoOffsetReset: earliest
+      keyDeserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      valueDeserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+    properties:
+      spring.json.value.default.type: com.prokofeva.dto.EmailMessageDto
+      spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+      spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+
 mail:
   debug: true
+
+kafka:
+  topics:
+    topicFinReg: finish-registration
+    topicCreateDoc: create-documents
+    topicSendDoc: send-documents
+    topicSendSes: send-ses
+    topicCreditIssued: credit-issued
+    topicDenied: statement-denied

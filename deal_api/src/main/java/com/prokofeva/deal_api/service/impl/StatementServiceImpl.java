@@ -101,6 +101,7 @@ public class StatementServiceImpl implements StatementService {
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
         statement.setStatus(status);
+        if(status.equals(ApplicationStatus.DOCUMENT_SIGNED)) statement.setSignDate(now);
 
         StatusHistory statusHistory = new StatusHistory(status, now, ChangeType.AUTOMATIC);
         statement.getStatusHistoryList().add(statusHistory);

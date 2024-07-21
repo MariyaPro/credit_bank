@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Schema(description = "Ежемесячный платеж по кредиту")
+@Schema(description = "Ежемесячный платеж по кредиту.")
 @Data
 @Builder
 public class PaymentScheduleElementDto {

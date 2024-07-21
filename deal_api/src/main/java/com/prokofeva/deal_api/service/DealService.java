@@ -22,4 +22,6 @@ public interface DealService {
     void checkSesCode(String sesCode, String statementId, String logId);
 
     void signDocuments(String statementId, String logId);
+
+    void sendDoc(String statementId, String logId);
 }

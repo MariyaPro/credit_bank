@@ -1,31 +1,52 @@
 package com.prokofeva.dossier_api.config;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.TopicPartition;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 
 @Configuration
 @EnableKafka
+@RequiredArgsConstructor
 public class KafkaConsumerConfig {
-    @Value(value = "${spring.kafka.bootstrap-servers}")
-    private String bootstrapAddress;
+    private static final String DLT_TOPIC_SUFFIX = ".dlt";
+    private final ProducerFactory<Object, Object> producerFactory;
+    private final ConsumerFactory<Object, Object> consumerFactory;
 
     @Bean
-    public ConsumerFactory<String, String> messageDtoConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "all");
+    public KafkaTemplate<Object, Object> kafkaTemplate() {
+        return new KafkaTemplate<>(producerFactory);
+    }
 
-        return new DefaultKafkaConsumerFactory<>(props);
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<Object, Object> kafkaListenerContainerFactory(
+            DefaultErrorHandler errorHandler
+    ) {
+        ConcurrentKafkaListenerContainerFactory<Object, Object> kafkaListenerContainerFactory = new ConcurrentKafkaListenerContainerFactory<>();
+        kafkaListenerContainerFactory.setConsumerFactory(consumerFactory);
+        kafkaListenerContainerFactory.setCommonErrorHandler(errorHandler);
+        kafkaListenerContainerFactory.setConcurrency(4);
+        return kafkaListenerContainerFactory;
+    }
+
+    @Bean
+    public DeadLetterPublishingRecoverer publisher(KafkaTemplate<Object, Object> bytesTemplate) {
+        return new DeadLetterPublishingRecoverer(bytesTemplate,
+                (consumerRecord, exception) ->
+                        new TopicPartition(consumerRecord.topic() + DLT_TOPIC_SUFFIX, consumerRecord.partition()));
+    }
+
+    @Bean
+    public DefaultErrorHandler errorHandler(DeadLetterPublishingRecoverer deadLetterPublishingRecoverer) {
+        final var handler = new DefaultErrorHandler(deadLetterPublishingRecoverer);
+        handler.addNotRetryableExceptions(Exception.class);
+        return handler;
     }
 }

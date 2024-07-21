@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Schema(description = "Предложение условий займа")
+@Schema(description = "Предложение условий займа.")
 @Data
 @Builder
 public class LoanOfferDto {

@@ -62,7 +62,7 @@ public class DealController {
     public ResponseEntity<Void> sendDocuments(@PathVariable String statementId) {
         String logId = String.valueOf(UUID.randomUUID());
         log.info("{} -- Запрос на отправку документов (заявка id={}).", logId, statementId);
-        log.info("отработал метод POST");
+        dealService.sendDoc(statementId,logId);
         dealService.updateStatementStatus(ApplicationStatus.PREPARE_DOCUMENTS, statementId, logId);
 
         return new ResponseEntity<>(HttpStatus.OK);

@@ -4,8 +4,6 @@ import com.prokofeva.dto.*;
 import com.prokofeva.enums.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -21,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 
-@ExtendWith(SpringExtension.class)
+//@ExtendWith(SpringExtension.class)
 class FileServiceImplTest {
 
     private final FileServiceImpl fileService = new FileServiceImpl();
-    private static StatementDto statementDto;
+    private static StatementDto statementDto ;
 
     @BeforeAll
-    static void setupStatementDto() {
+    public static void setupStatementDto() {
         EmploymentDto employmentDto = EmploymentDto.builder()
                 .status(EmploymentStatus.EMPLOYED)
                 .employerInn("505021556592")

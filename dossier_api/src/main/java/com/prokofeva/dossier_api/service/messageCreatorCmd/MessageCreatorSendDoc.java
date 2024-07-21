@@ -39,7 +39,7 @@ public class MessageCreatorSendDoc implements MessageCreator {
                 "2. Анкету с вашими данными - Проверьте правильность указанных данных.\n" +
                 "3. График ежемесячных платежей.\n" +
                 "Если вы согласны с условиями предоставления кредита, перейдите по ссылке:\n" +
-                "http://localhost:8085/deal/document/" + statementId + "/sing";
+                "http://localhost:8085/deal/document/" + statementId + "/sign";
         messageHelper.setText(text);
         log.info("{} -- {}: сообщение, ses-код и ссылка для подписания кредитного договора установлены в тело письма.", logId, this.getClass().getSimpleName());
     }

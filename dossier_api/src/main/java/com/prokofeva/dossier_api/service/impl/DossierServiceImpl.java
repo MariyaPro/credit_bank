@@ -12,10 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.validation.Valid;
 
+@Validated
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -29,8 +32,8 @@ public class DossierServiceImpl implements DossierService {
     private String emailFrom;
 
     @Override
-    public void sendMessageToClient(EmailMessageDto emailMessageDto, String logId) {
-        log.info("{} -- Необходимо отправить сообщение клиенту: {}", logId,emailMessageDto);
+    public void sendMessageToClient(@Valid EmailMessageDto emailMessageDto, String logId) {
+        log.info("{} -- Необходимо отправить сообщение клиенту: {}", logId, emailMessageDto);
         senderService.sendMailMessage(createMailMessage(emailMessageDto,logId),logId);
         log.info("{} -- Сообщение отправлено.",logId);
     }

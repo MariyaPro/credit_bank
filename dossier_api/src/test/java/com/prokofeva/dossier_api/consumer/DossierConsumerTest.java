@@ -21,6 +21,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.containers.KafkaContainer;
@@ -46,12 +47,11 @@ import static org.mockito.Mockito.verify;
 class DossierConsumerTest {
     @Mock
     private DossierService dossierService;
-//    @Autowired
     @InjectMocks
     private DossierConsumer dossierConsumer;
 
     private static KafkaTemplate<String, EmailMessageDto> kafkaTemplate;
-    private static Consumer<String, String> consumer;
+    private static Consumer<String, EmailMessageDto> consumer;
 
     @Container
     static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.3.2"));
@@ -60,7 +60,6 @@ class DossierConsumerTest {
     static void beforeAll() {
         kafkaContainer.start();
         setup();
-
     }
 
     @AfterAll
@@ -77,15 +76,15 @@ class DossierConsumerTest {
                 theme, UUID.randomUUID()));
 
         consumer.subscribe(List.of(topicName));
-        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100000));
+        ConsumerRecords<String, EmailMessageDto> records = consumer.poll(Duration.ofMillis(100000));
 
         assertEquals(records.count(), 1);
 
-        for (ConsumerRecord<String, String> record : records) {
-            dossierConsumer.sendFinReg(record);
+        for (ConsumerRecord<String, EmailMessageDto> record : records) {
+            dossierConsumer.sendFinReg(record.value());
         }
 
-        verify(dossierService, times(1)).sendMessageToClient(any(), anyString());
+        verify(dossierService, times(1)).sendMessageToClient(any(EmailMessageDto.class), anyString());
     }
 
     @Test
@@ -97,12 +96,12 @@ class DossierConsumerTest {
                 theme, UUID.randomUUID()));
 
         consumer.subscribe(List.of(topicName));
-        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100000));
+        ConsumerRecords<String, EmailMessageDto> records = consumer.poll(Duration.ofMillis(100000));
 
         assertEquals(records.count(), 1);
 
-        for (ConsumerRecord<String, String> record : records) {
-            dossierConsumer.sendCreateDoc(record);
+        for (ConsumerRecord<String, EmailMessageDto> record : records) {
+            dossierConsumer.sendCreateDoc(record.value());
         }
 
         verify(dossierService, times(1)).sendMessageToClient(any(), anyString());
@@ -117,12 +116,12 @@ class DossierConsumerTest {
                 theme, UUID.randomUUID()));
 
         consumer.subscribe(List.of(topicName));
-        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100000));
+        ConsumerRecords<String, EmailMessageDto> records = consumer.poll(Duration.ofMillis(100000));
 
         assertEquals(records.count(), 1);
 
-        for (ConsumerRecord<String, String> record : records) {
-            dossierConsumer.sendDoc(record);
+        for (ConsumerRecord<String, EmailMessageDto> record : records) {
+            dossierConsumer.sendDoc(record.value());
         }
 
         verify(dossierService, times(1)).sendMessageToClient(any(), anyString());
@@ -138,12 +137,12 @@ class DossierConsumerTest {
                 theme, UUID.randomUUID()));
 
         consumer.subscribe(List.of(topicName));
-        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100000));
+        ConsumerRecords<String, EmailMessageDto> records = consumer.poll(Duration.ofMillis(100000));
 
         assertEquals(records.count(), 1);
 
-        for (ConsumerRecord<String, String> record : records) {
-            dossierConsumer.sendSes(record);
+        for (ConsumerRecord<String, EmailMessageDto> record : records) {
+            dossierConsumer.sendSes(record.value());
         }
 
         verify(dossierService, times(1)).sendMessageToClient(any(), anyString());
@@ -160,12 +159,12 @@ class DossierConsumerTest {
                 UUID.randomUUID()));
 
         consumer.subscribe(List.of(topicName));
-        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100000));
+        ConsumerRecords<String, EmailMessageDto> records = consumer.poll(Duration.ofMillis(100000));
 
         assertEquals(records.count(), 1);
 
-        for (ConsumerRecord<String, String> record : records) {
-            dossierConsumer.sendCreditIssued(record);
+        for (ConsumerRecord<String, EmailMessageDto> record : records) {
+            dossierConsumer.sendCreditIssued(record.value());
         }
     }
 
@@ -179,12 +178,12 @@ class DossierConsumerTest {
                 UUID.randomUUID()));
 
         consumer.subscribe(List.of(topicName));
-        ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(100000));
+        ConsumerRecords<String, EmailMessageDto> records = consumer.poll(Duration.ofMillis(100000));
 
         assertEquals(records.count(), 1);
 
-        for (ConsumerRecord<String, String> record : records) {
-            dossierConsumer.sendDenied(record);
+        for (ConsumerRecord<String, EmailMessageDto> record : records) {
+            dossierConsumer.sendDenied(record.value());
         }
 
         verify(dossierService, times(1)).sendMessageToClient(any(), anyString());
@@ -204,12 +203,11 @@ class DossierConsumerTest {
 
         Map<String, Object> configCons = new HashMap<>();
         configCons.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        configCons.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configCons.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         configCons.put(ConsumerConfig.GROUP_ID_CONFIG, "all");
         configCons.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-        ConsumerFactory<String, String> factory = new DefaultKafkaConsumerFactory<>(configCons);
+        ConsumerFactory<String, EmailMessageDto> factory = new DefaultKafkaConsumerFactory<>(
+                configCons, new StringDeserializer(), new JsonDeserializer<>(EmailMessageDto.class));
         consumer = factory.createConsumer();
     }
 

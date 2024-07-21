@@ -16,7 +16,12 @@ public class SenderServiceImpl implements SenderService {
 
     @Override
     public void sendMailMessage(MimeMessage message, String logId) {
-        log.info("{} -- Для отправки клиенту сформировано сообщение: {}.",logId,message);
-        mailSender.send(message);
+        log.info("{} -- Для отправки клиенту сформировано сообщение: {}.", logId, message);
+        try {
+            mailSender.send(message);
+        } catch (Exception e) {
+            log.error("{} -- Не удалось отправить сообщение клиенту.\nMime message: {}\nCause: {}", logId, message, e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }
