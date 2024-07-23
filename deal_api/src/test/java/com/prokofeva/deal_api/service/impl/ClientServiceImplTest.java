@@ -1,11 +1,11 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.dto.*;
-import com.prokofeva.deal_api.enums.EmploymentPosition;
-import com.prokofeva.deal_api.enums.EmploymentStatus;
-import com.prokofeva.deal_api.enums.MaritalStatus;
 import com.prokofeva.deal_api.model.Client;
 import com.prokofeva.deal_api.repositories.ClientRepo;
+import com.prokofeva.dto.*;
+import com.prokofeva.enums.EmploymentPosition;
+import com.prokofeva.enums.EmploymentStatus;
+import com.prokofeva.enums.MaritalStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

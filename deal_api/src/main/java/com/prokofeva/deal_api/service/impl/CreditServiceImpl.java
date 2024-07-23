@@ -1,14 +1,16 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.dto.CreditDto;
-import com.prokofeva.deal_api.enums.CreditStatus;
 import com.prokofeva.deal_api.mapper.CreditMapper;
 import com.prokofeva.deal_api.model.Credit;
 import com.prokofeva.deal_api.repositories.CreditRepo;
 import com.prokofeva.deal_api.service.CreditService;
+import com.prokofeva.dto.CreditDto;
+import com.prokofeva.enums.CreditStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
 
 @Slf4j
 @Service
@@ -23,6 +25,13 @@ public class CreditServiceImpl implements CreditService {
         credit.setCreditStatus(CreditStatus.CALCULATED);
         log.info("{} -- Создан новый кредит: {}.",logId, credit);
         return saveCredit(credit, logId);
+    }
+
+    @Override
+    public void updateCreditStatus(CreditStatus status, CreditDto creditDto,String logId) {
+        Credit credit = creditRepo.findById(creditDto.getCreditId()).orElseThrow(EntityNotFoundException::new);
+        credit.setCreditStatus(status);
+        saveCredit(credit,logId);
     }
 
     private CreditDto saveCredit(Credit credit, String logId) {

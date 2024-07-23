@@ -1,26 +1,26 @@
+server:
+  port: 8085
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5433/deal_db
     username: deal_user
     password: 123
     driver-class-name: org.postgresql.Driver
-
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: off
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-
   liquibase:
     change-log: db/changelog/db.changelog-master.xml
-
-server:
-  port: 8085
+  kafka:
+    bootstrap-servers: kafka:29092
 
 feign:
   client:
@@ -29,9 +29,18 @@ feign:
         read-timeout: 5000
         connect-timeout: 5000
 
-#calc_feignclient_url: http://calculator-app:8090/calculator/
-calc_feignclient_url: http://localhost:8090/calculator/
+calc_feignclient_url: http://calculator-app:8090/calculator/
+#calc_feignclient_url: http://localhost:8090/calculator/
 
 logging:
   file:
     name: logs/log_deal
+
+kafka:
+  topics:
+    topicFinReg: finish-registration
+    topicCreateDoc: create-documents
+    topicSendDoc: send-documents
+    topicSendSes: send-ses
+    topicCreditIssued: credit-issued
+    topicDenied: statement-denied

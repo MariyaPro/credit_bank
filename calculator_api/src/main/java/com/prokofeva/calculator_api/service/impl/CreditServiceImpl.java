@@ -1,12 +1,12 @@
 package com.prokofeva.calculator_api.service.impl;
 
-import com.prokofeva.calculator_api.dto.CreditDto;
-import com.prokofeva.calculator_api.dto.PaymentScheduleElementDto;
-import com.prokofeva.calculator_api.dto.ScoringDataDto;
+import com.prokofeva.dto.PaymentScheduleElementDto;
+import com.prokofeva.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.CreditService;
 import com.prokofeva.calculator_api.service.InsuranceService;
 import com.prokofeva.calculator_api.service.PaymentScheduleService;
 import com.prokofeva.calculator_api.service.ScoringService;
+import com.prokofeva.dto.CreditDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

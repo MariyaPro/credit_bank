@@ -1,12 +1,12 @@
 package com.prokofeva.deal_api.service.impl;
 
 import com.prokofeva.deal_api.client.CalcFeignClient;
-import com.prokofeva.deal_api.dto.*;
-import com.prokofeva.deal_api.enums.*;
 import com.prokofeva.deal_api.exeption.ExternalServiceException;
 import com.prokofeva.deal_api.service.ClientService;
 import com.prokofeva.deal_api.service.CreditService;
 import com.prokofeva.deal_api.service.StatementService;
+import com.prokofeva.dto.*;
+import com.prokofeva.enums.*;
 import feign.FeignException;
 import feign.Request;
 import feign.Response;
@@ -91,7 +91,7 @@ class DealServiceImplTest {
                 LoanOfferDto.builder().build()
         ));
 
-        List<LoanOfferDto> listOffersAc = dealService.getListOffers(loanRequestDto);
+        List<LoanOfferDto> listOffersAc = dealService.getListOffers(loanRequestDto,anyString());
 
         assertNotNull(listOffersAc);
 
@@ -154,7 +154,7 @@ class DealServiceImplTest {
         when(statementService.createStatement(any(), anyString())).thenReturn(statementDtoFromService);
         when(calcFeignClient.getListOffers(any(LoanStatementRequestDto.class))).thenThrow(feignException);
 
-        Exception e = assertThrows(ExternalServiceException.class, () -> dealService.getListOffers(loanRequestDto));
+        Exception e = assertThrows(ExternalServiceException.class, () -> dealService.getListOffers(loanRequestDto,anyString()));
 
         assertNotNull(e);
         assertArrayEquals("Test message".getBytes(StandardCharsets.UTF_8),
@@ -179,7 +179,7 @@ class DealServiceImplTest {
                 .isSalaryClient(false)
                 .build();
 
-        dealService.selectAppliedOffer(loanOfferDto);
+        dealService.selectAppliedOffer(loanOfferDto, anyString());
 
         verify(statementService, times(1)).selectAppliedOffer(loanOfferDto);
     }
@@ -259,7 +259,7 @@ class DealServiceImplTest {
         when(calcFeignClient.calculateCredit(any())).thenReturn(creditDto);
         when(creditService.createCredit(any(CreditDto.class), anyString())).thenReturn(creditDto);
 
-        dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5");
+        dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5", anyString());
 
         verify(statementService, times(1)).getStatementById(any());
         verify(clientService, times(1)).updateClientInfo(any(), any(), anyString());
@@ -339,7 +339,7 @@ class DealServiceImplTest {
         when(calcFeignClient.calculateCredit(any())).thenThrow(feignException);
 
         Exception e = assertThrows(ExternalServiceException.class,
-                () -> dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5"));
+                () -> dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5", anyString()));
 
         assertNotNull(e);
         assertArrayEquals("Test message".getBytes(StandardCharsets.UTF_8),

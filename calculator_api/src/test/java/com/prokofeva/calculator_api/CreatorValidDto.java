@@ -1,10 +1,10 @@
 package com.prokofeva.calculator_api;
 
-import com.prokofeva.calculator_api.dto.*;
-import com.prokofeva.calculator_api.enums.EmploymentPosition;
-import com.prokofeva.calculator_api.enums.EmploymentStatus;
-import com.prokofeva.calculator_api.enums.Gender;
-import com.prokofeva.calculator_api.enums.MaritalStatus;
+import com.prokofeva.dto.*;
+import com.prokofeva.enums.EmploymentPosition;
+import com.prokofeva.enums.EmploymentStatus;
+import com.prokofeva.enums.Gender;
+import com.prokofeva.enums.MaritalStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

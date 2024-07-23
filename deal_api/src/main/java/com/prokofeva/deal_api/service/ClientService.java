@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.service;
 
-import com.prokofeva.deal_api.dto.ClientDto;
-import com.prokofeva.deal_api.dto.FinishRegistrationRequestDto;
-import com.prokofeva.deal_api.dto.LoanStatementRequestDto;
+import com.prokofeva.dto.ClientDto;
+import com.prokofeva.dto.FinishRegistrationRequestDto;
+import com.prokofeva.dto.LoanStatementRequestDto;
 
 public interface ClientService {
     ClientDto createClient(LoanStatementRequestDto loanStatementRequestDto, String logId);

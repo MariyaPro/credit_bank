@@ -1,8 +1,8 @@
 package com.prokofeva.deal_api.mapper;
 
-import com.prokofeva.deal_api.dto.ClientDto;
-import com.prokofeva.deal_api.enums.MaritalStatus;
 import com.prokofeva.deal_api.model.Client;
+import com.prokofeva.dto.ClientDto;
+import com.prokofeva.enums.MaritalStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

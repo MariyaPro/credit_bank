@@ -30,5 +30,4 @@ public class HandlerExceptionControllerAdvice {
         log.error("Некорректные данные в запросе, перехвачено исключение MethodArgumentNotValidException.class : {}", errorsList);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorsList);
     }
-
 }

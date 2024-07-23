@@ -1,3 +1,5 @@
+server:
+  port: 8090
 
 rate_loan:
   base: '20.00'
@@ -53,5 +55,3 @@ scoring:
 logging:
   file:
     name: logs/log_calculator
-server:
-  port: 8090

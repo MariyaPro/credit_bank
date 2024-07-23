@@ -1,9 +1,9 @@
 package com.prokofeva.calculator_api.controller;
 
-import com.prokofeva.calculator_api.dto.CreditDto;
-import com.prokofeva.calculator_api.dto.LoanOfferDto;
-import com.prokofeva.calculator_api.dto.LoanStatementRequestDto;
-import com.prokofeva.calculator_api.dto.ScoringDataDto;
+import com.prokofeva.dto.CreditDto;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.LoanStatementRequestDto;
+import com.prokofeva.dto.ScoringDataDto;
 import com.prokofeva.calculator_api.service.CalculatorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,5 +45,4 @@ public class CalculatorController {
         log.info("{} -- Поступила заявка на кредит. {}", logId, scoringDataDto.toString());
         return ResponseEntity.ok(calculatorService.calculateCredit(scoringDataDto, logId));
     }
-
 }

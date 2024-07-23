@@ -1,7 +1,7 @@
 package com.prokofeva.statement_api.feign;
 
-import com.prokofeva.statement_api.model.LoanOfferDto;
-import com.prokofeva.statement_api.model.LoanStatementRequestDto;
+import com.prokofeva.dto.LoanOfferDto;
+import com.prokofeva.dto.LoanStatementRequestDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

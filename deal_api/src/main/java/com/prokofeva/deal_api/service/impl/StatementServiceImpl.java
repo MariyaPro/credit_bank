@@ -1,13 +1,13 @@
 package com.prokofeva.deal_api.service.impl;
 
-import com.prokofeva.deal_api.dto.*;
-import com.prokofeva.deal_api.enums.ApplicationStatus;
-import com.prokofeva.deal_api.enums.ChangeType;
 import com.prokofeva.deal_api.mapper.ClientMapper;
 import com.prokofeva.deal_api.mapper.StatementMapper;
 import com.prokofeva.deal_api.model.Statement;
 import com.prokofeva.deal_api.repositories.StatementRepo;
 import com.prokofeva.deal_api.service.StatementService;
+import com.prokofeva.dto.*;
+import com.prokofeva.enums.ApplicationStatus;
+import com.prokofeva.enums.ChangeType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -72,6 +72,28 @@ public class StatementServiceImpl implements StatementService {
         saveStatement(statement, statementDto.getStatementId().toString());
     }
 
+    @Override
+    public void updateStatementStatus(ApplicationStatus status, String statementId, String logId) {
+        Statement statement = statementRepo.findById(UUID.fromString(statementId)).orElseThrow(EntityNotFoundException::new);
+        addStatusHistory(statement, status, logId);
+        saveStatement(statement, logId);
+    }
+
+    @Override
+    public boolean checkSesCode(String sesCode, String statementId, String logId) {
+        Statement statement = statementRepo.findById(UUID.fromString(statementId)).orElseThrow(EntityNotFoundException::new);
+        String sesCodeDb = statement.getSesCode();
+        log.info("{} --Полученный код ({}). Сохраненный в базе ({}).",logId,sesCode,sesCodeDb);
+     return sesCode.equals(sesCodeDb);
+    }
+
+    @Override
+    public void setupSesCode(String statementId, String logId) {
+        Statement statement = statementRepo.findById(UUID.fromString(statementId)).orElseThrow(EntityNotFoundException::new);
+        statement.setSesCode(UUID.randomUUID().toString());
+        saveStatement(statement,logId);
+    }
+
     private void addStatusHistory(Statement statement, ApplicationStatus status, String logId) {
         if (statement.getStatementId() != null)
             logId = statement.getStatementId().toString();
@@ -79,6 +101,7 @@ public class StatementServiceImpl implements StatementService {
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 
         statement.setStatus(status);
+        if(status.equals(ApplicationStatus.DOCUMENT_SIGNED)) statement.setSignDate(now);
 
         StatusHistory statusHistory = new StatusHistory(status, now, ChangeType.AUTOMATIC);
         statement.getStatusHistoryList().add(statusHistory);
