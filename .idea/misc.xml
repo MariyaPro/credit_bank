@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/statement_api/pom.xml" />
         <option value="$PROJECT_DIR$/dossier_api/pom.xml" />
         <option value="$PROJECT_DIR$/credit_bank_dto/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway_api/pom.xml" />
       </list>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />

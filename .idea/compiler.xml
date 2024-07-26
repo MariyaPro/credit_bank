@@ -10,6 +10,7 @@
         <module name="credit_bank_dto" />
         <module name="calculator_api" />
         <module name="dossier_api" />
+        <module name="gateway_api" />
       </profile>
       <profile name="Annotation profile for statement_api" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -35,6 +36,7 @@
       <module name="credit_bank_dto" options="-parameters" />
       <module name="deal_api" options="-parameters" />
       <module name="dossier_api" options="-parameters" />
+      <module name="gateway_api" options="-parameters" />
       <module name="statement_api" options="-parameters" />
     </option>
   </component>
