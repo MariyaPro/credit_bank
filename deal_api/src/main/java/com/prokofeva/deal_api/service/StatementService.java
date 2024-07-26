@@ -7,13 +7,13 @@ import com.prokofeva.dto.StatementDto;
 import com.prokofeva.enums.ApplicationStatus;
 
 public interface StatementService {
-    void selectAppliedOffer(LoanOfferDto loanOfferDto);
+    void selectAppliedOffer(LoanOfferDto loanOfferDto, String logId);
 
     StatementDto createStatement(ClientDto clientDto, String logId);
 
-    StatementDto getStatementById(String statementId);
+    StatementDto getStatementById(String statementId, String logId);
 
-    void registrationCredit(StatementDto statementDto, CreditDto creditDtoFromDb);
+    void registrationCredit(StatementDto statementDto, CreditDto creditDtoFromDb, String logId);
 
     void updateStatementStatus(ApplicationStatus status, String statementId, String logId);
 

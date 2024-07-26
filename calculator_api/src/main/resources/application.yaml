@@ -1,6 +1,10 @@
 server:
   port: 8090
 
+spring:
+  application:
+    name: calculator
+
 rate_loan:
   base: '20.00'
   age:

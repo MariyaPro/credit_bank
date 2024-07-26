@@ -8,27 +8,22 @@ logging:
 spring:
   application:
     name: gateway
-#  cloud:
-#    gateway:
-#      enabled: true
-##      httpclient:
-##        connect-timeout: 10000
-##        response-timeout: 30s
-#      routes:
-##        - id: calculator
-##          uri: http://localhost:8090
-##          predicates:
-##            - Path=/calculator/**
-##        - id: deal
-##          uri: http://localhost:8085
-##          predicates:
-##            - Path=/deal/**
-#        - id: statement
-#          uri: http://localhost:8080
+  cloud:
+    gateway:
+      enabled: true
+      httpclient:
+        connect-timeout: 10000
+        response-timeout: 30s
+      routes:
+#        - id: calculator
+#          uri: http://calc-app:8090
 #          predicates:
-#            - Path=/statement/**
-
-#deal_feignclient_url: http://deal-app:8085/deal/
-#statement_feignclient_url: http://statement-app:8080/statement/
-deal_feignclient_url: http://localhost:8085/deal/
-statement_feignclient_url: http://localhost:8080/statement/
+#            - Path=/calculator/**
+        - id: deal
+          uri: http://deal-app:8085
+          predicates:
+            - Path=/deal/**
+        - id: statement
+          uri: http://statement-app:8080
+          predicates:
+            - Path=/statement/**

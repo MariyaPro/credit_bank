@@ -28,11 +28,11 @@ public class StatementServiceImpl implements StatementService {
     private final ClientMapper clientMapper;
 
     @Override
-    public void selectAppliedOffer(LoanOfferDto loanOfferDto) {
+    public void selectAppliedOffer(LoanOfferDto loanOfferDto, String logId) {
         Optional<Statement> statementOptional = statementRepo.findById(loanOfferDto.getStatementId());
         Statement statement = statementOptional.orElseThrow(EntityNotFoundException::new);
         statement.setAppliedOffer(loanOfferDto);
-        saveStatement(statement, loanOfferDto.getStatementId().toString());
+        saveStatement(statement, logId);
     }
 
     private StatementDto saveStatement(Statement statement, String logId) {
@@ -56,20 +56,20 @@ public class StatementServiceImpl implements StatementService {
     }
 
     @Override
-    public StatementDto getStatementById(String statementId) {
+    public StatementDto getStatementById(String statementId, String logId) {
         Statement statement = statementRepo.findById(UUID.fromString(statementId))
                 .orElseThrow(EntityNotFoundException::new);
-        log.info("{} -- Заявка успешно плучена из БД.", statementId);
+        log.info("{} -- Заявка (id={}) успешно плучена из БД.", logId,statementId);
         return statementMapper.convertEntityToDto(statement);
     }
 
     @Override
-    public void registrationCredit(StatementDto statementDto, CreditDto creditDtoFromDb) {
+    public void registrationCredit(StatementDto statementDto, CreditDto creditDtoFromDb, String logId) {
         statementDto.setCreditId(creditDtoFromDb);
-        log.info("{} -- Изменение данных заявки: заполнено поле creditId = {}.", statementDto.getStatementId(), creditDtoFromDb.getCreditId());
+        log.info("{} -- Изменение данных заявки: заполнено поле creditId = {}.", logId, creditDtoFromDb.getCreditId());
         Statement statement = statementMapper.convertDtoToEntity(statementDto);
-        addStatusHistory(statement, ApplicationStatus.APPROVED, statementDto.getStatementId().toString());
-        saveStatement(statement, statementDto.getStatementId().toString());
+        addStatusHistory(statement, ApplicationStatus.APPROVED, logId);
+        saveStatement(statement, logId);
     }
 
     @Override
@@ -95,8 +95,6 @@ public class StatementServiceImpl implements StatementService {
     }
 
     private void addStatusHistory(Statement statement, ApplicationStatus status, String logId) {
-        if (statement.getStatementId() != null)
-            logId = statement.getStatementId().toString();
         log.info("{} -- Изменение статуса заявки (статус = {}).", logId, status);
         LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
 

@@ -147,7 +147,7 @@ class StatementServiceImplTest {
 
         long countStatementBefore = statementRepo.count();
 
-        statementService.selectAppliedOffer(loanOfferDto);
+        statementService.selectAppliedOffer(loanOfferDto,"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
 
         long countStatementAfter = statementRepo.count();
 
@@ -189,7 +189,7 @@ class StatementServiceImplTest {
 
         long countStatementBefore = statementRepo.count();
 
-        StatementDto statementDtoEx = statementService.getStatementById(uuidStr);
+        StatementDto statementDtoEx = statementService.getStatementById(uuidStr,"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
 
         long countStatementAfter = statementRepo.count();
 

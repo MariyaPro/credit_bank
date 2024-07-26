@@ -7,5 +7,5 @@ import com.prokofeva.dto.LoanStatementRequestDto;
 public interface ClientService {
     ClientDto createClient(LoanStatementRequestDto loanStatementRequestDto, String logId);
 
-    ClientDto updateClientInfo(ClientDto clientDto, FinishRegistrationRequestDto finRegRequestDto, String statementId);
+    ClientDto updateClientInfo(ClientDto clientDto, FinishRegistrationRequestDto finRegRequestDto, String logId);
 }

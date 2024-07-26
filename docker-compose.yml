@@ -62,6 +62,21 @@ services:
     volumes:
       - /home/dev/IdeaProjects/credit_bank/logs/dossier:/app/logs
 
+  gateway-api:
+    build:
+      context: .
+      dockerfile: Dockerfile_Gateway
+    container_name: gateway-app
+    restart: no
+    depends_on:
+      - kafka
+    ports:
+      - "8000:8000"
+    environment:
+      - SERVER_PORT=8000
+    volumes:
+      - /home/dev/IdeaProjects/credit_bank/logs/gateway:/app/logs
+
   db:
     image: postgres:14.7-alpine
     environment:
