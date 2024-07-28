@@ -6,6 +6,8 @@ import com.prokofeva.dto.LoanOfferDto;
 import com.prokofeva.dto.StatementDto;
 import com.prokofeva.enums.ApplicationStatus;
 
+import java.util.List;
+
 public interface StatementService {
     void selectAppliedOffer(LoanOfferDto loanOfferDto, String logId);
 
@@ -20,5 +22,7 @@ public interface StatementService {
     boolean checkSesCode(String sesCode, String statementId, String logId);
 
     void setupSesCode(String statementId, String logId);
+
+    List<StatementDto> getListStatements(String logId);
 }
 

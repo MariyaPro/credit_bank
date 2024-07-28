@@ -109,4 +109,13 @@ public class DealController {
         dealService.updateStatementStatus(status, statementId, logId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/admin/statement/")
+    @Operation(description = "Получить все заявки.")
+    public ResponseEntity<List<StatementDto>> getListStatements() {
+        String logId = String.join(":", appName, UUID.randomUUID().toString());
+        log.info("{} -- Поступил запрос на получение всех заявок.", logId);
+
+        return ResponseEntity.ok(dealService.getListStatements(logId));
+    }
 }

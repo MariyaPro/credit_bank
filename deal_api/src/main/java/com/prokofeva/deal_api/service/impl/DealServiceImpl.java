@@ -134,6 +134,11 @@ public class DealServiceImpl implements DealService {
         kafkaProducer.sendMessage(statementId, Theme.SEND_DOCUMENTS, logId);
     }
 
+    @Override
+    public List<StatementDto> getListStatements(String logId) {
+        return statementService.getListStatements(logId);
+    }
+
     private ScoringDataDto createScoringData(LoanOfferDto loanOfferDto, ClientDto clientDto, String logId) {
         log.info("{} -- Формирование запроса к внешнему сервису.", logId);
         return ScoringDataDto.builder()

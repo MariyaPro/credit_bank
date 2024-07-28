@@ -24,4 +24,6 @@ public interface DealService {
     void signDocuments(String statementId, String logId);
 
     void sendDoc(String statementId, String logId);
+
+    List<StatementDto> getListStatements(String logId);
 }

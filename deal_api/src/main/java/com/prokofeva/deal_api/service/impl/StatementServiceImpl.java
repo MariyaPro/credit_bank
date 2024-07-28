@@ -16,8 +16,10 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -92,6 +94,16 @@ public class StatementServiceImpl implements StatementService {
         Statement statement = statementRepo.findById(UUID.fromString(statementId)).orElseThrow(EntityNotFoundException::new);
         statement.setSesCode(UUID.randomUUID().toString());
         saveStatement(statement,logId);
+    }
+
+    @Override
+    public List<StatementDto> getListStatements(String logId) {
+        List<StatementDto> statementDtoList = statementRepo.findAll()
+                .stream()
+                .map(statementMapper::convertEntityToDto)
+                .collect(Collectors.toList());
+        log.info("{} -- Сформирован список всех заявок. Количество записей = {}.", logId,statementDtoList.size());
+        return statementDtoList;
     }
 
     private void addStatusHistory(Statement statement, ApplicationStatus status, String logId) {
