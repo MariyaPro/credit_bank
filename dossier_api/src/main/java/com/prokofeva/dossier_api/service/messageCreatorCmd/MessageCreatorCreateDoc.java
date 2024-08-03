@@ -15,7 +15,7 @@ public class MessageCreatorCreateDoc implements MessageCreator {
     @Override
     public void fill(MimeMessageHelper messageHelper, UUID statementId, String logId) throws MessagingException {
         String text = "Ваша заявка на кредит одобрена. Для получения документов перейдите по ссылке\n" +
-                "http://localhost:8000/deal/document/" + statementId + "/send";
+                "http://localhost:8085/deal/document/" + statementId + "/send";
         messageHelper.setText(text);
         log.info("{} -- {}: сообщение и ссылка для получения документов установлены в тело письма.",logId,this.getClass().getSimpleName());
     }
