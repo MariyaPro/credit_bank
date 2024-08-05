@@ -16,7 +16,7 @@ jobs:
         with:
           java-version: 18
       - name: Install dependencies
-        run: mvn -f /home/runner/work/credit_bank/calculator_api.pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+        run: mvn -f /home/runner/work/credit_bank/calculator_api install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       - name: Run tests and collect coverage
         run: mvn -B test
       - name: Upload coverage to Codecov
