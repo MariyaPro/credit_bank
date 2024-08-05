@@ -27,6 +27,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="dossier" target="17" />
+      <module name="gateway_api" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
