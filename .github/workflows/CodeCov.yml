@@ -11,7 +11,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: 18
+          distribution: 'Oracle JDK'
       - name: Install dependencies
         run: |
           mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
