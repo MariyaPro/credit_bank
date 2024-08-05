@@ -1,0 +1,1 @@
+[![CodeCov](https://github.com/MariyaPro/credit_bank/actions/workflows/build.yml/badge.svg)](https://github.com/MariyaPro/credit_bank/actions/workflows/build.yml)
