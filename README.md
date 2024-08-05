@@ -1,1 +1,1 @@
-[![CodeCov](https://github.com/MariyaPro/credit_bank/actions/workflows/calc_codecov.yml/badge.svg)](https://github.com/MariyaPro/credit_bank/actions/workflows/calc_codecov.yml)
+[![CodeCov](https://github.com/MariyaPro/credit_bank/actions/workflows/CodeCov.yml/badge.svg)](https://github.com/MariyaPro/credit_bank/actions/workflows/CodeCov.yml)
