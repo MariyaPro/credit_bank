@@ -19,7 +19,7 @@ jobs:
           mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
           mvn -f ./calculator_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
       - name: Run tests and collect coverage
-        run: mvn -B test
+        run: mvn -f ./calculator_api/pom.xml -B test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         env:
