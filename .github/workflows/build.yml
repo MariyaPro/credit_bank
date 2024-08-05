@@ -7,9 +7,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
       - name: Setup Python
-        uses: actions/setup-python@main
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.10
+          python-version: 3.9
       - name: Generate coverage report
         run: |
           pip install pytest
