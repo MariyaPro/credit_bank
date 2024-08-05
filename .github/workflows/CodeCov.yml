@@ -12,6 +12,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'Oracle JDK'
+          java-version: '17'
       - name: Install dependencies
         run: |
           mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
