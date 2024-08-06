@@ -1,1 +1,2 @@
 [![codecov](https://codecov.io/gh/MariyaPro/credit_bank/branch/DevOPs/graph/badge.svg?token=TGG43T8PBY)](https://codecov.io/gh/MariyaPro/credit_bank)
+[![SonarCloud](https://github.com/MariyaPro/credit_bank/actions/workflows/SonarCloud.yml/badge.svg)](https://github.com/MariyaPro/credit_bank/actions/workflows/SonarCloud.yml)
