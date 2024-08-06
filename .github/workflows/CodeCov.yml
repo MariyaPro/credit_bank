@@ -12,22 +12,20 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'oracle'
-          java-version: '17'
+          distribution: oracle
+          java-version: 17
 
       - name: Install dependencies
         run: |
           mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
           mvn -f ./calculator_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
-      - name: Upload coverage reports to Codecov with GitHub Action
-        uses: codecov/codecov-action@v4.2.0
+      - name: Run tests and collect coverage
+        run: mvn -B test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-#      - name: Upload coverage reports to Codecov
-#        uses: codecov/codecov-action@v4.0.1
-#        with:
-#          directory: ./calculator_api
-#          token: ${{ secrets.CODECOV_TOKEN }}
 
