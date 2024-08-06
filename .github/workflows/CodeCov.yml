@@ -17,8 +17,7 @@ jobs:
           mvn -f ./calculator_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
       - name: Run tests and collect coverage
-        run: |
-          mvn -f ./calculator_api/ -B test
+        run: mvn -f ./calculator_api/ -B test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -41,9 +40,7 @@ jobs:
                mvn -f ./deal_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
       - name: Run tests and collect coverage
-        run: |
-               mvn -f ./calculator_api/ -B test
-               mvn -f ./deal_api/ -B test
+        run: mvn -f ./deal_api/ -B test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -66,9 +63,7 @@ jobs:
                mvn -f ./dossier_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
       - name: Run tests and collect coverage
-        run: |
-               mvn -f ./calculator_api/ -B test
-               mvn -f ./dossier_api/ -B test
+        run: mvn -f ./dossier_api/ -B test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -91,9 +86,7 @@ jobs:
                mvn -f ./statement_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
       - name: Run tests and collect coverage
-        run: |
-               mvn -f ./calculator_api/ -B test
-               mvn -f ./statement_api/ -B test
+        run: mvn -f ./statement_api/ -B test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
