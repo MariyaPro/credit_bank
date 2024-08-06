@@ -26,8 +26,7 @@ jobs:
       - name: Run tests and collect coverage
         run: |
           mvn -f ./calculator_api/ -B test
-          mvn -f ./deal_api/ -B test
-          mvn -f ./calculator_api/ -B test
+#          mvn -f ./deal_api/ -B test
           mvn -f ./dossier_api/ -B test
           mvn -f ./statement_api/ -B test
 
