@@ -33,4 +33,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn -f ./credit_bank_dto/pom.xml install -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=MariyaPro_credit_bank
-          mvn -f ./statement_api/pom.xml install -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=MariyaPro_credit_bank
+          mvn -f ./calculator_api/pom.xml install -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=MariyaPro_credit_bank
