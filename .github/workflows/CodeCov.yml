@@ -21,6 +21,8 @@ jobs:
         run: mvn -f ./calculator_api/pom.xml -B test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
+        with:
+          directory: ./calculator_api
         env:
           CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
 
