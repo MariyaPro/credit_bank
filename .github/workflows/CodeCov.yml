@@ -19,15 +19,15 @@ jobs:
         run: |
           mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
           mvn -f ./calculator_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-          mvn -f ./deal_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-#          mvn -f ./dossier_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+#          mvn -f ./deal_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+          mvn -f ./dossier_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 #          mvn -f ./statement_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
       - name: Run tests and collect coverage
         run: |
           mvn -f ./calculator_api/ -B test
-          mvn -f ./deal_api/ -B test
-#          mvn -f ./dossier_api/ -B test
+#          mvn -f ./deal_api/ -B test
+          mvn -f ./dossier_api/ -B test
 #          mvn -f ./statement_api/ -B test
 
       - name: Upload coverage to Codecov
