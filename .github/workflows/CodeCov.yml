@@ -21,7 +21,7 @@ jobs:
           mvn -f ./calculator_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
       - name: Run tests and collect coverage
-        run: mvn -B test
+        run: mvn -f ./calculator_api/ -B test
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
