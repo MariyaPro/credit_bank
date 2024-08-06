@@ -1,4 +1,4 @@
-name: CodeCov
+name: CodeCov-All
 on: [push, pull_request]
 jobs:
   calc-codecov:
