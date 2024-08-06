@@ -8,17 +8,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-#      - name: Set up JDK
-#        uses: actions/setup-java@v4
-#        with:
-#          distribution: 'oracle'
-#          java-version: '17'
-#      - name: Install dependencies
-#        run: |
-#          mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-#          mvn -f ./calculator_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-#      - name: Run tests and collect coverage
-#        run: mvn -f ./calculator_api/pom.xml -B test
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'oracle'
+          java-version: '17'
+      - name: Install dependencies
+        run: |
+          mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+          mvn -f ./calculator_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+      - name: Run tests and collect coverage
+        run: mvn -f ./calculator_api/pom.xml -B test
 #      - name: Upload coverage to Codecov
 #        uses: codecov/codecov-action@v4
 #        with:
