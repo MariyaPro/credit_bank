@@ -1,0 +1,9 @@
+FROM bellsoft/liberica-openjdk-alpine
+RUN mkdir -p /app/app
+WORKDIR /app/
+
+COPY gateway_api/target/gateway_api-0.0.1-SNAPSHOT.jar /app/
+
+EXPOSE 8000
+
+ENTRYPOINT ["java", "-jar", "gateway_api-0.0.1-SNAPSHOT.jar"]
