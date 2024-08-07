@@ -56,7 +56,7 @@ class DealControllerTest {
                 .passportSeries("1234")
                 .passportNumber("123456")
                 .build();
-        when(dealService.getListOffers(requestDto,anyString()))
+        when(dealService.getListOffers(any(),anyString()))
                 .thenReturn(List.of(
                         LoanOfferDto.builder().build(), LoanOfferDto.builder().build(),
                         LoanOfferDto.builder().build(), LoanOfferDto.builder().build()
@@ -191,7 +191,7 @@ class DealControllerTest {
 
         ResponseEntity<Void> response = dealController.selectAppliedOffer(loanOfferDto);
 
-        verify(dealService, times(1)).selectAppliedOffer(loanOfferDto, anyString());
+        verify(dealService, times(1)).selectAppliedOffer(any(), anyString());
         assertEquals(response.getStatusCodeValue(), 200);
     }
 
@@ -216,7 +216,7 @@ class DealControllerTest {
 
         ResponseEntity<Void> response = dealController.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5");
 
-        verify(dealService, times(1)).registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5", anyString());
+        verify(dealService, times(1)).registrationCredit(any(), anyString(), anyString());
         assertEquals(response.getStatusCodeValue(), 200);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -30,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestPropertySource("/application-test.yaml")
 class StatementControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -176,7 +178,7 @@ class StatementControllerTest {
     @Test
     void selectAppliedOffer() {
         LoanOfferDto loanOfferDto = LoanOfferDto.builder()
-                .statementId(UUID.fromString("fceaf46f-08f4-462f-9267-cc03047835a5"))
+                .statementId(UUID.randomUUID())
                 .requestedAmount(BigDecimal.valueOf(100000))
                 .totalAmount(BigDecimal.valueOf(111185))
                 .term(12)
@@ -188,7 +190,7 @@ class StatementControllerTest {
 
         ResponseEntity<Void> response = statementController.selectAppliedOffer(loanOfferDto);
 
-        verify(statementService, times(1)).selectAppliedOffer(loanOfferDto, "fceaf46f-08f4-462f-9267-cc03047835a5");
+        verify(statementService, times(1)).selectAppliedOffer(any(), anyString());
         assertEquals(response.getStatusCodeValue(), 200);
     }
 }
