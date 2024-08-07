@@ -181,7 +181,7 @@ class DealServiceImplTest {
 
         dealService.selectAppliedOffer(loanOfferDto, anyString());
 
-        verify(statementService, times(1)).selectAppliedOffer(loanOfferDto);
+        verify(statementService, times(1)).selectAppliedOffer(loanOfferDto,"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
     }
 
     @Test
@@ -254,14 +254,14 @@ class DealServiceImplTest {
                 .build();
 
 
-        when(statementService.getStatementById("fceaf46f-08f4-462f-9267-cc03047835a5")).thenReturn(statementDto);
+        when(statementService.getStatementById("fceaf46f-08f4-462f-9267-cc03047835a5","test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1")).thenReturn(statementDto);
         when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5")).thenReturn(clientDto);
         when(calcFeignClient.calculateCredit(any())).thenReturn(creditDto);
         when(creditService.createCredit(any(CreditDto.class), anyString())).thenReturn(creditDto);
 
         dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5", anyString());
 
-        verify(statementService, times(1)).getStatementById(any());
+        verify(statementService, times(1)).getStatementById(any(),"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
         verify(clientService, times(1)).updateClientInfo(any(), any(), anyString());
         verify(calcFeignClient, times(1)).calculateCredit(any());
         verify(creditService, times(1)).createCredit(any(), anyString());
@@ -334,7 +334,7 @@ class DealServiceImplTest {
                         .request(Request.create(Request.HttpMethod.POST, "ii", Map.of(), null, null, null))
                         .build());
 
-        when(statementService.getStatementById("fceaf46f-08f4-462f-9267-cc03047835a5")).thenReturn(statementDto);
+        when(statementService.getStatementById("fceaf46f-08f4-462f-9267-cc03047835a5","test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1")).thenReturn(statementDto);
         when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5")).thenReturn(clientDto);
         when(calcFeignClient.calculateCredit(any())).thenThrow(feignException);
 
@@ -345,7 +345,7 @@ class DealServiceImplTest {
         assertArrayEquals("Test message".getBytes(StandardCharsets.UTF_8),
                 e.getMessage().getBytes(StandardCharsets.UTF_8));
 
-        verify(statementService, times(1)).getStatementById(any());
+        verify(statementService, times(1)).getStatementById(any(),"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
         verify(clientService, times(1)).updateClientInfo(any(), any(), anyString());
         verify(calcFeignClient, times(1)).calculateCredit(any());
         verify(creditService, times(0)).createCredit(any(), anyString());

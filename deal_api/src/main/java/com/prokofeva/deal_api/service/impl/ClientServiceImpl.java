@@ -43,8 +43,8 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto updateClientInfo(ClientDto clientDto,
                                       FinishRegistrationRequestDto finRegRequestDto,
-                                      String statementId) {
-        log.info("{} -- Обновление данных клиента (id = {}).", statementId, clientDto.getClientId());
+                                      String logId) {
+        log.info("{} -- Обновление данных клиента (id = {}).", logId, clientDto.getClientId());
         PassportDto passportDto = clientDto.getPassport();
         passportDto.setIssueDate(finRegRequestDto.getPassportIssueDate());
         passportDto.setIssueBranch(finRegRequestDto.getPassportIssueBrach());
@@ -58,8 +58,8 @@ public class ClientServiceImpl implements ClientService {
         clientDto.setEmployment(employmentDto);
         clientDto.setAccountNumber(finRegRequestDto.getAccountNumber());
 
-        log.info("{} -- Данные клиента (id = {}) изменены.", statementId, clientDto.getClientId());
+        log.info("{} -- Данные клиента (id = {}) изменены.", logId, clientDto.getClientId());
 
-        return saveClient(clientMapper.convertDtoToEntity(clientDto),statementId);
+        return saveClient(clientMapper.convertDtoToEntity(clientDto),logId);
     }
 }

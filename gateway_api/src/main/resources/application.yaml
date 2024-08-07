@@ -1,0 +1,22 @@
+server:
+  port: 8000
+
+logging:
+  file:
+    name: logs/log_gateway
+
+spring:
+  application:
+    name: gateway
+
+deal_feignclient_url: http://deal-app:8085/deal/
+statement_feignclient_url: http://statement-app:8080/statement/
+#deal_feignclient_url: http://localhost:8085/deal/
+#statement_feignclient_url: http://localhost:8080/statement/
+
+feign:
+  client:
+    config:
+      deal:
+        read-timeout: 5000
+        connect-timeout: 5000

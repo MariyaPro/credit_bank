@@ -19,8 +19,8 @@ public class KafkaProducerImpl implements KafkaProducer {
     private final StatementService statementService;
 
     @Override
-    public void sendMessage(String statementId, Theme theme) {
-        String address = statementService.getStatementById(statementId).getClientId().getEmail();
+    public void sendMessage(String statementId, Theme theme, String logId) {
+        String address = statementService.getStatementById(statementId,logId).getClientId().getEmail();
         EmailMessageDto emailMessageDto = new EmailMessageDto(address,theme,UUID.fromString(statementId));
 
         template.send(theme.getValue(), emailMessageDto);

@@ -1,14 +1,15 @@
 package com.prokofeva.calculator_api.controller;
 
+import com.prokofeva.calculator_api.service.CalculatorService;
 import com.prokofeva.dto.CreditDto;
 import com.prokofeva.dto.LoanOfferDto;
 import com.prokofeva.dto.LoanStatementRequestDto;
 import com.prokofeva.dto.ScoringDataDto;
-import com.prokofeva.calculator_api.service.CalculatorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,11 +30,13 @@ import java.util.UUID;
 public class CalculatorController {
 
     private final CalculatorService calculatorService;
+    @Value("${spring.application.name}")
+    private String appName;
 
     @Operation(description = "Расчёт возможных условий кредита")
     @PostMapping("/offers")
     public ResponseEntity<List<LoanOfferDto>> createLoanOffer(@RequestBody @Valid LoanStatementRequestDto loanStatementRequestDto) {
-        String logId = UUID.randomUUID().toString();
+        String logId = String.join(":", appName, UUID.randomUUID().toString());
         log.info("{} -- Поступила заявка на расчет вариантов займа. {}", logId, loanStatementRequestDto.toString());
         return ResponseEntity.ok(calculatorService.createListOffer(loanStatementRequestDto, logId));
     }
@@ -41,7 +44,7 @@ public class CalculatorController {
     @PostMapping("/calc")
     @Operation(description = "Валидация присланных данных + полный расчет параметров кредита ")
     public ResponseEntity<CreditDto> calculateCredit(@RequestBody @Valid ScoringDataDto scoringDataDto) {
-        String logId = UUID.randomUUID().toString();
+        String logId = String.join(":", appName, UUID.randomUUID().toString());
         log.info("{} -- Поступила заявка на кредит. {}", logId, scoringDataDto.toString());
         return ResponseEntity.ok(calculatorService.calculateCredit(scoringDataDto, logId));
     }

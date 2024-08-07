@@ -2,6 +2,8 @@ server:
   port: 8085
 
 spring:
+  application:
+    name: deal
   datasource:
     url: jdbc:postgresql://localhost:5433/deal_db
     username: deal_user

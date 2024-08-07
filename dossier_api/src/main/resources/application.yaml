@@ -1,6 +1,9 @@
 server:
   port: 8095
+
 spring:
+  application:
+    name: dossier
   mail:
     host: smtp.yandex.ru
     username: ProkofevaMariyaS@yandex.ru
