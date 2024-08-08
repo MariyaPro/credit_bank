@@ -28,10 +28,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(SpringExtension.class)
 @TestPropertySource("/application-test.yaml")
 class DossierServiceImplTest {
-//    @Mock
-//    private JavaMailSender mailSender;
-//    @Mock
-//    private SenderService senderService;
+    @Mock
+    private JavaMailSender mailSender;
+    @Mock
+    private SenderService senderService;
     @Mock
     private MessageCreatorFactory messageCreatorFactory;
     @InjectMocks
@@ -51,17 +51,17 @@ class DossierServiceImplTest {
         );
         MimeMessage mimeMessage = new MimeMessage(Session.getDefaultInstance(System.getProperties()));
 
-//        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
-//        MessageCreatorFinReg creatorFinReg = Mockito.mock(MessageCreatorFinReg.class);
-//        when(messageCreatorFactory.getCreator(any(),anyString())).thenReturn(creatorFinReg);
-//
-//        dossierService.sendMessageToClient(emailMessageDto,"fceaf46f-08f4-462f-9267-cc03047835a5");
-//
-//        verify(senderService, times(1)).sendMailMessage(mimeMessage,"fceaf46f-08f4-462f-9267-cc03047835a5");
-//        verify(mailSender,times(1)).createMimeMessage();
-//        verify(messageCreatorFactory, times(1)).getCreator(any(Theme.class),anyString());
-//
-//        assertEquals(mimeMessage.getSubject(),Theme.FINISH_REGISTRATION.getValue());
-//        assertEquals(mimeMessage.getAllRecipients().length,1 );
+        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
+        MessageCreatorFinReg creatorFinReg = Mockito.mock(MessageCreatorFinReg.class);
+        when(messageCreatorFactory.getCreator(any(),anyString())).thenReturn(creatorFinReg);
+
+        dossierService.sendMessageToClient(emailMessageDto,"fceaf46f-08f4-462f-9267-cc03047835a5");
+
+        verify(senderService, times(1)).sendMailMessage(any(),anyString());
+        verify(mailSender,times(1)).createMimeMessage();
+        verify(messageCreatorFactory, times(1)).getCreator(any(),anyString());
+
+        assertEquals(mimeMessage.getSubject(),Theme.FINISH_REGISTRATION.getValue());
+        assertEquals(mimeMessage.getAllRecipients().length,1 );
     }
 }
