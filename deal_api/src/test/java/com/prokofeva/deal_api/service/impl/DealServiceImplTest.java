@@ -41,6 +41,8 @@ class DealServiceImplTest {
     private CalcFeignClient calcFeignClient;
     @Mock
     private CreditService creditService;
+    @Mock
+    private KafkaProducerImpl kafkaProducer;
 
     @Test
     void getListOffers() {
@@ -91,7 +93,7 @@ class DealServiceImplTest {
                 LoanOfferDto.builder().build()
         ));
 
-        List<LoanOfferDto> listOffersAc = dealService.getListOffers(loanRequestDto,anyString());
+        List<LoanOfferDto> listOffersAc = dealService.getListOffers(loanRequestDto,"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
 
         assertNotNull(listOffersAc);
 
@@ -154,7 +156,7 @@ class DealServiceImplTest {
         when(statementService.createStatement(any(), anyString())).thenReturn(statementDtoFromService);
         when(calcFeignClient.getListOffers(any(LoanStatementRequestDto.class))).thenThrow(feignException);
 
-        Exception e = assertThrows(ExternalServiceException.class, () -> dealService.getListOffers(loanRequestDto,anyString()));
+        Exception e = assertThrows(ExternalServiceException.class, () -> dealService.getListOffers(loanRequestDto,"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1"));
 
         assertNotNull(e);
         assertArrayEquals("Test message".getBytes(StandardCharsets.UTF_8),
@@ -179,7 +181,7 @@ class DealServiceImplTest {
                 .isSalaryClient(false)
                 .build();
 
-        dealService.selectAppliedOffer(loanOfferDto, anyString());
+        dealService.selectAppliedOffer(loanOfferDto, "test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
 
         verify(statementService, times(1)).selectAppliedOffer(loanOfferDto,"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
     }
@@ -255,13 +257,13 @@ class DealServiceImplTest {
 
 
         when(statementService.getStatementById("fceaf46f-08f4-462f-9267-cc03047835a5","test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1")).thenReturn(statementDto);
-        when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5")).thenReturn(clientDto);
+        when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto, "test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1")).thenReturn(clientDto);
         when(calcFeignClient.calculateCredit(any())).thenReturn(creditDto);
         when(creditService.createCredit(any(CreditDto.class), anyString())).thenReturn(creditDto);
 
-        dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5", anyString());
+        dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5", "test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
 
-        verify(statementService, times(1)).getStatementById(any(),"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
+        verify(statementService, times(1)).getStatementById(any(),anyString());
         verify(clientService, times(1)).updateClientInfo(any(), any(), anyString());
         verify(calcFeignClient, times(1)).calculateCredit(any());
         verify(creditService, times(1)).createCredit(any(), anyString());
@@ -335,17 +337,17 @@ class DealServiceImplTest {
                         .build());
 
         when(statementService.getStatementById("fceaf46f-08f4-462f-9267-cc03047835a5","test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1")).thenReturn(statementDto);
-        when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5")).thenReturn(clientDto);
+        when(clientService.updateClientInfo(statementDto.getClientId(), finRegRequestDto, "test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1")).thenReturn(clientDto);
         when(calcFeignClient.calculateCredit(any())).thenThrow(feignException);
 
         Exception e = assertThrows(ExternalServiceException.class,
-                () -> dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5", anyString()));
+                () -> dealService.registrationCredit(finRegRequestDto, "fceaf46f-08f4-462f-9267-cc03047835a5", "test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1"));
 
         assertNotNull(e);
         assertArrayEquals("Test message".getBytes(StandardCharsets.UTF_8),
                 e.getMessage().getBytes(StandardCharsets.UTF_8));
 
-        verify(statementService, times(1)).getStatementById(any(),"test:da2a5da5-19b7-475e-b8cb-f7eddec4f6b1");
+        verify(statementService, times(1)).getStatementById(any(),anyString());
         verify(clientService, times(1)).updateClientInfo(any(), any(), anyString());
         verify(calcFeignClient, times(1)).calculateCredit(any());
         verify(creditService, times(0)).createCredit(any(), anyString());

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/credit_bank.iml" filepath="$PROJECT_DIR$/credit_bank.iml" />
       <module fileurl="file://$PROJECT_DIR$/deal_api/deal_api.iml" filepath="$PROJECT_DIR$/deal_api/deal_api.iml" />
       <module fileurl="file://$PROJECT_DIR$/dossier_api/dossier_api.iml" filepath="$PROJECT_DIR$/dossier_api/dossier_api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/statement_api/statement_api.iml" filepath="$PROJECT_DIR$/statement_api/statement_api.iml" />
     </modules>
   </component>
 </project>

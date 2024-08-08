@@ -5,8 +5,7 @@ import com.prokofeva.dto.ClientDto;
 import com.prokofeva.enums.MaritalStatus;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mapstruct.factory.Mappers;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -14,10 +13,8 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
 class ClientMapperTest {
-    @Autowired
-    private ClientMapper clientMapper;
+    private final ClientMapper clientMapper = Mappers.getMapper(ClientMapper.class);
     private static Client clientAc;
     private static ClientDto clientDtoAc;
 

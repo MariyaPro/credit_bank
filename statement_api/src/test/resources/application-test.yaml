@@ -1,3 +1,7 @@
+spring:
+  application:
+    name: statement
+
 prescoring_min_age: 18
 
 deal_feignclient_url: http://deal-app:8090/for_test/

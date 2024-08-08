@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyString;
 
 //@ExtendWith(SpringExtension.class)
 class FileServiceImplTest {
@@ -90,7 +89,7 @@ class FileServiceImplTest {
 
     @Test
     void createCreditAgreementFile() throws IOException {
-        Path creditAgreementFile = fileService.createCreditAgreementFile(statementDto, anyString());
+        Path creditAgreementFile = fileService.createCreditAgreementFile(statementDto, "test:fceaf46f-08f4-462f-9267-cc03047835a5");
 
         assertNotNull(creditAgreementFile);
         assertTrue(Files.size(creditAgreementFile) > 0L);
@@ -100,7 +99,7 @@ class FileServiceImplTest {
 
     @Test
     void createQuestionnaireFile() throws IOException {
-        Path questionnaireFile = fileService.createQuestionnaireFile(statementDto, anyString());
+        Path questionnaireFile = fileService.createQuestionnaireFile(statementDto, "test:fceaf46f-08f4-462f-9267-cc03047835a5");
 
         assertNotNull(questionnaireFile);
         assertTrue(Files.size(questionnaireFile) > 0L);
@@ -110,7 +109,7 @@ class FileServiceImplTest {
 
     @Test
     void createPaymentScheduleFile() throws IOException {
-        Path paymentScheduleFile = fileService.createPaymentScheduleFile(statementDto, anyString());
+        Path paymentScheduleFile = fileService.createPaymentScheduleFile(statementDto, "test:fceaf46f-08f4-462f-9267-cc03047835a5");
 
         assertNotNull(paymentScheduleFile);
         assertTrue(Files.size(paymentScheduleFile) > 0L);

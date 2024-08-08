@@ -4,8 +4,7 @@ import com.prokofeva.deal_api.model.Credit;
 import com.prokofeva.dto.CreditDto;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,10 +12,8 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
 class CreditMapperTest {
-    @Autowired
-    private CreditMapper creditMapper;
+    private final CreditMapper creditMapper = Mappers.getMapper(CreditMapper.class);
     private static Credit creditAc;
     private static CreditDto creditDtoAc;
 

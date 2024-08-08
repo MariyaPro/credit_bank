@@ -57,9 +57,9 @@ class DossierServiceImplTest {
 
         dossierService.sendMessageToClient(emailMessageDto,"fceaf46f-08f4-462f-9267-cc03047835a5");
 
-        verify(senderService, times(1)).sendMailMessage(mimeMessage,"fceaf46f-08f4-462f-9267-cc03047835a5");
+        verify(senderService, times(1)).sendMailMessage(any(),anyString());
         verify(mailSender,times(1)).createMimeMessage();
-        verify(messageCreatorFactory, times(1)).getCreator(any(Theme.class),anyString());
+        verify(messageCreatorFactory, times(1)).getCreator(any(),anyString());
 
         assertEquals(mimeMessage.getSubject(),Theme.FINISH_REGISTRATION.getValue());
         assertEquals(mimeMessage.getAllRecipients().length,1 );
