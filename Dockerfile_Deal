@@ -1,0 +1,9 @@
+FROM bellsoft/liberica-openjdk-alpine
+RUN mkdir -p /app/app
+WORKDIR /app/
+
+COPY deal_api/target/deal_api-0.0.1-SNAPSHOT.jar /app/
+
+EXPOSE 8085
+
+ENTRYPOINT ["java", "-jar", "deal_api-0.0.1-SNAPSHOT.jar"]

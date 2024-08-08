@@ -1,0 +1,94 @@
+name: CodeCov-All
+on: [push, pull_request]
+jobs:
+  calc-codecov:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: oracle
+          java-version: 17
+      - name: Install dependencies
+        run: |
+          mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+          mvn -f ./calculator_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+      - name: Run tests and collect coverage
+        run: mvn -f ./calculator_api/ -B test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  deal-codecov:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: oracle
+          java-version: 17
+      - name: Install dependencies
+        run: |
+               mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+               mvn -f ./deal_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+      - name: Run tests and collect coverage
+        run: mvn -f ./deal_api/ -B test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  dossier-codecov:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: oracle
+          java-version: 17
+      - name: Install dependencies
+        run: |
+               mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+               mvn -f ./dossier_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+      - name: Run tests and collect coverage
+        run: mvn -f ./dossier_api/ -B test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  statement-codecov:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: oracle
+          java-version: 17
+      - name: Install dependencies
+        run: |
+               mvn -f ./credit_bank_dto/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+               mvn -f ./statement_api/pom.xml install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+      - name: Run tests and collect coverage
+        run: mvn -f ./statement_api/ -B test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

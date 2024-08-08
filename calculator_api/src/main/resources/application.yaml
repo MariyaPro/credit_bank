@@ -1,0 +1,61 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: calculator
+
+rate_loan:
+  base: '20.00'
+  age:
+    min:
+      male: '32'
+      female: '30'
+    max:
+      male: '60'
+      female: '55'
+  correction:
+    age:
+      male: '-3'
+      female: '-3'
+    employment:
+      status:
+        self_employed: '1'
+        business_owner: '2'
+      position:
+        manager: '-1'
+        top_manager: '2'
+    marital_status:
+      married: '-3'
+      divorced: '1'
+    insurance_enabled: '-3'
+    salary_client: '-1'
+    gender:
+      other: '7'
+
+rate_insurance:
+  base: '3.0'
+  term:
+    short: '12'
+    long: '120'
+  amount_loan:
+    small: '80000'
+    big: '1000000'
+  correction:
+    short_term: '1'
+    long_term: '-1'
+    small_amount: '1'
+    big_amount: '-1'
+
+scoring:
+  age:
+    min: '20'
+    max: '65'
+  min_work_experience:
+    total: '18'
+    current: '3'
+  max_number_of_salaries_in_amount: '25'
+
+logging:
+  file:
+    name: logs/log_calculator
